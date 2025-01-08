@@ -1,0 +1,148 @@
+package frc.robot.subsystems;
+
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
+
+public class SwerveModule {
+  TalonFX driveMotor;
+  SparkMax turnMotor;
+
+  AbsoluteEncoder turnEncoder;
+  private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
+
+  SparkClosedLoopController turningPIDController;
+
+  SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
+
+  public SwerveModule(int driveID, int turnID) {
+
+    driveMotor = new TalonFX(driveID);
+    turnMotor = new SparkMax(turnID, MotorType.kBrushless);
+
+    SparkMaxConfig turnConfig = new SparkMaxConfig();
+    turnConfig.closedLoop
+        .pidf(
+            SwerveModuleConstants.turnP,
+            SwerveModuleConstants.turnI,
+            SwerveModuleConstants.turnD,
+            SwerveModuleConstants.driveFF)
+        .positionWrappingMinInput(SwerveModuleConstants.kTurningEncoderPositionPIDMinInput)
+        .positionWrappingMaxInput(SwerveModuleConstants.kTurningEncoderPositionPIDMaxInput)
+        .positionWrappingEnabled(true);
+
+    turnEncoder = turnMotor.getAbsoluteEncoder();
+    turnConfig
+    .inverted(true)
+    .idleMode(IdleMode.kBrake)
+    .smartCurrentLimit(SwerveModuleConstants.turningCurrentLimit);
+
+    turnConfig.absoluteEncoder
+        .positionConversionFactor(SwerveModuleConstants.kTurningEncoderPositionFactor)
+        .velocityConversionFactor(SwerveModuleConstants.kTurningEncoderVelocityFactor)
+        .inverted(true);
+    turningPIDController = turnMotor.getClosedLoopController();
+    turnMotor.configure(turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    var config = new TalonFXConfiguration();
+    config.Slot0.kP = SwerveModuleConstants.driveP;
+    config.Slot0.kI = SwerveModuleConstants.driveI;
+    config.Slot0.kD = SwerveModuleConstants.driveD;
+    config.Slot0.kV = SwerveModuleConstants.driveFF;
+    config.Slot0.kS = SwerveModuleConstants.driveKs;
+    config.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    config.CurrentLimits.StatorCurrentLimit = SwerveModuleConstants.driveCurrentLimit;
+    config.CurrentLimits.StatorCurrentLimitEnable = true;
+    config.Feedback.SensorToMechanismRatio = 1 / SwerveModuleConstants.kDriveMetersPerRev;
+    driveMotor.getConfigurator().apply(config);
+    driveMotor.getVelocity().setUpdateFrequency(100); // Set update frequency to 100 Hert, 10ms
+    driveMotor.getPosition().setUpdateFrequency(100); // Set update frequency to 100 Hert, 10ms
+    driveMotor.getClosedLoopError().setUpdateFrequency(50);
+    driveMotor.getClosedLoopOutput().setUpdateFrequency(50);
+    driveMotor.getSupplyVoltage().setUpdateFrequency(20);
+    driveMotor.getSupplyCurrent().setUpdateFrequency(20);
+    driveMotor.getStatorCurrent().setUpdateFrequency(20);
+    driveMotor.optimizeBusUtilization();
+
+    m_desiredState.angle = new Rotation2d(turnEncoder.getPosition());
+
+    Timer.delay(.01); // Pause between subsystems to ease CAN traffic at startup
+    new SwerveModuleState(null, null);
+  }
+
+  public SwerveModuleState getState() {
+    return new SwerveModuleState(
+        driveMotor.getVelocity().getValueAsDouble(), new Rotation2d(turnEncoder.getPosition()));
+  }
+
+  public SwerveModulePosition getPosition() {
+    return new SwerveModulePosition(
+        driveMotor.getPosition().getValueAsDouble(), new Rotation2d(turnEncoder.getPosition()));
+  }
+
+  public SwerveModuleState getDesiredState() {
+    return m_desiredState;
+  }
+
+  public void setDesiredState(SwerveModuleState state) {
+    Rotation2d encoderRotation = new Rotation2d(turnEncoder.getPosition());
+    SwerveModuleState optimizedState = SwerveModuleState.optimize(state, encoderRotation);
+    turningPIDController.setReference(
+        optimizedState.angle.getRadians(), SparkMax.ControlType.kPosition);
+
+    // Scale speed by cosine of angle error. This scales down movement perpendicular
+    // to the desired
+    // direction of travel that can occur when modules change directions. This
+    // results in smoother
+    // driving.
+    optimizedState.speedMetersPerSecond *= optimizedState.angle.minus(encoderRotation).getCos();
+    var requestedVoltage = new VelocityVoltage(optimizedState.speedMetersPerSecond);
+    driveMotor.setControl(requestedVoltage);
+
+    m_desiredState = optimizedState;
+  }
+
+  public void resetEncoders() {
+    driveMotor.setPosition(0);
+  }
+
+  public static class SwerveModuleConstants {
+    public static final double kTurningEncoderPositionFactor = (2 * Math.PI); // radians
+    public static final double kTurningEncoderVelocityFactor = (2 * Math.PI) / 60.0; // radians per second
+
+    public static int turningCurrentLimit = 30;
+    public static double kTurningEncoderPositionPIDMinInput = 0;
+    public static double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor;
+    public static double turnP = 1.5;
+    public static double turnI = 0;
+    public static double turnD = 0.05;
+    public static double turnFF = 0;
+
+    public static int driveCurrentLimit = 80;
+    public static double driveP = 1;
+    public static double driveI = 0;
+    public static double driveD = 0;
+    public static double driveFF = 2.5;
+    public static double driveKs = .07;
+
+    public static double wheelDiameter = Units.inchesToMeters(4);
+    public static double wheelCircumference = wheelDiameter * Math.PI;
+    public static double driveRatio = 50. / 14. * 17. / 27. * 45. / 15.; // MK4I L2
+    public static double kDriveMetersPerRev = wheelCircumference / driveRatio;
+  }
+}
