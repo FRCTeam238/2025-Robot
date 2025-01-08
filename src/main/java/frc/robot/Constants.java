@@ -59,4 +59,12 @@ public class Constants {
             XBOX
         }
     }
+
+    public class ArmConstants {
+        public static int motorID = 0;
+        public static double kP = 0.2;
+        public static double kI = 0;
+        public static double kD = 0;
+        public static double kFF = 0;
+    }
 }

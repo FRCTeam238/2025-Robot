@@ -11,10 +11,10 @@ public class Controls {
 
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
-    static CommandXboxController controller = new CommandXboxController(0);
-    static CommandXboxController driverController = new CommandXboxController(3);
-    static CommandJoystick rightJoystick = new CommandJoystick(1); 
-    static CommandJoystick leftJoystick = new CommandJoystick(2); 
+    public static CommandXboxController controller = new CommandXboxController(0);
+    public static CommandXboxController driverController = new CommandXboxController(3);
+    public static CommandJoystick rightJoystick = new CommandJoystick(1); 
+    public static CommandJoystick leftJoystick = new CommandJoystick(2); 
 
     static DriveType driveType = DriveType.JOYSTICK;
 
