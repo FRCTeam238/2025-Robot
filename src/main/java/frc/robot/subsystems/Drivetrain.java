@@ -200,7 +200,8 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getRate();
   }
 
-  public ChassisSpeeds choreoController(Pose2d currentPose, SwerveSample referenceState) {
+  public ChassisSpeeds choreoController(SwerveSample referenceState) {
+    Pose2d currentPose = getPose();
     // log("TrajPose", referenceState.getPose());
     double xFF = referenceState.vx;
     double yFF = referenceState.vy;
