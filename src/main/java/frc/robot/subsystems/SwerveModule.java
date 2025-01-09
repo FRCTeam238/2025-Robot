@@ -8,6 +8,7 @@ import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -45,6 +46,7 @@ public class SwerveModule {
         .positionWrappingMinInput(SwerveModuleConstants.kTurningEncoderPositionPIDMinInput)
         .positionWrappingMaxInput(SwerveModuleConstants.kTurningEncoderPositionPIDMaxInput)
         .positionWrappingEnabled(true);
+    turnConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
 
     turnEncoder = turnMotor.getAbsoluteEncoder();
     turnConfig
@@ -57,7 +59,10 @@ public class SwerveModule {
         .velocityConversionFactor(SwerveModuleConstants.kTurningEncoderVelocityFactor)
         .inverted(true);
     turningPIDController = turnMotor.getClosedLoopController();
-    turnMotor.configure(turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    turnConfig.signals.primaryEncoderPositionPeriodMs(100);
+    turnConfig.signals.absoluteEncoderPositionPeriodMs(10);
+    turnConfig.signals.absoluteEncoderVelocityPeriodMs(200);
 
     var config = new TalonFXConfiguration();
     config.Slot0.kP = SwerveModuleConstants.driveP;
@@ -80,9 +85,7 @@ public class SwerveModule {
     driveMotor.optimizeBusUtilization();
 
     m_desiredState.angle = new Rotation2d(turnEncoder.getPosition());
-
-    Timer.delay(.01); // Pause between subsystems to ease CAN traffic at startup
-    new SwerveModuleState(null, null);
+    turnMotor.configure(turnConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public SwerveModuleState getState() {
