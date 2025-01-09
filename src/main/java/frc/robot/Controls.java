@@ -1,25 +1,41 @@
 package frc.robot;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.OperatorConstants.*;
 
+@Logged
 public class Controls {
+
+    private static Controls singleton;
 
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
-    static CommandXboxController controller = new CommandXboxController(0);
-    static CommandXboxController driverController = new CommandXboxController(3);
-    static CommandJoystick rightJoystick = new CommandJoystick(1); 
-    static CommandJoystick leftJoystick = new CommandJoystick(2); 
+    @NotLogged CommandXboxController controller = new CommandXboxController(0);
+    @NotLogged CommandXboxController driverController = new CommandXboxController(3);
+    @NotLogged CommandJoystick rightJoystick = new CommandJoystick(1); 
+    @NotLogged CommandJoystick leftJoystick = new CommandJoystick(2); 
 
     static DriveType driveType = DriveType.JOYSTICK;
 
+    private Controls(){
+    }
+
+    public static Controls getInstance()
+    {
+        if (singleton == null)
+        {
+            singleton = new Controls();
+        }
+        return singleton;
+    }
+
     @Logged
-    public static double[] getSwerveJoystickValues() {
+    public double[] getSwerveJoystickValues() {
         double slowmodePercent = getSlowmode() ? .75 : 1;
 
         switch (getDriveType()) {
@@ -52,11 +68,11 @@ public class Controls {
         }
     }
 
-    private static boolean getSlowmode() {
+    private boolean getSlowmode() {
         return leftJoystick.getHID().getRawButton(3) || rightJoystick.getHID().getRawButton(3);
       }
 
-    public static DriveType getDriveType() {
+    public DriveType getDriveType() {
         driveType = driveTypeChooser.getSelected();
         return driveType;
       }

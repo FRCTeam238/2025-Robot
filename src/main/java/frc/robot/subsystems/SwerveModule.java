@@ -14,22 +14,21 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Timer;
 
+@Logged
 public class SwerveModule {
   TalonFX driveMotor;
-  SparkMax turnMotor;
+  @NotLogged SparkMax turnMotor;
+  @NotLogged SparkClosedLoopController turningPIDController;
+  @NotLogged AbsoluteEncoder turnEncoder;
 
-  AbsoluteEncoder turnEncoder;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
-
-  SparkClosedLoopController turningPIDController;
-
-  SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
   public SwerveModule(int driveID, int turnID) {
 

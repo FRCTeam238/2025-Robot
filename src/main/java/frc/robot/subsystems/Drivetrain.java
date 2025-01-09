@@ -7,6 +7,7 @@ import com.studica.frc.AHRS.NavXComType;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,17 +23,19 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** for swerve */
+@Logged
 public class Drivetrain extends SubsystemBase {
 
-  SwerveModule frontLeft = new SwerveModule(frontLeftDriveCANId, frontLeftTurnCANId);
-  SwerveModule frontRight = new SwerveModule(frontRightDriveCANId, frontRightTurnCANId);
-  SwerveModule backLeft = new SwerveModule(backLeftDriveCANId, backLeftTurnCANId);
-  SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
+  @NotLogged SwerveModule frontLeft = new SwerveModule(frontLeftDriveCANId, frontLeftTurnCANId);
+  @NotLogged SwerveModule frontRight = new SwerveModule(frontRightDriveCANId, frontRightTurnCANId);
+  @NotLogged SwerveModule backLeft = new SwerveModule(backLeftDriveCANId, backLeftTurnCANId);
+  @NotLogged SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  SwerveDrivePoseEstimator odometry;
+  @NotLogged SwerveDrivePoseEstimator odometry;
   AHRS gyro;
   PIDController x, y, theta;
-  @Logged String command;
+  String command = "None";
+  SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] {0, 0, 0, 0}, new double[] {0, 0, 0, 0});
 
   public Drivetrain() {
     gyro = new AHRS(NavXComType.kMXP_SPI);
@@ -66,7 +69,6 @@ public class Drivetrain extends SubsystemBase {
         });
   }
 
-  @Logged
   public Pose2d getPose() {
     return odometry.getEstimatedPosition();
   }
@@ -150,14 +152,12 @@ public class Drivetrain extends SubsystemBase {
     backRight.resetEncoders();
   }
 
-  @Logged
   public SwerveModuleState[] getSwerveModuleStates() {
     return new SwerveModuleState[] {
       frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState(),
     };
   }
 
-  @Logged
   public SwerveModuleState[] getDesiredStates() {
     return new SwerveModuleState[] {
             frontLeft.getDesiredState(), frontRight.getDesiredState(), backLeft.getDesiredState(), backRight.getDesiredState()
@@ -191,7 +191,6 @@ public class Drivetrain extends SubsystemBase {
         });
   }
 
-  @Logged
   public double getHeading() {
     return gyro.getRotation2d().getDegrees();
   }
@@ -202,7 +201,6 @@ public class Drivetrain extends SubsystemBase {
 
   public ChassisSpeeds choreoController(SwerveSample referenceState) {
     Pose2d currentPose = getPose();
-    // log("TrajPose", referenceState.getPose());
     double xFF = referenceState.vx;
     double yFF = referenceState.vy;
     double rotationFF = referenceState.omega;
@@ -211,12 +209,9 @@ public class Drivetrain extends SubsystemBase {
     double yFeedback = y.calculate(currentPose.getY(), referenceState.y);
     double rotationFeedback =
         theta.calculate(currentPose.getRotation().getRadians(), referenceState.heading);
-    // log("CurrentRotation", currentPose.getRotation().getRadians());
-    // log("PoseRotation", referenceState.getPose().getRotation().getRadians());
     
     ChassisSpeeds retval = ChassisSpeeds.fromFieldRelativeSpeeds(
         xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
-    // log("ChassisSpeeds", retval);
     return retval;
   }
 }

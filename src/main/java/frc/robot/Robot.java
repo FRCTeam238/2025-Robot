@@ -4,18 +4,31 @@
 
 package frc.robot;
 
+import org.littletonrobotics.urcl.URCL;
+
+import com.ctre.phoenix6.SignalLogger;
+
+import edu.wpi.first.epilogue.Epilogue;
+import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Drivetrain;
 
+@Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
 
   public static Drivetrain drivetrain = new Drivetrain();
 
   public Robot() {
+    SignalLogger.start();
+    DataLogManager.start();
+    DriverStation.startDataLog(DataLogManager.getLog());
+    URCL.start();
+    Epilogue.bind(this);
   }
 
   @Override
