@@ -8,15 +8,15 @@ public class Constants {
     public class DriveConstants {
         public static final boolean fieldRelative = true;
 
-        public static final int frontRightDriveCANId = 14;
-        public static final int frontLeftDriveCANId = 15;
-        public static final int backRightDriveCANId = 1;
-        public static final int backLeftDriveCANId = 0;
+        public static final int frontRightDriveCANId = 18;
+        public static final int frontLeftDriveCANId = 11;
+        public static final int backRightDriveCANId = 17;
+        public static final int backLeftDriveCANId = 13;
 
-        public static final int frontRightTurnCANId = 10;
-        public static final int backRightTurnCANId = 5;
-        public static final int backLeftTurnCANId = 4;
-        public static final int frontLeftTurnCANId = 11;
+        public static final int frontRightTurnCANId = 19;
+        public static final int backRightTurnCANId = 17;
+        public static final int backLeftTurnCANId = 12;
+        public static final int frontLeftTurnCANId = 10;
 
         public static final double kP = 10;
         public static final double kI = 0;

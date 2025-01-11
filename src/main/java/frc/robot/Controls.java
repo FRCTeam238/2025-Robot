@@ -4,6 +4,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import static frc.robot.Constants.OperatorConstants.*;
@@ -23,6 +24,9 @@ public class Controls {
     static DriveType driveType = DriveType.JOYSTICK;
 
     private Controls(){
+        driveTypeChooser.addOption("XBOX", DriveType.XBOX);
+        driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
+        SmartDashboard.putData(driveTypeChooser);
     }
 
     public static Controls getInstance()
