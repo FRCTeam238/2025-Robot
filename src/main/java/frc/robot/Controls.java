@@ -21,11 +21,11 @@ public class Controls {
     @NotLogged CommandJoystick rightJoystick = new CommandJoystick(1); 
     @NotLogged CommandJoystick leftJoystick = new CommandJoystick(2); 
 
-    static DriveType driveType = DriveType.JOYSTICK;
+    DriveType driveType = DriveType.JOYSTICK;
 
     private Controls(){
         driveTypeChooser.addOption("XBOX", DriveType.XBOX);
-        driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
+        driveTypeChooser.setDefaultOption("JOYSTICK", DriveType.JOYSTICK);
         SmartDashboard.putData(driveTypeChooser);
     }
 

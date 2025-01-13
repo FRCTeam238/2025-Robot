@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
     URCL.start();
     Epilogue.bind(this);
 
+    Controls.getInstance();
     drivetrain.setDefaultCommand(new Drive());
   }
 
