@@ -57,6 +57,10 @@ public class Robot extends TimedRobot {
     }
   }
 
+  public Drivetrain getDrivetrain() {
+    return drivetrain;
+  }
+
   @Override
   public void autonomousPeriodic() {}
 

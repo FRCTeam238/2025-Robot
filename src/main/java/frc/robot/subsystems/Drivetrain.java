@@ -152,12 +152,14 @@ public class Drivetrain extends SubsystemBase {
     backRight.resetEncoders();
   }
 
+  @Logged
   public SwerveModuleState[] getSwerveModuleStates() {
     return new SwerveModuleState[] {
       frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState(),
     };
   }
 
+  @Logged
   public SwerveModuleState[] getDesiredStates() {
     return new SwerveModuleState[] {
             frontLeft.getDesiredState(), frontRight.getDesiredState(), backLeft.getDesiredState(), backRight.getDesiredState()

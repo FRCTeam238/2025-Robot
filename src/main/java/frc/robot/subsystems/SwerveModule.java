@@ -41,7 +41,7 @@ public class SwerveModule {
             SwerveModuleConstants.turnP,
             SwerveModuleConstants.turnI,
             SwerveModuleConstants.turnD,
-            SwerveModuleConstants.driveFF)
+            SwerveModuleConstants.turnFF)
         .positionWrappingMinInput(SwerveModuleConstants.kTurningEncoderPositionPIDMinInput)
         .positionWrappingMaxInput(SwerveModuleConstants.kTurningEncoderPositionPIDMaxInput)
         .positionWrappingEnabled(true);
@@ -110,8 +110,7 @@ public class SwerveModule {
     // Scale speed by cosine of angle error. This scales down movement perpendicular
     // to the desired
     // direction of travel that can occur when modules change directions. This
-    // results in smoother
-    // driving.
+    // results in smoother driving.
     optimizedState.speedMetersPerSecond *= optimizedState.angle.minus(encoderRotation).getCos();
     var requestedVoltage = new VelocityVoltage(optimizedState.speedMetersPerSecond);
     driveMotor.setControl(requestedVoltage);
@@ -130,7 +129,7 @@ public class SwerveModule {
     public static int turningCurrentLimit = 30;
     public static double kTurningEncoderPositionPIDMinInput = 0;
     public static double kTurningEncoderPositionPIDMaxInput = kTurningEncoderPositionFactor;
-    public static double turnP = 1.5;
+    public static double turnP = 1;
     public static double turnI = 0;
     public static double turnD = 0.05;
     public static double turnFF = 0;

@@ -22,7 +22,7 @@ public class Constants {
         public static final double kI = 0;
         public static final double kD = 0.01;
 
-        public static final double kPAngular = 4;
+        public static final double kPAngular = 1;
         public static final double kIAngular = 0;
         public static final double kDAngular = 0;
 
