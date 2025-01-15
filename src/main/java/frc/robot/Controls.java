@@ -27,6 +27,8 @@ public class Controls {
         driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
         SmartDashboard.putData(driveTypeChooser);
+
+        driverController.start().onTrue(Robot.drivetrain.zeroHeadingCommand());
     }
 
     public static Controls getInstance()
@@ -60,12 +62,12 @@ public class Controls {
                         // applyDeadband will do the absolute value stuff for us and make the zero point
                         // start at
                         // the deadzone edge
-                        Math.pow(-MathUtil.applyDeadband(driverController.getLeftY(), xboxControllerDeadzone), 5)
+                        Math.pow(-MathUtil.applyDeadband(driverController.getLeftY(), xboxControllerDeadzone), 1)
                                 * slowmodePercent,
-                        Math.pow(-MathUtil.applyDeadband(driverController.getLeftX(), xboxControllerDeadzone), 5)
+                        Math.pow(-MathUtil.applyDeadband(driverController.getLeftX(), xboxControllerDeadzone), 1)
                                 * slowmodePercent,
                         Math.pow(
-                                -MathUtil.applyDeadband(driverController.getRightX(), xboxControllerDeadzone), 3),
+                                -MathUtil.applyDeadband(driverController.getRightX(), xboxControllerDeadzone), 1),
                 };
             }
             default -> throw new IllegalStateException("Unexpected value: " + getDriveType());

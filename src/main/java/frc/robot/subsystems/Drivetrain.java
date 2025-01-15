@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -176,12 +177,14 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void zeroHeading() {
-    gyro.reset();
+    // gyro.reset();
     if (DriverStation.getAlliance().isPresent()) {
       if (DriverStation.getAlliance().get() == Alliance.Red) {
-        gyro.setAngleAdjustment(180);
+        // gyro.setAngleAdjustment(180);
+        odometry.resetRotation(new Rotation2d(Math.PI));
       } else {
-        gyro.setAngleAdjustment(0);
+        odometry.resetRotation(new Rotation2d(0));
+        // gyro.setAngleAdjustment(0);
       }
     }
   }
