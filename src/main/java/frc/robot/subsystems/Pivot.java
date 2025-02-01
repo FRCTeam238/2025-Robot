@@ -24,9 +24,8 @@ public class Pivot extends SubsystemBase {
   SparkMax pivotFollower;
 
   SparkAbsoluteEncoder encoder;
-  
-
   ArmFeedforward ff;
+
   /** Creates a new Pivot. */
   public Pivot() {
     pivotLeader = new SparkMax(0, MotorType.kBrushless);
@@ -38,6 +37,8 @@ public class Pivot extends SubsystemBase {
 
     //TODO: make numbers real
     ff = new ArmFeedforward(0, 0, 0);
+
+    encoder = pivotLeader.getAbsoluteEncoder();
 
     //TODO: finish configs
     followerConfig.follow(pivotLeader)
@@ -63,25 +64,40 @@ public class Pivot extends SubsystemBase {
     pivotLeader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
   }
 
+  /**
+   * sets the motor PID position to the current position with a speed of zero
+   */ 
+  public void holdPosition() {
+    pivotLeader.getClosedLoopController().setReference(getVelocity(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+  }
+
+  //SETTERS
+
+
   public void setSpeed(double speed) {
     pivotLeader.set(speed);
   }
 
-
+  /**
+   * sets the position, velocity, and acceleration that we want the robot to achieve 
+   * 
+   * @param state - the state of the pivot that we want to be in
+   */
   public void setDesiredState(MotionProfile.State state) {
     double feed = ff.calculate(state.position, state.velocity, state.acceleration);
 
-
-    //TODO: does this need another parameter for voltage?
     pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feed);
   }
 
-  // public double getPosition() {
-  //   return en
-  // }
+  //GETTERS
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public double getPosition() {
+    return encoder.getPosition();
   }
+
+  public double getVelocity() {
+    return encoder.getVelocity();
+  }
+
+
 }

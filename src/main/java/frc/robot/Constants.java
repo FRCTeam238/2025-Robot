@@ -50,6 +50,28 @@ public class Constants {
 
     }
 
+    public enum CoralMechanismState {
+        L1,
+        L2,
+        L3,
+        L4,
+        Stow,
+        DeepCage,
+        ShallowCage,
+        CoralStation
+    }
+
+    public enum AlgaeMechanismState {
+        Out,
+        Stow,
+        Processor //do we need this?
+    }
+
+    public class PivotConstants {
+        public static double velocityMaxError = 0;
+        public static double positionMaxError = 0;
+    }
+
     public class OperatorConstants {
         public static double driverJoystickDeadzone = .1;
         public static double xboxControllerDeadzone = .075; // TODO: find good deadzone values for the xbox controllers

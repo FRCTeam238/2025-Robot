@@ -18,11 +18,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Drive;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Pivot;
 
 @Logged
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+
+  public static Pivot pivot = new Pivot();
   public static Drivetrain drivetrain = new Drivetrain();
   public static Elevator elevator = new Elevator();
 
