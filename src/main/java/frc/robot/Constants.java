@@ -59,4 +59,11 @@ public class Constants {
             XBOX
         }
     }
+
+    public class ElevatorConstants {
+        public static double maxElevatorJerk;
+        public static double maxAccel;
+        public static double maxVelocity;
+        public static double velocityTolerance;
+    }
 }

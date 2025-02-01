@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.io.ObjectInputFilter.Config;
-import java.lang.module.Configuration;
-
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -14,10 +11,13 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.MotionProfile;
 
 public class Elevator extends SubsystemBase {
   TalonFX leftMotor = new TalonFX(0);
   TalonFX rightMotor = new TalonFX(0);
+
+  String command = "None";
 
   /** Creates a new Elevator. */
   public Elevator() {
@@ -46,6 +46,10 @@ public class Elevator extends SubsystemBase {
 
    }
 
+  public void setDesiredState(MotionProfile.State state) {
+    
+  }
+
   @Override
   public void periodic() {
     
@@ -55,4 +59,16 @@ public class Elevator extends SubsystemBase {
     leftMotor.set(speed);
     
   } 
+
+  public double getEncoderPosition() {
+    return leftMotor.get();
+  }
+
+  public double getVelocity() {
+    return leftMotor.getVelocity().getValue().baseUnitMagnitude();
+  }
+
+  public void setCommand(String name) {
+    command = name;
+  }
 }
