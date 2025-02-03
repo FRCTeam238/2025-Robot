@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -66,4 +68,23 @@ public class Constants {
         public static double maxVelocity;
         public static double velocityTolerance;
     }
-}
+    public class WristConstants {
+        public static double wristCurrent = 30;
+        public static double kP = 0;
+        public static double kI = 0;
+        public static double kD = 0;
+        public static double wrapPoint = .5;
+        public static double sensorOffset = 0;
+        public static SensorDirectionValue sensorDirection = SensorDirectionValue.Clockwise_Positive;
+        public static double kG = 0;
+        public static double kV = 0;
+        public static double kA = 0;
+        public static double kS = 0;
+        
+    }
+        
+
+    public class CoralIntakeConstants {
+        public static double currentLimit = 30;
+        
+    }}
