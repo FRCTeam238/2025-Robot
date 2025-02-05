@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkMaxConfigAccessor;
+import static frc.robot.Constants.PivotConstants.*;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,8 +36,7 @@ public class Pivot extends SubsystemBase {
     SparkMaxConfig followerConfig = new SparkMaxConfig();
 
 
-    //TODO: make numbers real
-    ff = new ArmFeedforward(0, 0, 0);
+    ff = new ArmFeedforward(kS, kG, kV);
 
     encoder = pivotLeader.getAbsoluteEncoder();
 
@@ -44,21 +44,25 @@ public class Pivot extends SubsystemBase {
     followerConfig.follow(pivotLeader)
     .inverted(true)
     .closedLoop
-      .p(0)
-      .i(0)
-      .d(0)
+      .p(kP)
+      .i(kI)
+      .d(kD)
       .maxMotion
         .maxAcceleration(0)
         .maxVelocity(0);
-
-    leaderConfig.follow(pivotLeader)
-    .closedLoop
-      .p(0)
-      .i(0)
-      .d(0)
-      .maxMotion
+        
+        leaderConfig.follow(pivotLeader)
+        .closedLoop
+        .p(kP)
+        .i(kI)
+        .d(kD)
+        .maxMotion
         .maxAcceleration(0)
         .maxVelocity(0);
+    leaderConfig.absoluteEncoder
+      .positionConversionFactor(360)
+      .velocityConversionFactor(360);
+        
 
     pivotFollower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     pivotLeader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
@@ -68,7 +72,7 @@ public class Pivot extends SubsystemBase {
    * sets the motor PID position to the current position with a speed of zero
    */ 
   public void holdPosition() {
-    pivotLeader.getClosedLoopController().setReference(getVelocity(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+    pivotLeader.getClosedLoopController().setReference(getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
   }
 
   //SETTERS

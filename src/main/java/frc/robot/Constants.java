@@ -72,6 +72,18 @@ public class Constants {
     public class PivotConstants {
         public static double velocityMaxError = 0;
         public static double positionMaxError = 0;
+        public static double maxJerk = 0;
+        public static double maxAccel = 0;
+        public static double maxVelocity = 0;
+        public static double velocityTolerance = 0;
+
+        public static double kP = 0;
+        public static double kI = 0;
+        public static double kD = 0;
+        public static double kS = 0;
+        public static double kV = 0;
+        public static double kG = 0;
+
     }
 
     public class OperatorConstants {
@@ -89,6 +101,19 @@ public class Constants {
         public static double maxAccel;
         public static double maxVelocity;
         public static double velocityTolerance;
+        public static double velocityMaxError;
+        public static double positionMaxError;
+        public static double kP;
+        public static double kI;
+        public static double kD;
+        public static double kV;
+        public static double kS;
+        public static double kG;
+        public static double statorCurrentLimit;
+        public static double conversionFactor = (9/54) * 2.256 * Math.PI;
+        
+
+
     }
     public class WristConstants {
         public static double wristCurrent = 30;
