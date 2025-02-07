@@ -8,7 +8,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorProfile extends Command {
-  private final Elevator elevator = Robot.elevator;
+  private final Elevator elevator = Elevator.getInstance();
   private final MotionProfile.State goal;
   private final MotionProfile.MotionConstraints constraints;
   private MotionProfile profile;

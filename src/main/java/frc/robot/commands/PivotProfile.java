@@ -28,7 +28,7 @@ public class PivotProfile extends Command {
 
   /** Creates a new PivotProfile. */
   public PivotProfile(MotionProfile.State goal) {
-    pivot = Robot.pivot;
+    pivot = Pivot.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
     this.goal = goal;
 

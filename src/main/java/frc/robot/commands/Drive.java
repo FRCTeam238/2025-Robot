@@ -10,7 +10,7 @@ import frc.robot.subsystems.Drivetrain;
 /** Drive */
 public class Drive extends Command {
 
-  Drivetrain drivetrain = Robot.drivetrain;
+  Drivetrain drivetrain = Drivetrain.getInstance();
 
   public Drive() {
     addRequirements(drivetrain);

@@ -25,9 +25,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
 
-  public static Pivot pivot = new Pivot();
-  public static Drivetrain drivetrain = new Drivetrain();
-  public static Elevator elevator = new Elevator();
+  public Pivot pivot = Pivot.getInstance();
+  public Drivetrain drivetrain = Drivetrain.getInstance();
+  public Elevator elevator = Elevator.getInstance();
 
   public Robot() {
     SignalLogger.start();

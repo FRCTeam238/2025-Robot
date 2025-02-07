@@ -27,6 +27,10 @@ public class Pivot extends SubsystemBase {
   SparkAbsoluteEncoder encoder;
   ArmFeedforward ff;
 
+  String name = "None";
+  
+  private static Pivot singleton;
+
   /** Creates a new Pivot. */
   public Pivot() {
     pivotLeader = new SparkMax(0, MotorType.kBrushless);
@@ -39,6 +43,7 @@ public class Pivot extends SubsystemBase {
     ff = new ArmFeedforward(kS, kG, kV);
 
     encoder = pivotLeader.getAbsoluteEncoder();
+
 
     //TODO: finish configs
     followerConfig.follow(pivotLeader)
@@ -57,8 +62,8 @@ public class Pivot extends SubsystemBase {
         .i(kI)
         .d(kD)
         .maxMotion
-        .maxAcceleration(0)
-        .maxVelocity(0);
+        .maxAcceleration(maxAccel)
+        .maxVelocity(maxVelocity);
     leaderConfig.absoluteEncoder
       .positionConversionFactor(360)
       .velocityConversionFactor(360);
@@ -66,6 +71,13 @@ public class Pivot extends SubsystemBase {
 
     pivotFollower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     pivotLeader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+  }
+
+  public static Pivot getInstance() {
+    if (singleton == null) {
+      singleton = new Pivot();
+    }
+    return singleton;
   }
 
   /**
@@ -82,6 +94,10 @@ public class Pivot extends SubsystemBase {
     pivotLeader.set(speed);
   }
 
+  public void setCommand(String name) {
+    this.name = name;
+  }
+
   /**
    * sets the position, velocity, and acceleration that we want the robot to achieve 
    * 
@@ -95,6 +111,15 @@ public class Pivot extends SubsystemBase {
 
   //GETTERS
 
+
+  public String getCommand() {
+    return name;
+  }
+
+  /**
+   * 
+   * @return position in degrees
+   */
   public double getPosition() {
     return encoder.getPosition();
   }
