@@ -11,6 +11,8 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
 import au.grapplerobotics.interfaces.LaserCanInterface.RangingMode;
+import au.grapplerobotics.interfaces.LaserCanInterface.RegionOfInterest;
+import au.grapplerobotics.interfaces.LaserCanInterface.TimingBudget;
 
 import static frc.robot.Constants.CoralIntakeConstants.*;
 
@@ -21,8 +23,10 @@ public class CoralIntake extends SubsystemBase {
   /** Creates a new CoralIntake. */
 
   TalonFX coralMotor = new TalonFX(0);
-  DigitalInput coralSensor = new DigitalInput(0);
   LaserCan lc;
+
+  private static CoralIntake singleton;
+
   public CoralIntake() {
     TalonFXConfiguration coralIntakeConfig = new TalonFXConfiguration();
     lc = new LaserCan(0);
@@ -31,9 +35,18 @@ public class CoralIntake extends SubsystemBase {
     coralMotor.getConfigurator().apply(coralIntakeConfig);
     try {
       lc.setRangingMode(RangingMode.SHORT);
+      lc.setRegionOfInterest(new RegionOfInterest(ROIx, ROIy, ROIw, ROIh));
+      lc.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
      e.printStackTrace(); 
     }
+  }
+
+  public static CoralIntake getInstance() {
+    if (singleton == null) {
+      singleton = new CoralIntake();
+    }
+    return singleton;
   }
 
   public void setSpeed(double speed) {
@@ -41,8 +54,9 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public boolean hasCoral() {
-    return coralSensor.get();
+    return sensorDistance >= lc.getMeasurement().distance_mm;
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

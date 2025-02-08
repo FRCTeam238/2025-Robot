@@ -131,7 +131,17 @@ public class Constants {
     }
         
 
+
     public class CoralIntakeConstants {
         public static double currentLimit = 30;
+
+
+        //LaserCAN region of interest values, please configure in grapple hook app i think
+        public static int ROIx = 0;
+        public static int ROIy = 0;
+        public static int ROIw = 0;
+        public static int ROIh = 0;
+        // units are in mm
+        public static double sensorDistance = 0;
         
     }}
