@@ -15,8 +15,6 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
-import frc.robot.Robot;
-
 import static frc.robot.Constants.ElevatorConstants.*;
 
 public class Elevator extends SubsystemBase {

@@ -7,9 +7,7 @@ package frc.robot.commands;
 import static frc.robot.Constants.PivotConstants.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.MotionProfile;
-import frc.robot.Robot;
 import frc.robot.subsystems.Pivot;
-import frc.robot.Constants.CoralMechanismState;
 import frc.robot.MotionProfile.MotionConstraints;
 import frc.robot.MotionProfile.ProfileType;
 
@@ -29,6 +27,7 @@ public class PivotProfile extends Command {
   /** Creates a new PivotProfile. */
   public PivotProfile(MotionProfile.State goal) {
     pivot = Pivot.getInstance();
+    addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
     this.goal = goal;
 

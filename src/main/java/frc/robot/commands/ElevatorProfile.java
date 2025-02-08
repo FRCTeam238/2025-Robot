@@ -4,7 +4,6 @@ import static frc.robot.Constants.ElevatorConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.MotionProfile;
-import frc.robot.Robot;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorProfile extends Command {
@@ -39,7 +38,8 @@ public class ElevatorProfile extends Command {
   @Override
   public void execute() {
    
-    elevator.setDesiredState(currentState);
+    MotionProfile.State sample = profile.sample();
+    elevator.setDesiredState(sample);
   }
 
   @Override

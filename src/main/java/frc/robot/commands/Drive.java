@@ -4,7 +4,6 @@ import static frc.robot.Constants.DriveConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
-import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 /** Drive */

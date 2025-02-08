@@ -83,6 +83,15 @@ public class Constants {
         public static double kS = 0;
         public static double kV = 0;
         public static double kG = 0;
+        // positions are measured in degrees
+        public static double L1 = 0;
+        public static double L2 = 0;
+        public static double L3 = 0;
+        public static double L4 = 0;
+        public static double stow = 0;
+        public static double deepCage = 0;
+        public static double shallowCage = 0;
+        public static double coralStation = 0;
 
     }
 
@@ -111,10 +120,17 @@ public class Constants {
         public static double kG;
         public static double statorCurrentLimit;
         public static double conversionFactor = (9/54) * 2.256 * Math.PI;
-        
 
-
+        public static double L1 = 0;
+        public static double L2 = 0;
+        public static double L3 = 0;
+        public static double L4 = 0;
+        public static double stow = 0;
+        public static double deepCage = 0;
+        public static double shallowCage = 0;
+        public static double coralStation = 0;
     }
+
     public class WristConstants {
         public static double wristCurrent = 30;
         public static double kP = 0;
@@ -127,6 +143,24 @@ public class Constants {
         public static double kV = 0;
         public static double kA = 0;
         public static double kS = 0;
+
+        public static double maxAccel = 0;
+        public static double maxJerk = 0;
+        public static double maxVelocity = 0;
+        public static double velocityTolerance = 0;
+
+        public static double maxPositionTolerance = 0;
+        public static double maxVelocityTolerance = 0;
+        
+        public static double L1 = 0;
+        public static double L2 = 0;
+        public static double L3 = 0;
+        public static double L4 = 0;
+        public static double stow = 0;
+        public static double deepCage = 0;
+        public static double shallowCage = 0;
+        public static double coralStation = 0;
+
         
     }
         
