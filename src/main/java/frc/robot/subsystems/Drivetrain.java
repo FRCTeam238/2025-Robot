@@ -38,6 +38,8 @@ public class Drivetrain extends SubsystemBase {
   String command = "None";
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] {0, 0, 0, 0}, new double[] {0, 0, 0, 0});
 
+  private static Drivetrain singleton;
+
   public Drivetrain() {
     gyro = new AHRS(NavXComType.kMXP_SPI);
     odometry =
@@ -56,6 +58,13 @@ public class Drivetrain extends SubsystemBase {
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
+  }
+
+  public static Drivetrain getInstance() {
+    if (singleton == null) {
+      singleton = new Drivetrain();
+    }
+    return singleton;
   }
 
   @Override

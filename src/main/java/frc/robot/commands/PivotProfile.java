@@ -24,11 +24,11 @@ public class PivotProfile extends Command {
 
   MotionProfile.State currentState;
   MotionProfile profile;
-  MotionProfile.MotionConstraints constraints = new MotionConstraints(0, 0, 0, 0);
+  MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance);
 
   /** Creates a new PivotProfile. */
   public PivotProfile(MotionProfile.State goal) {
-    pivot = Robot.pivot;
+    pivot = Pivot.getInstance();
     // Use addRequirements() here to declare subsystem dependencies.
     this.goal = goal;
 

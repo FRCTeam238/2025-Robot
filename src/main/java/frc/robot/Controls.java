@@ -7,12 +7,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Drivetrain;
+
 import static frc.robot.Constants.OperatorConstants.*;
 
 @Logged
 public class Controls {
 
     private static Controls singleton;
+
+    private Drivetrain drivetrain = Drivetrain.getInstance();
 
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
@@ -28,7 +32,7 @@ public class Controls {
         driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
         SmartDashboard.putData(driveTypeChooser);
 
-        driverController.start().onTrue(Robot.drivetrain.zeroHeadingCommand());
+        driverController.start().onTrue(drivetrain.zeroHeadingCommand());
     }
 
     public static Controls getInstance()

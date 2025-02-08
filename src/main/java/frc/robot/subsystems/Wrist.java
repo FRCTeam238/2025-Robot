@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
+import frc.robot.Robot;
 
 import static frc.robot.Constants.WristConstants.*;
 
@@ -23,6 +24,10 @@ public class Wrist extends SubsystemBase {
     ArmFeedforward wristFf = new ArmFeedforward(kS, kG, kV, kA);
     PositionVoltage wristVoltage = new PositionVoltage(0);
     String commandName = "";
+    private Pivot pivot = Pivot.getInstance();
+
+    private static Wrist singleton;
+
     public Wrist() {
         TalonFXConfiguration wristConfig = new TalonFXConfiguration();
         wristConfig.CurrentLimits.StatorCurrentLimit = wristCurrent;
@@ -41,12 +46,19 @@ public class Wrist extends SubsystemBase {
         wristSensor.getConfigurator().apply(sensorConfig);
     }
 
+    public static Wrist getInstance() {
+        if (singleton == null) {
+          singleton = new Wrist();
+        }
+        return singleton;
+      }
+
     public void setSpeed(double speed) {
         wristMotor.set(speed);
     }
      
     public void setDesiredState(MotionProfile.State state) {
-    double wristAngle = state.position + 0; 
+    double wristAngle = state.position + pivot.getPosition(); 
     //Change 0 to angle from pivot
     double feed = wristFf.calculate(wristAngle, state.velocity, state.acceleration);
     
@@ -71,7 +83,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void holdPosition() {
-        double wristAngle = getPosition() + 0; 
+        double wristAngle = getPosition() + pivot.getPosition(); 
         //Change 0 to angle from pivot
         double feed = wristFf.calculate(wristAngle, 0, 0);
         wristVoltage.withFeedForward(feed).Position = getPosition();
