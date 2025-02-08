@@ -10,15 +10,15 @@ public class Constants {
     public class DriveConstants {
         public static final boolean fieldRelative = true;
 
-        public static final int frontRightDriveCANId = 18;
-        public static final int frontLeftDriveCANId = 11;
-        public static final int backRightDriveCANId = 17;
-        public static final int backLeftDriveCANId = 13;
+        public static final int frontRightDriveCANId = 19;
+        public static final int frontLeftDriveCANId = 0;
+        public static final int backRightDriveCANId = 10;
+        public static final int backLeftDriveCANId = 9;
 
-        public static final int frontRightTurnCANId = 19;
-        public static final int backRightTurnCANId = 17;
-        public static final int backLeftTurnCANId = 12;
-        public static final int frontLeftTurnCANId = 10;
+        public static final int frontRightTurnCANId = 18;
+        public static final int backRightTurnCANId = 11;
+        public static final int backLeftTurnCANId = 8;
+        public static final int frontLeftTurnCANId = 1;
 
         public static final double kP = 10;
         public static final double kI = 0;
@@ -118,7 +118,7 @@ public class Constants {
         public static double kV;
         public static double kS;
         public static double kG;
-        public static double statorCurrentLimit;
+        public static double statorCurrentLimit = 40;
         public static double conversionFactor = (9/54) * 2.256 * Math.PI;
 
         public static double L1 = 0;

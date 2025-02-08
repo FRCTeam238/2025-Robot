@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.Drive;
 
 /** for swerve */
 @Logged
@@ -57,12 +58,11 @@ public class Drivetrain extends SubsystemBase {
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
+
+
   }
 
   public static Drivetrain getInstance() {
-    if (singleton == null) {
-      singleton = new Drivetrain();
-    }
     return singleton;
   }
 

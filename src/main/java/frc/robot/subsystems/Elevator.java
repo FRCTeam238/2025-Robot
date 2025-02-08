@@ -13,13 +13,17 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
+import frc.robot.commands.ManualElevator;
+
 import static frc.robot.Constants.ElevatorConstants.*;
 
 public class Elevator extends SubsystemBase {
-  TalonFX leftMotor = new TalonFX(0);
-  TalonFX rightMotor = new TalonFX(0);
+  TalonFX leftMotor = new TalonFX(6);
+  TalonFX rightMotor = new TalonFX(7);
 
   private Pivot pivot = Pivot.getInstance();
 
@@ -33,8 +37,8 @@ public class Elevator extends SubsystemBase {
 
   /** Creates a new Elevator. */
   public Elevator() {
-
     ff = new ArmFeedforward(kS, kG, kV);
+
 
     TalonFXConfiguration leftConfig = new TalonFXConfiguration(); 
     leftConfig.Slot0.kP = kP;
@@ -45,7 +49,7 @@ public class Elevator extends SubsystemBase {
     leftConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     leftConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    leftConfig.Feedback.SensorToMechanismRatio = 1/conversionFactor;
+    leftConfig.Feedback.SensorToMechanismRatio = 1.0/conversionFactor;
     leftMotor.getConfigurator().apply(leftConfig);
     
     TalonFXConfiguration rightConfig = new TalonFXConfiguration(); 
@@ -63,11 +67,9 @@ public class Elevator extends SubsystemBase {
   }
 
   public static Elevator getInstance() {
-    if (singleton == null) {
-      singleton = new Elevator();
-    }
     return singleton;
   }
+
 
   public void setDesiredState(MotionProfile.State state) {
     double feed = ff.calculate(Units.degreesToRadians(pivot.getPosition()), state.velocity, state.acceleration);
@@ -75,6 +77,19 @@ public class Elevator extends SubsystemBase {
     elevatorVoltage.withFeedForward(feed).withPosition(state.position);
     leftMotor.setControl(elevatorVoltage);
 
+  }
+
+  /**
+   * set PID to remain at the current position at zero velocity
+   */
+  public void holdPosition() {
+    leftMotor.setControl(new PositionVoltage(getPosition()));
+  }
+
+  public Command holdPositionCommand() {
+    return new RunCommand(() -> {
+      holdPosition();
+    }, getInstance());
   }
 
   @Override
@@ -92,7 +107,7 @@ public class Elevator extends SubsystemBase {
    * 
    * @return units in inches
    */
-  public double getEncoderPosition() {
+  public double getPosition() {
 
     return leftMotor.getPosition().getValueAsDouble();
   }

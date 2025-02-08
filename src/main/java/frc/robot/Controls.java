@@ -3,11 +3,17 @@ package frc.robot;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Drive;
+import frc.robot.commands.ManualElevator;
+import frc.robot.commands.ManualPivot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Pivot;
 
 import static frc.robot.Constants.OperatorConstants.*;
 
@@ -16,7 +22,7 @@ public class Controls {
 
     private static Controls singleton;
 
-    private Drivetrain drivetrain = Drivetrain.getInstance();
+    private Drivetrain drivetrain = Robot.drivetrain;
 
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
@@ -27,12 +33,18 @@ public class Controls {
 
     DriveType driveType = DriveType.XBOX;
 
-    private Controls(){
+    public Controls(){
+        DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
         SmartDashboard.putData(driveTypeChooser);
 
         driverController.start().onTrue(drivetrain.zeroHeadingCommand());
+
+        Robot.drivetrain.setDefaultCommand(new Drive());
+        Robot.pivot.setDefaultCommand(new ManualPivot());
+        Robot.elevator.setDefaultCommand(new ManualElevator());
+
     }
 
     public static Controls getInstance()
@@ -87,6 +99,23 @@ public class Controls {
         return driveType;
       }
 
+    public double getOperatorLeftStickY() {
+        double x = controller.getLeftY();
+        if(Math.abs(x) < 0.1){
+            x = 0;
+        }
+        
+        return x;
+    }
+
+    public double getOperatorRightStickY() {
+        double y = controller.getRightY();
+        if(Math.abs(y) < 0.1){
+            y = 0;
+        }
+
+        return y;
+    }
 
     public enum DriveType {
         XBOX,

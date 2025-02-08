@@ -15,8 +15,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import static frc.robot.Constants.PivotConstants.*;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
+import frc.robot.commands.ManualPivot;
 
 public class Pivot extends SubsystemBase {
 
@@ -32,8 +35,8 @@ public class Pivot extends SubsystemBase {
 
   /** Creates a new Pivot. */
   public Pivot() {
-    pivotLeader = new SparkMax(0, MotorType.kBrushless);
-    pivotFollower = new SparkMax(0, MotorType.kBrushless);
+    pivotLeader = new SparkMax(2, MotorType.kBrushless);
+    pivotFollower = new SparkMax(17, MotorType.kBrushless);
 
     SparkMaxConfig leaderConfig = new SparkMaxConfig();
     SparkMaxConfig followerConfig = new SparkMaxConfig();
@@ -45,24 +48,17 @@ public class Pivot extends SubsystemBase {
 
 
     //TODO: finish configs
-    followerConfig.follow(pivotLeader)
-    .inverted(true)
+    followerConfig.follow(pivotLeader, true)
     .closedLoop
       .p(kP)
       .i(kI)
-      .d(kD)
-      .maxMotion
-        .maxAcceleration(0)
-        .maxVelocity(0);
+      .d(kD);
         
-        leaderConfig.follow(pivotLeader)
-        .closedLoop
-        .p(kP)
-        .i(kI)
-        .d(kD)
-        .maxMotion
-        .maxAcceleration(maxAccel)
-        .maxVelocity(maxVelocity);
+    leaderConfig
+    .closedLoop
+      .p(kP)
+      .i(kI)
+      .d(kD);
     leaderConfig.absoluteEncoder
       .positionConversionFactor(360)
       .velocityConversionFactor(360);
@@ -73,9 +69,6 @@ public class Pivot extends SubsystemBase {
   }
 
   public static Pivot getInstance() {
-    if (singleton == null) {
-      singleton = new Pivot();
-    }
     return singleton;
   }
 
@@ -84,6 +77,12 @@ public class Pivot extends SubsystemBase {
    */ 
   public void holdPosition() {
     pivotLeader.getClosedLoopController().setReference(getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
+  }
+
+  public Command holdPositionCommand() {
+    return new RunCommand(() -> {
+      holdPosition();
+    }, getInstance());
   }
 
   //SETTERS

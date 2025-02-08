@@ -10,6 +10,7 @@ import frc.robot.MotionProfile;
 import frc.robot.subsystems.Pivot;
 import frc.robot.MotionProfile.MotionConstraints;
 import frc.robot.MotionProfile.ProfileType;
+import frc.robot.Robot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PivotProfile extends Command {
@@ -26,7 +27,7 @@ public class PivotProfile extends Command {
 
   /** Creates a new PivotProfile. */
   public PivotProfile(MotionProfile.State goal) {
-    pivot = Pivot.getInstance();
+    pivot = Robot.pivot;
     addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
     this.goal = goal;

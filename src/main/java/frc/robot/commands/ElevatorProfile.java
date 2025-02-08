@@ -28,7 +28,7 @@ public class ElevatorProfile extends Command {
   @Override
   public void initialize() {
 
-    currentState = new MotionProfile.State(elevator.getEncoderPosition(), elevator.getVelocity());
+    currentState = new MotionProfile.State(elevator.getPosition(), elevator.getVelocity());
 
     profile = new MotionProfile(goal, currentState, constraints, MotionProfile.ProfileType.AUTO);
     elevator.setCommand(getName());
@@ -55,7 +55,7 @@ public class ElevatorProfile extends Command {
 
   public boolean onTarget() {
    return Math.abs(elevator.getVelocity() - goal.velocity) <= velocityMaxError
-        && Math.abs(elevator.getEncoderPosition() - goal.position) <= positionMaxError;
+        && Math.abs(elevator.getPosition() - goal.position) <= positionMaxError;
   }
 
   

@@ -26,10 +26,11 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
 
-  public Pivot pivot = Pivot.getInstance();
-  public Drivetrain drivetrain = Drivetrain.getInstance();
-  public Elevator elevator = Elevator.getInstance();
-  public CoralIntake coralIntake = CoralIntake.getInstance();
+  public static Pivot pivot;
+  public static Drivetrain drivetrain;
+  public static Elevator elevator;
+  public static Controls controls;
+  // public CoralIntake coralIntake = CoralIntake.getInstance();
 
   public Robot() {
     SignalLogger.start();
@@ -38,8 +39,11 @@ public class Robot extends TimedRobot {
     URCL.start();
     Epilogue.bind(this);
 
-    Controls.getInstance();
-    drivetrain.setDefaultCommand(new Drive());
+    
+    elevator = new Elevator();
+    pivot = new Pivot();
+    drivetrain = new Drivetrain();
+    controls = new Controls();
   }
 
   @Override

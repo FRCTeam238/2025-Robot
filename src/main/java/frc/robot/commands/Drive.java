@@ -4,14 +4,16 @@ import static frc.robot.Constants.DriveConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
+import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 /** Drive */
 public class Drive extends Command {
 
-  Drivetrain drivetrain = Drivetrain.getInstance();
+  Drivetrain drivetrain;
 
   public Drive() {
+    drivetrain = Robot.drivetrain;
     addRequirements(drivetrain);
   }
 
@@ -22,7 +24,7 @@ public class Drive extends Command {
 
   @Override
   public void execute() {
-    double[] joyValues = Controls.getInstance().getSwerveJoystickValues();
+    double[] joyValues = Robot.controls.getSwerveJoystickValues();
 
     drivetrain.drive(
         joyValues[0] * maxVelocityMetersPerSec,
