@@ -58,8 +58,7 @@ public class Wrist extends SubsystemBase {
     public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
     double wristAngle = state.position + Pivot.getInstance().getPosition(); 
-    //Change 0 to angle from pivot
-    double feed = wristFf.calculate(wristAngle, state.velocity, state.acceleration);
+    double feed = wristFf.calculate(Units.degreesToRadians(wristAngle), state.velocity, state.acceleration);
     
     wristVoltage.withFeedForward(feed).withPosition(state.position);
     wristMotor.setControl(wristVoltage);
