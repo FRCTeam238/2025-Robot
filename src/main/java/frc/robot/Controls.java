@@ -22,8 +22,6 @@ public class Controls {
 
     private static Controls singleton;
 
-    private Drivetrain drivetrain = Robot.drivetrain;
-
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
     @NotLogged CommandXboxController controller = new CommandXboxController(0);
@@ -33,17 +31,17 @@ public class Controls {
 
     DriveType driveType = DriveType.XBOX;
 
-    public Controls(){
+    private Controls(){
         DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
         SmartDashboard.putData(driveTypeChooser);
 
-        driverController.start().onTrue(drivetrain.zeroHeadingCommand());
+        driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
-        Robot.drivetrain.setDefaultCommand(new Drive());
-        Robot.pivot.setDefaultCommand(new ManualPivot());
-        Robot.elevator.setDefaultCommand(new ManualElevator());
+        Drivetrain.getInstance().setDefaultCommand(new Drive());
+        Pivot.getInstance().setDefaultCommand(new ManualPivot());
+        Elevator.getInstance().setDefaultCommand(new ManualElevator());
 
     }
 

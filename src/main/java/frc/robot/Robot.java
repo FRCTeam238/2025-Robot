@@ -40,10 +40,10 @@ public class Robot extends TimedRobot {
     Epilogue.bind(this);
 
     
-    elevator = new Elevator();
-    pivot = new Pivot();
-    drivetrain = new Drivetrain();
-    controls = new Controls();
+    elevator = Elevator.getInstance();
+    pivot = Pivot.getInstance();
+    drivetrain = Drivetrain.getInstance();
+    controls = Controls.getInstance();
   }
 
   @Override

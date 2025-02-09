@@ -25,8 +25,6 @@ public class Elevator extends SubsystemBase {
   TalonFX leftMotor = new TalonFX(6);
   TalonFX rightMotor = new TalonFX(7);
 
-  private Pivot pivot = Pivot.getInstance();
-
   PositionVoltage elevatorVoltage = new PositionVoltage(0);
 
   String command = "None";
@@ -36,7 +34,7 @@ public class Elevator extends SubsystemBase {
   ArmFeedforward ff;
 
   /** Creates a new Elevator. */
-  public Elevator() {
+  private Elevator() {
     ff = new ArmFeedforward(kS, kG, kV);
 
 
@@ -67,12 +65,14 @@ public class Elevator extends SubsystemBase {
   }
 
   public static Elevator getInstance() {
+    if(singleton == null)
+      singleton = new Elevator();
     return singleton;
   }
 
 
   public void setDesiredState(MotionProfile.State state) {
-    double feed = ff.calculate(Units.degreesToRadians(pivot.getPosition()), state.velocity, state.acceleration);
+    double feed = ff.calculate(Units.degreesToRadians(Pivot.getInstance().getPosition()), state.velocity, state.acceleration);
 
     elevatorVoltage.withFeedForward(feed).withPosition(state.position);
     leftMotor.setControl(elevatorVoltage);

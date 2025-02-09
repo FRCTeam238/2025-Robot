@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
-import frc.robot.Robot;
 import frc.robot.subsystems.Pivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -15,7 +14,7 @@ public class ManualPivot extends Command {
 
   /** Creates a new ManualPivot. */
   public ManualPivot() {
-    pivot = Robot.pivot;
+    pivot = Pivot.getInstance();
     addRequirements(pivot);
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -28,7 +27,7 @@ public class ManualPivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivot.setSpeed(Robot.controls.getOperatorRightStickY()*0.25);
+    pivot.setSpeed(Controls.getInstance().getOperatorRightStickY()*0.25);
   }
 
   // Called once the command ends or is interrupted.

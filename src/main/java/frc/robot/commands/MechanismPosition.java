@@ -4,10 +4,7 @@
 
 package frc.robot.commands;
 
-import static frc.robot.Constants.ElevatorConstants.L1;
-
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.CoralMechanismState;
 import frc.robot.MotionProfile;
 import frc.robot.Constants.PivotConstants;

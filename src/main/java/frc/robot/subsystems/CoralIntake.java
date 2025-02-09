@@ -24,7 +24,7 @@ public class CoralIntake extends SubsystemBase {
 
   private static CoralIntake singleton;
 
-  public CoralIntake() {
+  private CoralIntake() {
     TalonFXConfiguration coralIntakeConfig = new TalonFXConfiguration();
     lc = new LaserCan(0);
     coralIntakeConfig.CurrentLimits.StatorCurrentLimit = currentLimit;

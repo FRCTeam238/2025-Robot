@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
 
   private static Drivetrain singleton;
 
-  public Drivetrain() {
+  private Drivetrain() {
     gyro = new AHRS(NavXComType.kMXP_SPI);
     odometry =
         new SwerveDrivePoseEstimator(
@@ -63,6 +63,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public static Drivetrain getInstance() {
+    if(singleton == null)
+      singleton = new Drivetrain();
     return singleton;
   }
 

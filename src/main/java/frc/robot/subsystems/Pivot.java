@@ -34,7 +34,7 @@ public class Pivot extends SubsystemBase {
   private static Pivot singleton;
 
   /** Creates a new Pivot. */
-  public Pivot() {
+  private Pivot() {
     pivotLeader = new SparkMax(2, MotorType.kBrushless);
     pivotFollower = new SparkMax(17, MotorType.kBrushless);
 
@@ -69,6 +69,8 @@ public class Pivot extends SubsystemBase {
   }
 
   public static Pivot getInstance() {
+    if(singleton == null)
+      singleton = new Pivot();
     return singleton;
   }
 

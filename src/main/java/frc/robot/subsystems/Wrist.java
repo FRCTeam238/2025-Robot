@@ -18,11 +18,10 @@ public class Wrist extends SubsystemBase {
     ArmFeedforward wristFf = new ArmFeedforward(kS, kG, kV, kA);
     PositionVoltage wristVoltage = new PositionVoltage(0);
     String commandName = "";
-    private Pivot pivot = Pivot.getInstance();
 
     private static Wrist singleton;
 
-    public Wrist() {
+    private Wrist() {
         TalonFXConfiguration wristConfig = new TalonFXConfiguration();
         wristConfig.CurrentLimits.StatorCurrentLimit = wristCurrent;
         wristConfig.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -52,7 +51,7 @@ public class Wrist extends SubsystemBase {
     }
      
     public void setDesiredState(MotionProfile.State state) {
-    double wristAngle = state.position + pivot.getPosition(); 
+    double wristAngle = state.position + Pivot.getInstance().getPosition(); 
     //Change 0 to angle from pivot
     double feed = wristFf.calculate(wristAngle, state.velocity, state.acceleration);
     
@@ -77,7 +76,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public void holdPosition() {
-        double wristAngle = getPosition() + pivot.getPosition(); 
+        double wristAngle = getPosition() + Pivot.getInstance().getPosition(); 
         //Change 0 to angle from pivot
         double feed = wristFf.calculate(wristAngle, 0, 0);
         wristVoltage.withFeedForward(feed).Position = getPosition();
