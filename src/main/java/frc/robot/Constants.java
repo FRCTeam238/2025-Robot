@@ -70,28 +70,31 @@ public class Constants {
     }
 
     public class PivotConstants {
-        public static double velocityMaxError = 0;
-        public static double positionMaxError = 0;
-        public static double maxJerk = 0;
-        public static double maxAccel = 0;
-        public static double maxVelocity = 0;
-        public static double velocityTolerance = 0;
+        //https://www.reca.lc/arm?armMass=%7B%22s%22%3A32%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A14%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22NEO%22%7D&ratio=%7B%22magnitude%22%3A225%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
+        public static double velocityMaxError = 3;
+        public static double positionMaxError = 1;
+        public static double maxJerk = 10000;
+        public static double maxAccel = 150; //Max = 12,146 degrees/s^2
+        public static double maxVelocity = 15; //Max = 151 degrees/s
+        public static double velocityTolerance = 3;
 
         public static double kP = 0;
         public static double kI = 0;
         public static double kD = 0;
         public static double kS = 0;
-        public static double kV = 0;
-        public static double kG = 0;
-        // positions are measured in degrees
+        public static double kV = 4.38; //V*s/rad
+        public static double kG = 0.37;
+        public static double kA = 0.02; //V*s^2/rad
+
+        // Units = degrees. 0 degrees is pivot level (folded flat) to make FF work right.
         public static double L1 = 0;
-        public static double L2 = 0;
-        public static double L3 = 0;
-        public static double L4 = 0;
-        public static double stow = 0;
-        public static double deepCage = 0;
+        public static double L2 = 90;
+        public static double L3 = 90;
+        public static double L4 = 90;
+        public static double stow = 50;
+        public static double deepCage = 90;
         public static double shallowCage = 0;
-        public static double coralStation = 0;
+        public static double coralStation = 45;
 
     }
 
@@ -106,32 +109,35 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-        public static double maxElevatorJerk;
-        public static double maxAccel;
-        public static double maxVelocity;
-        public static double velocityTolerance;
-        public static double velocityMaxError;
-        public static double positionMaxError;
+    //https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
+        public static double maxElevatorJerk = 10000; 
+        public static double maxAccel = 120; //max @40A is 830 in/s^2
+        public static double maxVelocity = 12; //max is ~121 in/s
+        public static double velocityTolerance = 0.5;
+        public static double velocityMaxError = 0.3;
+        public static double positionMaxError = 0.5;
         public static double kP;
         public static double kI;
         public static double kD;
-        public static double kV;
+        public static double kV = 0.1;  //V*s/in
+        public static double kA = 0.0013; //V*2^2/in
         public static double kS;
-        public static double kG;
+        public static double kG = .5;
         public static double statorCurrentLimit = 40;
         public static double conversionFactor = (9/54) * 2.256 * Math.PI;
 
         public static double L1 = 0;
         public static double L2 = 0;
-        public static double L3 = 0;
-        public static double L4 = 0;
+        public static double L3 = 14.75;
+        public static double L4 = 39.5;
         public static double stow = 0;
-        public static double deepCage = 0;
+        public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 0;
+        public static double coralStation = 5.5;
     }
 
     public class WristConstants {
+        //https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A66%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         public static double wristCurrent = 30;
         public static double kP = 0;
         public static double kI = 0;
@@ -139,27 +145,28 @@ public class Constants {
         public static double wrapPoint = .5;
         public static double sensorOffset = 0;
         public static SensorDirectionValue sensorDirection = SensorDirectionValue.Clockwise_Positive;
-        public static double kG = 0;
-        public static double kV = 0;
+        public static double kG = 0.25;
+        public static double kV = 1.19; //V/s*rad
         public static double kA = 0;
         public static double kS = 0;
 
-        public static double maxAccel = 0;
-        public static double maxJerk = 0;
-        public static double maxVelocity = 0;
-        public static double velocityTolerance = 0;
+        public static double maxAccel = 560; //max accel = 15k deg/s^2
+        public static double maxJerk = 10000;
+        public static double maxVelocity = 56; //max 560 deg/s 
+        public static double velocityTolerance = 3;
 
-        public static double maxPositionTolerance = 0;
-        public static double maxVelocityTolerance = 0;
+        public static double maxPositionTolerance = 1;
+        public static double maxVelocityTolerance = 3;
         
+        //Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF correct
         public static double L1 = 0;
-        public static double L2 = 0;
-        public static double L3 = 0;
-        public static double L4 = 0;
-        public static double stow = 0;
-        public static double deepCage = 0;
+        public static double L2 = 45;
+        public static double L3 = 45;
+        public static double L4 = 45;
+        public static double stow = 36;
+        public static double deepCage = 115;
         public static double shallowCage = 0;
-        public static double coralStation = 0;
+        public static double coralStation = 21;
 
         
     }

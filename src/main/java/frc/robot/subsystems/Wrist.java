@@ -32,6 +32,7 @@ public class Wrist extends SubsystemBase {
         wristConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         wristConfig.Feedback.FeedbackRemoteSensorID = wristSensor.getDeviceID();
         wristConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        wristConfig.Feedback.SensorToMechanismRatio = 1/360; //Native unit is rotations, this converts to degrees
         wristConfig.Slot0.kP = kP;
         wristConfig.Slot0.kI = kI;
         wristConfig.Slot0.kD = kD;
@@ -57,15 +58,15 @@ public class Wrist extends SubsystemBase {
      
     public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
-    double wristAngle = state.position + Pivot.getInstance().getPosition(); 
-    double feed = wristFf.calculate(Units.degreesToRadians(wristAngle), state.velocity, state.acceleration);
+    double wristAngle = state.position + 90 - Pivot.getInstance().getPosition(); 
+    double feed = wristFf.calculate(Units.degreesToRadians(wristAngle), Units.degreesToRadians(state.velocity), Units.degreesToRadians(state.acceleration));
     
     wristVoltage.withFeedForward(feed).withPosition(state.position);
     wristMotor.setControl(wristVoltage);
     }
 
     public double getPosition() {
-        return wristSensor.getAbsolutePosition().getValueAsDouble();
+        return wristSensor.getAbsolutePosition().getValueAsDouble() * 360;
     }
 
     public double getVelocity() {

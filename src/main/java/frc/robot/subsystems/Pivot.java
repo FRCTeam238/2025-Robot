@@ -16,6 +16,7 @@ import static frc.robot.Constants.PivotConstants.*;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -110,7 +111,7 @@ public class Pivot extends SubsystemBase {
    */
   public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
-    feed = ff.calculate(state.position, state.velocity, state.acceleration);
+    feed = ff.calculate(Units.degreesToRadians(state.position), Units.degreesToRadians(state.velocity), Units.degreesToRadians(state.acceleration));
 
     pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feed);
   }

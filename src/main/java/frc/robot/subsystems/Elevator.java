@@ -48,7 +48,7 @@ public class Elevator extends SubsystemBase {
     leftConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     leftConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    leftConfig.Feedback.SensorToMechanismRatio = 1.0/conversionFactor;
+    leftConfig.Feedback.SensorToMechanismRatio = 1.0/conversionFactor; //native unit is rotations, this converts to inches
     leftMotor.getConfigurator().apply(leftConfig);
     
     TalonFXConfiguration rightConfig = new TalonFXConfiguration(); 
