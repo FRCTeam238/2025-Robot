@@ -6,11 +6,15 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
 import static frc.robot.Constants.WristConstants.*;
 
+@Logged
 public class Wrist extends SubsystemBase {
     //talonfx - falcon
     TalonFX wristMotor = new TalonFX(0);
@@ -18,6 +22,7 @@ public class Wrist extends SubsystemBase {
     ArmFeedforward wristFf = new ArmFeedforward(kS, kG, kV, kA);
     PositionVoltage wristVoltage = new PositionVoltage(0);
     String commandName = "";
+    MotionProfile.State desiredState = new MotionProfile.State(0);
 
     private static Wrist singleton;
 
@@ -51,6 +56,7 @@ public class Wrist extends SubsystemBase {
     }
      
     public void setDesiredState(MotionProfile.State state) {
+    desiredState = state;
     double wristAngle = state.position + Pivot.getInstance().getPosition(); 
     //Change 0 to angle from pivot
     double feed = wristFf.calculate(wristAngle, state.velocity, state.acceleration);

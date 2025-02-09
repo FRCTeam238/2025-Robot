@@ -14,8 +14,10 @@ import au.grapplerobotics.interfaces.LaserCanInterface.TimingBudget;
 
 import static frc.robot.Constants.CoralIntakeConstants.*;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+@Logged
 public class CoralIntake extends SubsystemBase {
   /** Creates a new CoralIntake. */
 

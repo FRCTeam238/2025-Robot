@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Drive;
-import frc.robot.subsystems.CoralIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
@@ -26,10 +24,10 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
 
-  public static Pivot pivot;
-  public static Drivetrain drivetrain;
-  public static Elevator elevator;
-  public static Controls controls;
+  public Pivot pivot;
+  public Drivetrain drivetrain;
+  public Elevator elevator;
+  public Controls controls;
   // public CoralIntake coralIntake = CoralIntake.getInstance();
 
   public Robot() {
@@ -39,7 +37,6 @@ public class Robot extends TimedRobot {
     URCL.start();
     Epilogue.bind(this);
 
-    
     elevator = Elevator.getInstance();
     pivot = Pivot.getInstance();
     drivetrain = Drivetrain.getInstance();

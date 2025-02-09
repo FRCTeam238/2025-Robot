@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.Timer;
 
 public class MotionProfile {
@@ -29,6 +30,7 @@ public class MotionProfile {
     }
   }
 
+  @Logged
   public static class State {
     public double velocity;
     public double acceleration;

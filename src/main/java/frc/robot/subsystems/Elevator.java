@@ -11,16 +11,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
-import frc.robot.commands.ManualElevator;
-
 import static frc.robot.Constants.ElevatorConstants.*;
 
+@Logged
 public class Elevator extends SubsystemBase {
   TalonFX leftMotor = new TalonFX(6);
   TalonFX rightMotor = new TalonFX(7);
@@ -32,6 +32,7 @@ public class Elevator extends SubsystemBase {
   private static Elevator singleton;
 
   ArmFeedforward ff;
+  MotionProfile.State desiredState = new MotionProfile.State(0);
 
   /** Creates a new Elevator. */
   private Elevator() {
@@ -72,6 +73,7 @@ public class Elevator extends SubsystemBase {
 
 
   public void setDesiredState(MotionProfile.State state) {
+    desiredState = state;
     double feed = ff.calculate(Units.degreesToRadians(Pivot.getInstance().getPosition()), state.velocity, state.acceleration);
 
     elevatorVoltage.withFeedForward(feed).withPosition(state.position);

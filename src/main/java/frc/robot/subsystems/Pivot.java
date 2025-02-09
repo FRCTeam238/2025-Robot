@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import static frc.robot.Constants.PivotConstants.*;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
 import frc.robot.commands.ManualPivot;
 
+@Logged
 public class Pivot extends SubsystemBase {
 
   SparkMax pivotLeader;
@@ -32,6 +34,9 @@ public class Pivot extends SubsystemBase {
   String name = "None";
   
   private static Pivot singleton;
+
+  MotionProfile.State desiredState = new MotionProfile.State(0);
+  double feed = 0;
 
   /** Creates a new Pivot. */
   private Pivot() {
@@ -104,7 +109,8 @@ public class Pivot extends SubsystemBase {
    * @param state - the state of the pivot that we want to be in
    */
   public void setDesiredState(MotionProfile.State state) {
-    double feed = ff.calculate(state.position, state.velocity, state.acceleration);
+    desiredState = state;
+    feed = ff.calculate(state.position, state.velocity, state.acceleration);
 
     pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feed);
   }
