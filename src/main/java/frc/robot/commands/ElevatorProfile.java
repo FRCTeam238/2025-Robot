@@ -4,7 +4,11 @@ import static frc.robot.Constants.ElevatorConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.MotionProfile;
+import frc.robot.Robot;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Wrist;
 
 public class ElevatorProfile extends Command {
   private final Elevator elevator = Elevator.getInstance();
@@ -37,9 +41,13 @@ public class ElevatorProfile extends Command {
 
   @Override
   public void execute() {
-   
-    MotionProfile.State sample = profile.sample();
-    elevator.setDesiredState(sample);
+    if (goal.position < ElevatorConstants.dangerZone && Wrist.getInstance().getPosition() > WristConstants.dangerZone)
+    {
+      //wrist is in danger of hitting elevator, don't drop yet
+    } else {
+      MotionProfile.State sample = profile.sample();
+      elevator.setDesiredState(sample);
+    }
   }
 
   @Override

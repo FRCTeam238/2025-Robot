@@ -125,6 +125,7 @@ public class Constants {
         public static double kG = .5;
         public static double statorCurrentLimit = 40;
         public static double conversionFactor = (9/54) * 2.256 * Math.PI;
+        public static double dangerZone = 3.5; //elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
         public static double L2 = 0;
@@ -157,6 +158,8 @@ public class Constants {
 
         public static double maxPositionTolerance = 1;
         public static double maxVelocityTolerance = 3;
+
+        public static double dangerZone = 72; //Wrist cannot travel up past this angle unless elevator is up a bit.
         
         //Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF correct
         public static double L1 = 0;

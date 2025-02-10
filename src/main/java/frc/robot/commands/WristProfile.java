@@ -7,9 +7,12 @@ package frc.robot.commands;
 import static frc.robot.Constants.WristConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.WristConstants;
 import frc.robot.MotionProfile;
 import frc.robot.MotionProfile.MotionConstraints;
 import frc.robot.MotionProfile.ProfileType;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -41,7 +44,15 @@ public class WristProfile extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (goal.position > WristConstants.dangerZone && Elevator.getInstance().getPosition() < ElevatorConstants.dangerZone)
+    {
+      //wrist is in danger of hitting elevator, don't move wrist until elevator gets high enough
+    } else {
+      MotionProfile.State sample = profile.sample();
+      wrist.setDesiredState(sample);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
