@@ -13,8 +13,7 @@ public class Loggers {
             super(PositionVoltage.class);
         }
 
-        public void update(EpilogueBackend backend, PositionVoltage voltage)
-        {
+        public void update(EpilogueBackend backend, PositionVoltage voltage) {
             backend.log("Feedforward", voltage.FeedForward);
             backend.log("Position", voltage.Position);
         }

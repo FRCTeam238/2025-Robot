@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class MotionProfile {
 
-  /** {@summary} Class describing the motion constraints for the profile to obey */
+  /**
+   * {@summary} Class describing the motion constraints for the profile to obey
+   */
   public static class MotionConstraints {
     public double maxJerk;
     public double maxAccel;
@@ -15,11 +17,12 @@ public class MotionProfile {
     /**
      * {@summary} constructor for MotionConstraints
      *
-     * @param maxJerk max Jerk (derivative of Accel)
-     * @param maxAccel max Acceleration to be used in the profile
-     * @param maxVelocity max Velocity to be used in the profile
-     * @param velocityTolerance max initial velocity to be ignored (allowing us to use S-curve
-     *     profile)
+     * @param maxJerk           max Jerk (derivative of Accel)
+     * @param maxAccel          max Acceleration to be used in the profile
+     * @param maxVelocity       max Velocity to be used in the profile
+     * @param velocityTolerance max initial velocity to be ignored (allowing us to
+     *                          use S-curve
+     *                          profile)
      */
     public MotionConstraints(
         double maxJerk, double maxAccel, double maxVelocity, double velocityTolerance) {
@@ -39,8 +42,8 @@ public class MotionProfile {
     /**
      * {@summary} constructor for MotionProfile State
      *
-     * @param position the position represented by the state
-     * @param velocity the velocity represented by the state
+     * @param position     the position represented by the state
+     * @param velocity     the velocity represented by the state
      * @param acceleration the acceleration represented by the state
      */
     public State(double position, double velocity, double acceleration) {
@@ -64,7 +67,8 @@ public class MotionProfile {
     }
   }
 
-  // Timing of the end of various phases, measured in seconds from start of profile
+  // Timing of the end of various phases, measured in seconds from start of
+  // profile
   private class Timings {
     double endRampUpAccel; // done ramping up acceleration, accel is now at max
     double endMaxAccel; // done with max accel phase, ramp down accel
@@ -95,11 +99,10 @@ public class MotionProfile {
       t = timings.endRampDownAccel - timings.endMaxAccel;
       a = state2.acceleration - constraints.maxJerk * t;
       v = state2.velocity + state2.acceleration * t - constraints.maxJerk * Math.pow(t, 2) / 2;
-      p =
-          state2.position
-              + state2.velocity * t
-              + state2.acceleration * Math.pow(t, 2) / 2
-              - constraints.maxJerk * Math.pow(t, 3) / 6;
+      p = state2.position
+          + state2.velocity * t
+          + state2.acceleration * Math.pow(t, 2) / 2
+          - constraints.maxJerk * Math.pow(t, 3) / 6;
       state3 = new State(p, v, a);
 
       t = timings.endMaxVelocity - timings.endRampDownAccel;
@@ -122,7 +125,8 @@ public class MotionProfile {
     }
   }
 
-  // Enum representing types of profiles. Auto will choose SCurve if initial velocity is low enough,
+  // Enum representing types of profiles. Auto will choose SCurve if initial
+  // velocity is low enough,
   // otherwise trapezoid
   public enum ProfileType {
     TRAPEZOID,
@@ -143,7 +147,8 @@ public class MotionProfile {
   public MotionProfile(State goal, State current, MotionConstraints constraints, ProfileType type) {
     this.constraints = constraints;
 
-    // It's easier to always calculate the profile the same way, so if the goal is less than
+    // It's easier to always calculate the profile the same way, so if the goal is
+    // less than
     // current, flip them and we'll flip the result later
     direction = shouldFlipProfile(current, goal) ? -1 : 1;
     this.goal = direct(goal);
@@ -151,7 +156,8 @@ public class MotionProfile {
     timings = new Timings();
     timer = new Timer();
 
-    // Choose a profile type and calculate it. This will populate the Timings object and
+    // Choose a profile type and calculate it. This will populate the Timings object
+    // and
     // TransitionStates object as necessary
     if (current.velocity > constraints.velocityTolerance
         || goal.velocity != 0
@@ -165,12 +171,14 @@ public class MotionProfile {
   }
 
   public State sample() {
-    // Start timer, this no-ops if the timer is already running so will start it on the first call
+    // Start timer, this no-ops if the timer is already running so will start it on
+    // the first call
     // to sample()
     timer.start();
     State retval = new State(0, 0, 0);
 
-    // If we're following an S-curve use equations described in paper linked in calculateSCurve
+    // If we're following an S-curve use equations described in paper linked in
+    // calculateSCurve
     if (type == ProfileType.SCURVE) {
       double time = timer.get();
       if (time < timings.endRampUpAccel) {
@@ -183,23 +191,20 @@ public class MotionProfile {
         retval.acceleration = states.state1.acceleration;
         double t = time - timings.endRampUpAccel;
         retval.velocity = states.state1.velocity + constraints.maxAccel * t;
-        retval.position =
-            states.state1.position
-                + states.state1.velocity * t
-                + constraints.maxAccel * Math.pow(t, 2) / 2;
+        retval.position = states.state1.position
+            + states.state1.velocity * t
+            + constraints.maxAccel * Math.pow(t, 2) / 2;
       } else if (time < timings.endRampDownAccel) {
         // ramp down accel, Jerk = -Max
         double t = time - timings.endMaxAccel;
         retval.acceleration = Math.max(states.state2.acceleration - t * constraints.maxJerk, 0);
-        retval.velocity =
-            states.state2.velocity
-                + states.state2.acceleration * t
-                - constraints.maxJerk * Math.pow(t, 2) / 2;
-        retval.position =
-            states.state2.position
-                + states.state2.velocity * t
-                + states.state2.acceleration * Math.pow(t, 2) / 2
-                - constraints.maxJerk * Math.pow(t, 3) / 6;
+        retval.velocity = states.state2.velocity
+            + states.state2.acceleration * t
+            - constraints.maxJerk * Math.pow(t, 2) / 2;
+        retval.position = states.state2.position
+            + states.state2.velocity * t
+            + states.state2.acceleration * Math.pow(t, 2) / 2
+            - constraints.maxJerk * Math.pow(t, 3) / 6;
       } else if (time < timings.endMaxVelocity) {
         // max vel cruise
         double t = time - timings.endRampDownAccel;
@@ -212,39 +217,36 @@ public class MotionProfile {
         retval.acceleration = -constraints.maxJerk * t;
         retval.velocity = states.state4.velocity - constraints.maxJerk * Math.pow(t, 2) / 2;
         ;
-        retval.position =
-            states.state4.position
-                + states.state4.velocity * t
-                - constraints.maxJerk * Math.pow(t, 3) / 6;
+        retval.position = states.state4.position
+            + states.state4.velocity * t
+            - constraints.maxJerk * Math.pow(t, 3) / 6;
       } else if (time < timings.endMaxDeccel) {
         // max decceleration. Jerk = 0
         double t = time - timings.endRampUpDeccel;
         retval.acceleration = states.state5.acceleration;
         retval.velocity = states.state5.velocity + states.state5.acceleration * t;
-        retval.position =
-            states.state5.position
-                + states.state5.velocity * t
-                + states.state5.acceleration * Math.pow(t, 2) / 2;
+        retval.position = states.state5.position
+            + states.state5.velocity * t
+            + states.state5.acceleration * Math.pow(t, 2) / 2;
       } else if (time < timings.endRampDownDeccel) {
         // ramping down deccel. Jerk = Max
         double t = time - timings.endMaxDeccel;
         retval.acceleration = states.state6.acceleration + constraints.maxJerk * t;
-        retval.velocity =
-            states.state6.velocity
-                + states.state6.acceleration * t
-                + constraints.maxJerk * Math.pow(t, 2) / 2;
-        retval.position =
-            states.state6.position
-                + states.state6.velocity * t
-                + states.state6.acceleration * Math.pow(t, 2) / 2
-                + constraints.maxJerk * Math.pow(t, 3) / 6;
+        retval.velocity = states.state6.velocity
+            + states.state6.acceleration * t
+            + constraints.maxJerk * Math.pow(t, 2) / 2;
+        retval.position = states.state6.position
+            + states.state6.velocity * t
+            + states.state6.acceleration * Math.pow(t, 2) / 2
+            + constraints.maxJerk * Math.pow(t, 3) / 6;
       } else {
         // profile complete, just return goal
         return direct(goal);
       }
       return direct(retval);
     }
-    // Otherwise we're following a trapezoid, implementation stolen from WPILib class
+    // Otherwise we're following a trapezoid, implementation stolen from WPILib
+    // class
     else {
       retval.velocity = initial.velocity;
       retval.position = initial.position;
@@ -256,16 +258,14 @@ public class MotionProfile {
       } else if (t < timings.endMaxVelocity) {
         retval.acceleration = 0;
         retval.velocity = constraints.maxVelocity;
-        retval.position +=
-            (initial.velocity + timings.endMaxAccel * constraints.maxAccel / 2.0)
-                    * timings.endMaxAccel
-                + constraints.maxVelocity * (t - timings.endMaxAccel);
+        retval.position += (initial.velocity + timings.endMaxAccel * constraints.maxAccel / 2.0)
+            * timings.endMaxAccel
+            + constraints.maxVelocity * (t - timings.endMaxAccel);
       } else if (t <= timings.endMaxDeccel) {
         retval.acceleration = -constraints.maxAccel;
         retval.velocity = goal.velocity + (timings.endMaxDeccel - t) * constraints.maxAccel;
         double timeLeft = timings.endMaxDeccel - t;
-        retval.position =
-            goal.position - (goal.velocity + timeLeft * constraints.maxAccel / 2.0) * timeLeft;
+        retval.position = goal.position - (goal.velocity + timeLeft * constraints.maxAccel / 2.0) * timeLeft;
       } else {
         retval = goal;
       }
@@ -294,8 +294,7 @@ public class MotionProfile {
     double fullTrapezoidDist = cutoffDistBegin + (goal.position - initial.position) + cutoffDistEnd;
     double accelerationTime = constraints.maxVelocity / constraints.maxAccel;
 
-    double fullSpeedDist =
-        fullTrapezoidDist - accelerationTime * accelerationTime * constraints.maxAccel;
+    double fullSpeedDist = fullTrapezoidDist - accelerationTime * accelerationTime * constraints.maxAccel;
 
     // Handle the case where the profile never reaches full speed
     if (fullSpeedDist < 0) {
@@ -321,10 +320,9 @@ public class MotionProfile {
     if (constraints.maxVelocity * constraints.maxJerk < Math.pow(constraints.maxAccel, 2)) {
       sv = 2 * constraints.maxVelocity * Math.sqrt(constraints.maxVelocity / constraints.maxJerk);
     } else {
-      sv =
-          constraints.maxVelocity
-              * ((constraints.maxVelocity / constraints.maxAccel)
-                  + (constraints.maxAccel / constraints.maxJerk));
+      sv = constraints.maxVelocity
+          * ((constraints.maxVelocity / constraints.maxAccel)
+              + (constraints.maxAccel / constraints.maxJerk));
     }
     if ((constraints.maxVelocity < va && s > sa)
         || (constraints.maxVelocity < va && s < sa && s > sv)) {
@@ -346,12 +344,11 @@ public class MotionProfile {
     } else {
       // Type D.2 eqs 80,88,89
       tj = constraints.maxAccel / constraints.maxJerk;
-      ta =
-          .5
-              * (Math.sqrt(
-                      (4 * s * Math.pow(constraints.maxJerk, 2) + Math.pow(constraints.maxAccel, 3))
-                          / (constraints.maxAccel * Math.pow(constraints.maxJerk, 2)))
-                  - constraints.maxAccel / constraints.maxJerk);
+      ta = .5
+          * (Math.sqrt(
+              (4 * s * Math.pow(constraints.maxJerk, 2) + Math.pow(constraints.maxAccel, 3))
+                  / (constraints.maxAccel * Math.pow(constraints.maxJerk, 2)))
+              - constraints.maxAccel / constraints.maxJerk);
       tv = ta + tj;
     }
 
@@ -368,10 +365,11 @@ public class MotionProfile {
   /**
    * Returns true if the profile inverted.
    *
-   * <p>The profile is inverted if goal position is less than the initial position.
+   * <p>
+   * The profile is inverted if goal position is less than the initial position.
    *
    * @param initial The initial state (usually the current state).
-   * @param goal The desired state when the profile is complete.
+   * @param goal    The desired state when the profile is complete.
    */
   private static boolean shouldFlipProfile(State initial, State goal) {
     return initial.position > goal.position;

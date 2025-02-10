@@ -11,7 +11,6 @@ import frc.robot.subsystems.Elevator;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ManualElevator extends Command {
 
-
   /** Creates a new ManualElevator. */
   public ManualElevator() {
     addRequirements(Elevator.getInstance());
@@ -21,13 +20,14 @@ public class ManualElevator extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double speed = Controls.getInstance().getOperatorLeftStickY();
-    Elevator.getInstance().set(speed*0.25);
+    Elevator.getInstance().set(speed * 0.25);
   }
 
   // Called once the command ends or is interrupted.

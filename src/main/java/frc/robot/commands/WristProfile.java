@@ -19,11 +19,12 @@ import frc.robot.subsystems.Wrist;
 public class WristProfile extends Command {
 
   Wrist wrist;
-  
+
   MotionProfile.State goal;
   MotionProfile profile;
-  
+
   private MotionProfile.State current;
+
   /** Creates a new WristProfile. */
   public WristProfile(MotionProfile.State goal, String name) {
     this.goal = goal;
@@ -32,22 +33,24 @@ public class WristProfile extends Command {
     addRequirements(wrist);
     wrist.setCommand(name);
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
     current = new MotionProfile.State(wrist.getPosition(), wrist.getVelocity());
-    profile = new MotionProfile(goal, current, new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance), ProfileType.SCURVE);
-    
+    profile = new MotionProfile(goal, current, new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance),
+        ProfileType.SCURVE);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (goal.position > WristConstants.dangerZone && Elevator.getInstance().getPosition() < ElevatorConstants.dangerZone)
-    {
-      //wrist is in danger of hitting elevator, don't move wrist until elevator gets high enough
+    if (goal.position > WristConstants.dangerZone
+        && Elevator.getInstance().getPosition() < ElevatorConstants.dangerZone) {
+      // wrist is in danger of hitting elevator, don't move wrist until elevator gets
+      // high enough
     } else {
       MotionProfile.State sample = profile.sample();
       wrist.setDesiredState(sample);

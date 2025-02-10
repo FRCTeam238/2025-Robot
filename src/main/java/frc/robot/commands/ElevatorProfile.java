@@ -4,7 +4,6 @@ import static frc.robot.Constants.ElevatorConstants.*;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.MotionProfile;
-import frc.robot.Robot;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.Elevator;
@@ -23,9 +22,8 @@ public class ElevatorProfile extends Command {
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(this.elevator);
     this.goal = goal;
-    constraints =
-        new MotionProfile.MotionConstraints(
-            maxElevatorJerk, maxAccel, maxVelocity, velocityTolerance);
+    constraints = new MotionProfile.MotionConstraints(
+        maxElevatorJerk, maxAccel, maxVelocity, velocityTolerance);
     elevator.setCommand(name);
   }
 
@@ -36,14 +34,13 @@ public class ElevatorProfile extends Command {
 
     profile = new MotionProfile(goal, currentState, constraints, MotionProfile.ProfileType.AUTO);
     elevator.setCommand(getName());
-    bypass = onTarget();  //if already on target, skip
+    bypass = onTarget(); // if already on target, skip
   }
 
   @Override
   public void execute() {
-    if (goal.position < ElevatorConstants.dangerZone && Wrist.getInstance().getPosition() > WristConstants.dangerZone)
-    {
-      //wrist is in danger of hitting elevator, don't drop yet
+    if (goal.position < ElevatorConstants.dangerZone && Wrist.getInstance().getPosition() > WristConstants.dangerZone) {
+      // wrist is in danger of hitting elevator, don't drop yet
     } else {
       MotionProfile.State sample = profile.sample();
       elevator.setDesiredState(sample);
@@ -52,7 +49,8 @@ public class ElevatorProfile extends Command {
 
   @Override
   public boolean isFinished() {
-    // TODO: Make this return true when this Command no longer needs to run execute()
+    // TODO: Make this return true when this Command no longer needs to run
+    // execute()
     return bypass || (onTarget() && profile.isFinished());
   }
 
@@ -62,9 +60,8 @@ public class ElevatorProfile extends Command {
   }
 
   public boolean onTarget() {
-   return Math.abs(elevator.getVelocity() - goal.velocity) <= velocityMaxError
+    return Math.abs(elevator.getVelocity() - goal.velocity) <= velocityMaxError
         && Math.abs(elevator.getPosition() - goal.position) <= positionMaxError;
   }
 
-  
 }

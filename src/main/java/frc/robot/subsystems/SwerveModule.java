@@ -24,9 +24,12 @@ import edu.wpi.first.math.util.Units;
 @Logged
 public class SwerveModule {
   TalonFX driveMotor;
-  @NotLogged SparkMax turnMotor;
-  @NotLogged SparkClosedLoopController turningPIDController;
-  @NotLogged AbsoluteEncoder turnEncoder;
+  @NotLogged
+  SparkMax turnMotor;
+  @NotLogged
+  SparkClosedLoopController turningPIDController;
+  @NotLogged
+  AbsoluteEncoder turnEncoder;
 
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
@@ -49,9 +52,9 @@ public class SwerveModule {
 
     turnEncoder = turnMotor.getAbsoluteEncoder();
     turnConfig
-    .inverted(true)
-    .idleMode(IdleMode.kBrake)
-    .smartCurrentLimit(SwerveModuleConstants.turningCurrentLimit);
+        .inverted(true)
+        .idleMode(IdleMode.kBrake)
+        .smartCurrentLimit(SwerveModuleConstants.turningCurrentLimit);
 
     turnConfig.absoluteEncoder
         .positionConversionFactor(SwerveModuleConstants.kTurningEncoderPositionFactor)

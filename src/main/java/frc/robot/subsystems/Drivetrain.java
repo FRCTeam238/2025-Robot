@@ -21,49 +21,52 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.Drive;
 
 /** for swerve */
 @Logged
 public class Drivetrain extends SubsystemBase {
 
-  @NotLogged SwerveModule frontLeft = new SwerveModule(frontLeftDriveCANId, frontLeftTurnCANId);
-  @NotLogged SwerveModule frontRight = new SwerveModule(frontRightDriveCANId, frontRightTurnCANId);
-  @NotLogged SwerveModule backLeft = new SwerveModule(backLeftDriveCANId, backLeftTurnCANId);
-  @NotLogged SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
+  @NotLogged
+  SwerveModule frontLeft = new SwerveModule(frontLeftDriveCANId, frontLeftTurnCANId);
+  @NotLogged
+  SwerveModule frontRight = new SwerveModule(frontRightDriveCANId, frontRightTurnCANId);
+  @NotLogged
+  SwerveModule backLeft = new SwerveModule(backLeftDriveCANId, backLeftTurnCANId);
+  @NotLogged
+  SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  @NotLogged SwerveDrivePoseEstimator odometry;
+  @NotLogged
+  SwerveDrivePoseEstimator odometry;
   AHRS gyro;
   PIDController x, y, theta;
   String command = "None";
-  SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] {0, 0, 0, 0}, new double[] {0, 0, 0, 0});
+  SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
+      new double[] { 0, 0, 0, 0 });
 
   private static Drivetrain singleton;
 
   private Drivetrain() {
     gyro = new AHRS(NavXComType.kMXP_SPI);
-    odometry =
-        new SwerveDrivePoseEstimator(
-            kDriveKinematics,
-            gyro.getRotation2d(),
-            new SwerveModulePosition[] {
-              frontLeft.getPosition(),
-              frontRight.getPosition(),
-              backLeft.getPosition(),
-              backRight.getPosition()
-            },
-            new Pose2d());
+    odometry = new SwerveDrivePoseEstimator(
+        kDriveKinematics,
+        gyro.getRotation2d(),
+        new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
+        },
+        new Pose2d());
 
     x = new PIDController(kP, kI, kD);
     y = new PIDController(kP, kI, kD);
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
 
-
   }
 
   public static Drivetrain getInstance() {
-    if(singleton == null)
+    if (singleton == null)
       singleton = new Drivetrain();
     return singleton;
   }
@@ -73,10 +76,10 @@ public class Drivetrain extends SubsystemBase {
     odometry.update(
         gyro.getRotation2d(),
         new SwerveModulePosition[] {
-          frontLeft.getPosition(),
-          frontRight.getPosition(),
-          backLeft.getPosition(),
-          backRight.getPosition()
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
         });
   }
 
@@ -89,17 +92,18 @@ public class Drivetrain extends SubsystemBase {
   }
 
   // public void updatePoseEstimate(EstimatedRobotPose estimate) {
-  //   odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(), estimate.timestampSeconds);
+  // odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(),
+  // estimate.timestampSeconds);
   // }
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(
         gyro.getRotation2d(),
         new SwerveModulePosition[] {
-          frontLeft.getPosition(),
-          frontRight.getPosition(),
-          backLeft.getPosition(),
-          backRight.getPosition()
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
         },
         pose);
   }
@@ -121,14 +125,13 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(double xSpeed, double ySpeed, double rot) {
 
-    var swerveModuleStates =
-        kDriveKinematics.toSwerveModuleStates(
-            ChassisSpeeds.discretize(
-                fieldRelative
-                    ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        xSpeed, ySpeed, rot, getFieldRelativeOffset())
-                    : new ChassisSpeeds(xSpeed, ySpeed, rot),
-                .02));
+    var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(
+        ChassisSpeeds.discretize(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(
+                    xSpeed, ySpeed, rot, getFieldRelativeOffset())
+                : new ChassisSpeeds(xSpeed, ySpeed, rot),
+            .02));
     setModuleStates(swerveModuleStates);
   }
 
@@ -139,10 +142,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void lockWheels() {
     SwerveModuleState wheelLock[] = {
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-      new SwerveModuleState(0, Rotation2d.fromDegrees(45))
+        new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+        new SwerveModuleState(0, Rotation2d.fromDegrees(45))
     };
     setModuleStates(wheelLock);
   }
@@ -166,23 +169,24 @@ public class Drivetrain extends SubsystemBase {
   @Logged
   public SwerveModuleState[] getSwerveModuleStates() {
     return new SwerveModuleState[] {
-      frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState(),
+        frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState(),
     };
   }
 
   @Logged
   public SwerveModuleState[] getDesiredStates() {
     return new SwerveModuleState[] {
-            frontLeft.getDesiredState(), frontRight.getDesiredState(), backLeft.getDesiredState(), backRight.getDesiredState()
+        frontLeft.getDesiredState(), frontRight.getDesiredState(), backLeft.getDesiredState(),
+        backRight.getDesiredState()
     };
   }
 
   public SwerveModulePosition[] getSwerveModulePosition() {
     return new SwerveModulePosition[] {
-      frontLeft.getPosition(),
-      frontRight.getPosition(),
-      backLeft.getPosition(),
-      backRight.getPosition(),
+        frontLeft.getPosition(),
+        frontRight.getPosition(),
+        backLeft.getPosition(),
+        backRight.getPosition(),
     };
   }
 
@@ -222,9 +226,8 @@ public class Drivetrain extends SubsystemBase {
 
     double xFeedback = x.calculate(currentPose.getX(), referenceState.x);
     double yFeedback = y.calculate(currentPose.getY(), referenceState.y);
-    double rotationFeedback =
-        theta.calculate(currentPose.getRotation().getRadians(), referenceState.heading);
-    
+    double rotationFeedback = theta.calculate(currentPose.getRotation().getRadians(), referenceState.heading);
+
     ChassisSpeeds retval = ChassisSpeeds.fromFieldRelativeSpeeds(
         xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
     return retval;

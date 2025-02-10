@@ -14,15 +14,16 @@ import frc.robot.MotionProfile.ProfileType;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PivotProfile extends Command {
 
-  //to start, we want to make a command that takes a mechanism position and go to it
-
+  // to start, we want to make a command that takes a mechanism position and go to
+  // it
 
   Pivot pivot;
   MotionProfile.State goal;
 
   MotionProfile.State currentState;
   MotionProfile profile;
-  MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance);
+  MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAccel, maxVelocity,
+      velocityTolerance);
 
   /** Creates a new PivotProfile. */
   public PivotProfile(MotionProfile.State goal, String name) {
@@ -43,7 +44,7 @@ public class PivotProfile extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //TODO: check if there are illegal positions we have to watch out for
+    // TODO: check if there are illegal positions we have to watch out for
     MotionProfile.State sample = profile.sample();
     pivot.setDesiredState(sample);
   }

@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
-import frc.robot.commands.ManualPivot;
 
 @Logged
 public class Pivot extends SubsystemBase {
@@ -33,7 +32,7 @@ public class Pivot extends SubsystemBase {
   ArmFeedforward ff;
 
   String name = "None";
-  
+
   private static Pivot singleton;
 
   MotionProfile.State desiredState = new MotionProfile.State(0);
@@ -47,42 +46,37 @@ public class Pivot extends SubsystemBase {
     SparkMaxConfig leaderConfig = new SparkMaxConfig();
     SparkMaxConfig followerConfig = new SparkMaxConfig();
 
-
     ff = new ArmFeedforward(kS, kG, kV);
 
     encoder = pivotLeader.getAbsoluteEncoder();
 
+    // TODO: finish configs
+    followerConfig.follow(pivotLeader, true).closedLoop
+        .p(kP)
+        .i(kI)
+        .d(kD);
 
-    //TODO: finish configs
-    followerConfig.follow(pivotLeader, true)
-    .closedLoop
-      .p(kP)
-      .i(kI)
-      .d(kD);
-        
-    leaderConfig
-    .closedLoop
-      .p(kP)
-      .i(kI)
-      .d(kD);
+    leaderConfig.closedLoop
+        .p(kP)
+        .i(kI)
+        .d(kD);
     leaderConfig.absoluteEncoder
-      .positionConversionFactor(360)
-      .velocityConversionFactor(360);
-        
+        .positionConversionFactor(360)
+        .velocityConversionFactor(360);
 
     pivotFollower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     pivotLeader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public static Pivot getInstance() {
-    if(singleton == null)
+    if (singleton == null)
       singleton = new Pivot();
     return singleton;
   }
 
   /**
    * sets the motor PID position to the current position with a speed of zero
-   */ 
+   */
   public void holdPosition() {
     pivotLeader.getClosedLoopController().setReference(getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
   }
@@ -93,8 +87,7 @@ public class Pivot extends SubsystemBase {
     }, getInstance());
   }
 
-  //SETTERS
-
+  // SETTERS
 
   public void setSpeed(double speed) {
     pivotLeader.set(speed);
@@ -105,19 +98,21 @@ public class Pivot extends SubsystemBase {
   }
 
   /**
-   * sets the position, velocity, and acceleration that we want the robot to achieve 
+   * sets the position, velocity, and acceleration that we want the robot to
+   * achieve
    * 
    * @param state - the state of the pivot that we want to be in
    */
   public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
-    feed = ff.calculate(Units.degreesToRadians(state.position), Units.degreesToRadians(state.velocity), Units.degreesToRadians(state.acceleration));
+    feed = ff.calculate(Units.degreesToRadians(state.position), Units.degreesToRadians(state.velocity),
+        Units.degreesToRadians(state.acceleration));
 
-    pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, feed);
+    pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0,
+        feed);
   }
 
-  //GETTERS
-
+  // GETTERS
 
   public String getCommand() {
     return name;
@@ -134,6 +129,5 @@ public class Pivot extends SubsystemBase {
   public double getVelocity() {
     return encoder.getVelocity();
   }
-
 
 }

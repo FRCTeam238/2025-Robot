@@ -66,27 +66,28 @@ public class Constants {
     public enum AlgaeMechanismState {
         Out,
         Stow,
-        Processor //do we need this?
+        Processor // do we need this?
     }
 
     public class PivotConstants {
-        //https://www.reca.lc/arm?armMass=%7B%22s%22%3A32%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A14%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22NEO%22%7D&ratio=%7B%22magnitude%22%3A225%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
+        // https://www.reca.lc/arm?armMass=%7B%22s%22%3A32%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A14%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22NEO%22%7D&ratio=%7B%22magnitude%22%3A225%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         public static double velocityMaxError = 3;
         public static double positionMaxError = 1;
         public static double maxJerk = 10000;
-        public static double maxAccel = 150; //Max = 12,146 degrees/s^2
-        public static double maxVelocity = 15; //Max = 151 degrees/s
+        public static double maxAccel = 150; // Max = 12,146 degrees/s^2
+        public static double maxVelocity = 15; // Max = 151 degrees/s
         public static double velocityTolerance = 3;
 
         public static double kP = 0;
         public static double kI = 0;
         public static double kD = 0;
         public static double kS = 0;
-        public static double kV = 4.38; //V*s/rad
+        public static double kV = 4.38; // V*s/rad
         public static double kG = 0.37;
-        public static double kA = 0.02; //V*s^2/rad
+        public static double kA = 0.02; // V*s^2/rad
 
-        // Units = degrees. 0 degrees is pivot level (folded flat) to make FF work right.
+        // Units = degrees. 0 degrees is pivot level (folded flat) to make FF work
+        // right.
         public static double L1 = 0;
         public static double L2 = 90;
         public static double L3 = 90;
@@ -109,23 +110,23 @@ public class Constants {
     }
 
     public class ElevatorConstants {
-    //https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
-        public static double maxElevatorJerk = 10000; 
-        public static double maxAccel = 120; //max @40A is 830 in/s^2
-        public static double maxVelocity = 12; //max is ~121 in/s
+        // https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
+        public static double maxElevatorJerk = 10000;
+        public static double maxAccel = 120; // max @40A is 830 in/s^2
+        public static double maxVelocity = 12; // max is ~121 in/s
         public static double velocityTolerance = 0.5;
         public static double velocityMaxError = 0.3;
         public static double positionMaxError = 0.5;
         public static double kP;
         public static double kI;
         public static double kD;
-        public static double kV = 0.1;  //V*s/in
-        public static double kA = 0.0013; //V*2^2/in
+        public static double kV = 0.1; // V*s/in
+        public static double kA = 0.0013; // V*2^2/in
         public static double kS;
         public static double kG = .5;
         public static double statorCurrentLimit = 40;
-        public static double conversionFactor = (9/54) * 2.256 * Math.PI;
-        public static double dangerZone = 3.5; //elevator needs to be up at least this high for wrist to fold back
+        public static double conversionFactor = (9 / 54) * 2.256 * Math.PI;
+        public static double dangerZone = 3.5; // elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
         public static double L2 = 0;
@@ -138,7 +139,7 @@ public class Constants {
     }
 
     public class WristConstants {
-        //https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A66%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
+        // https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A66%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         public static double wristCurrent = 30;
         public static double kP = 0;
         public static double kI = 0;
@@ -147,21 +148,22 @@ public class Constants {
         public static double sensorOffset = 0;
         public static SensorDirectionValue sensorDirection = SensorDirectionValue.Clockwise_Positive;
         public static double kG = 0.25;
-        public static double kV = 1.19; //V/s*rad
+        public static double kV = 1.19; // V/s*rad
         public static double kA = 0;
         public static double kS = 0;
 
-        public static double maxAccel = 560; //max accel = 15k deg/s^2
+        public static double maxAccel = 560; // max accel = 15k deg/s^2
         public static double maxJerk = 10000;
-        public static double maxVelocity = 56; //max 560 deg/s 
+        public static double maxVelocity = 56; // max 560 deg/s
         public static double velocityTolerance = 3;
 
         public static double maxPositionTolerance = 1;
         public static double maxVelocityTolerance = 3;
 
-        public static double dangerZone = 72; //Wrist cannot travel up past this angle unless elevator is up a bit.
-        
-        //Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF correct
+        public static double dangerZone = 72; // Wrist cannot travel up past this angle unless elevator is up a bit.
+
+        // Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF
+        // correct
         public static double L1 = 0;
         public static double L2 = 45;
         public static double L3 = 45;
@@ -171,21 +173,19 @@ public class Constants {
         public static double shallowCage = 0;
         public static double coralStation = 21;
 
-        
     }
-        
-
 
     public class CoralIntakeConstants {
         public static double currentLimit = 30;
 
-
-        //LaserCAN region of interest values, please configure in grapple hook app i think
+        // LaserCAN region of interest values, please configure in grapple hook app i
+        // think
         public static int ROIx = 0;
         public static int ROIy = 0;
         public static int ROIw = 0;
         public static int ROIh = 0;
         // units are in mm
         public static double sensorDistance = 0;
-        
-    }}
+
+    }
+}

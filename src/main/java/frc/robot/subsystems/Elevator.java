@@ -38,8 +38,7 @@ public class Elevator extends SubsystemBase {
   private Elevator() {
     ff = new ArmFeedforward(kS, kG, kV);
 
-
-    TalonFXConfiguration leftConfig = new TalonFXConfiguration(); 
+    TalonFXConfiguration leftConfig = new TalonFXConfiguration();
     leftConfig.Slot0.kP = kP;
     leftConfig.Slot0.kI = kI;
     leftConfig.Slot0.kD = kD;
@@ -48,10 +47,11 @@ public class Elevator extends SubsystemBase {
     leftConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     leftConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    leftConfig.Feedback.SensorToMechanismRatio = 1.0/conversionFactor; //native unit is rotations, this converts to inches
+    leftConfig.Feedback.SensorToMechanismRatio = 1.0 / conversionFactor; // native unit is rotations, this converts to
+                                                                         // inches
     leftMotor.getConfigurator().apply(leftConfig);
-    
-    TalonFXConfiguration rightConfig = new TalonFXConfiguration(); 
+
+    TalonFXConfiguration rightConfig = new TalonFXConfiguration();
     rightConfig.Slot0.kP = kP;
     rightConfig.Slot0.kI = kI;
     rightConfig.Slot0.kD = kD;
@@ -66,15 +66,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public static Elevator getInstance() {
-    if(singleton == null)
+    if (singleton == null)
       singleton = new Elevator();
     return singleton;
   }
 
-
   public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
-    double feed = ff.calculate(Units.degreesToRadians(Pivot.getInstance().getPosition()), state.velocity, state.acceleration);
+    double feed = ff.calculate(Units.degreesToRadians(Pivot.getInstance().getPosition()), state.velocity,
+        state.acceleration);
 
     elevatorVoltage.withFeedForward(feed).withPosition(state.position);
     leftMotor.setControl(elevatorVoltage);
@@ -96,14 +96,14 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
+
     // This method will be called once per scheduler run
   }
 
-  public void set(double speed){
+  public void set(double speed) {
     leftMotor.set(speed);
-    
-  } 
+
+  }
 
   /**
    * 

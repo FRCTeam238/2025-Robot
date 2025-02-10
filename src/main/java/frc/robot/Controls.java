@@ -24,14 +24,18 @@ public class Controls {
 
     static SendableChooser<DriveType> driveTypeChooser = new SendableChooser<DriveType>();
 
-    @NotLogged CommandXboxController controller = new CommandXboxController(0);
-    @NotLogged CommandXboxController driverController = new CommandXboxController(3);
-    @NotLogged CommandJoystick rightJoystick = new CommandJoystick(1); 
-    @NotLogged CommandJoystick leftJoystick = new CommandJoystick(2); 
+    @NotLogged
+    CommandXboxController controller = new CommandXboxController(0);
+    @NotLogged
+    CommandXboxController driverController = new CommandXboxController(3);
+    @NotLogged
+    CommandJoystick rightJoystick = new CommandJoystick(1);
+    @NotLogged
+    CommandJoystick leftJoystick = new CommandJoystick(2);
 
     DriveType driveType = DriveType.XBOX;
 
-    private Controls(){
+    private Controls() {
         DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
@@ -45,10 +49,8 @@ public class Controls {
 
     }
 
-    public static Controls getInstance()
-    {
-        if (singleton == null)
-        {
+    public static Controls getInstance() {
+        if (singleton == null) {
             singleton = new Controls();
         }
         return singleton;
@@ -90,25 +92,25 @@ public class Controls {
 
     private boolean getSlowmode() {
         return leftJoystick.getHID().getRawButton(3) || rightJoystick.getHID().getRawButton(3);
-      }
+    }
 
     public DriveType getDriveType() {
         driveType = driveTypeChooser.getSelected();
         return driveType;
-      }
+    }
 
     public double getOperatorLeftStickY() {
         double x = controller.getLeftY();
-        if(Math.abs(x) < 0.1){
+        if (Math.abs(x) < 0.1) {
             x = 0;
         }
-        
+
         return x;
     }
 
     public double getOperatorRightStickY() {
         double y = controller.getRightY();
-        if(Math.abs(y) < 0.1){
+        if (Math.abs(y) < 0.1) {
             y = 0;
         }
 

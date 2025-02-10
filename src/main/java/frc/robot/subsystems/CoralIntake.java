@@ -37,7 +37,7 @@ public class CoralIntake extends SubsystemBase {
       lc.setRegionOfInterest(new RegionOfInterest(ROIx, ROIy, ROIw, ROIh));
       lc.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
-     e.printStackTrace(); 
+      e.printStackTrace();
     }
   }
 
