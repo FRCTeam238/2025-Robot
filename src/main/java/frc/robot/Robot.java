@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Constants.CoralMechanismState;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   public Elevator elevator;
   public Controls controls;
   // public CoralIntake coralIntake = CoralIntake.getInstance();
+  public static CoralMechanismState coralState = CoralMechanismState.Stow;
 
   public Robot() {
     SignalLogger.start();
@@ -94,4 +96,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  public CoralMechanismState getCoralState () {
+    return coralState;
+  }
 }

@@ -22,7 +22,7 @@ public class MechanismPosition extends ParallelCommandGroup {
   public MechanismPosition(CoralMechanismState state) {
     
     mechState = state;
-
+    Robot.coralState = state;
     switch (mechState) {
       case L1 -> {
         addCommands(
