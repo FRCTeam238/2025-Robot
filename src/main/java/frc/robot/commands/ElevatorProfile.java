@@ -22,7 +22,7 @@ public class ElevatorProfile extends Command {
     constraints =
         new MotionProfile.MotionConstraints(
             maxElevatorJerk, maxAccel, maxVelocity, velocityTolerance);
-    setName(name);
+    elevator.setCommand(name);
   }
 
   @Override

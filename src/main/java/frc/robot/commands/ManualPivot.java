@@ -34,6 +34,7 @@ public class ManualPivot extends Command {
   @Override
   public void end(boolean interrupted) {
     pivot.setSpeed(0);
+    pivot.setCommand("None");
   }
 
   // Returns true when the command should end.

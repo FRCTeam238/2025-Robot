@@ -22,13 +22,12 @@ public class WristProfile extends Command {
   
   private MotionProfile.State current;
   /** Creates a new WristProfile. */
-  public WristProfile(MotionProfile.State goal) {
+  public WristProfile(MotionProfile.State goal, String name) {
     this.goal = goal;
 
     wrist = Wrist.getInstance();
-
     addRequirements(wrist);
-    // Use addRequirements() here to declare subsystem dependencies.
+    wrist.setCommand(name);
   }
   
   // Called when the command is initially scheduled.
@@ -46,7 +45,9 @@ public class WristProfile extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    wrist.setCommand("None");
+  }
 
   // Returns true when the command should end.
   @Override

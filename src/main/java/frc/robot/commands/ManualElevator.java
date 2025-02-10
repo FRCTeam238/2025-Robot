@@ -15,6 +15,7 @@ public class ManualElevator extends Command {
   /** Creates a new ManualElevator. */
   public ManualElevator() {
     addRequirements(Elevator.getInstance());
+    Elevator.getInstance().setCommand("Manual");
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -33,6 +34,7 @@ public class ManualElevator extends Command {
   @Override
   public void end(boolean interrupted) {
     Elevator.getInstance().set(0);
+    Elevator.getInstance().setCommand("None");
   }
 
   // Returns true when the command should end.

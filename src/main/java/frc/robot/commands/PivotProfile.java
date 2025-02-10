@@ -25,12 +25,12 @@ public class PivotProfile extends Command {
   MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance);
 
   /** Creates a new PivotProfile. */
-  public PivotProfile(MotionProfile.State goal) {
+  public PivotProfile(MotionProfile.State goal, String name) {
     pivot = Pivot.getInstance();
     addRequirements(pivot);
     // Use addRequirements() here to declare subsystem dependencies.
     this.goal = goal;
-
+    pivot.setCommand(name);
   }
 
   // Called when the command is initially scheduled.
@@ -50,7 +50,9 @@ public class PivotProfile extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    pivot.setCommand("None");
+  }
 
   // Returns true when the command should end.
   @Override
