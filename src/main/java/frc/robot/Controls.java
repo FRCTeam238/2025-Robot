@@ -4,8 +4,11 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Drive;
@@ -120,5 +123,12 @@ public class Controls {
     public enum DriveType {
         XBOX,
         JOYSTICK
+    }
+    public Command rumbleCommand() {
+        return new RunCommand(()->{
+            controller.setRumble(RumbleType.kBothRumble, 1);
+        }).finallyDo(()->{
+            controller.setRumble(RumbleType.kBothRumble, 0);
+        });
     }
 }
