@@ -4,16 +4,16 @@
 
 package frc.robot.subsystems;
 
+import static frc.robot.Constants.PivotConstants.*;
+
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import static frc.robot.Constants.PivotConstants.*;
-
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
@@ -25,109 +25,132 @@ import frc.robot.MotionProfile;
 @Logged
 public class Pivot extends SubsystemBase {
 
-  SparkMax pivotLeader;
-  SparkMax pivotFollower;
+    SparkMax pivotLeader;
+    SparkMax pivotFollower;
 
-  SparkAbsoluteEncoder encoder;
-  ArmFeedforward ff;
+    SparkAbsoluteEncoder encoder;
+    ArmFeedforward ff;
 
-  String name = "None";
+    String name = "None";
 
-  private static Pivot singleton;
+    private static Pivot singleton;
 
-  MotionProfile.State desiredState = new MotionProfile.State(0);
-  double feed = 0;
+    MotionProfile.State desiredState = new MotionProfile.State(0);
+    double feed = 0;
 
-  /** Creates a new Pivot. */
-  private Pivot() {
-    pivotLeader = new SparkMax(2, MotorType.kBrushless);
-    pivotFollower = new SparkMax(17, MotorType.kBrushless);
+    /** Creates a new Pivot. */
+    private Pivot() {
+        pivotLeader = new SparkMax(2, MotorType.kBrushless);
+        pivotFollower = new SparkMax(17, MotorType.kBrushless);
 
-    SparkMaxConfig leaderConfig = new SparkMaxConfig();
-    SparkMaxConfig followerConfig = new SparkMaxConfig();
+        SparkMaxConfig leaderConfig = new SparkMaxConfig();
+        SparkMaxConfig followerConfig = new SparkMaxConfig();
 
-    ff = new ArmFeedforward(kS, kG, kV);
+        ff = new ArmFeedforward(kS, kG, kV);
 
-    encoder = pivotLeader.getAbsoluteEncoder();
+        encoder = pivotLeader.getAbsoluteEncoder();
 
-    // TODO: finish configs
-    followerConfig.follow(pivotLeader, true).closedLoop
-        .p(kP)
-        .i(kI)
-        .d(kD);
+        // TODO: finish configs
+        followerConfig.follow(pivotLeader, true).closedLoop.p(kP).i(kI).d(kD);
 
-    leaderConfig.closedLoop
-        .p(kP)
-        .i(kI)
-        .d(kD);
-    leaderConfig.absoluteEncoder
-        .positionConversionFactor(360)
-        .velocityConversionFactor(360);
+        leaderConfig.closedLoop.p(kP).i(kI).d(kD);
+        leaderConfig.absoluteEncoder
+            .positionConversionFactor(360)
+            .velocityConversionFactor(360);
+        leaderConfig.softLimit
+            .forwardSoftLimit(0)
+            .reverseSoftLimit(0)
+            .reverseSoftLimitEnabled(true)
+            .forwardSoftLimitEnabled(true);
+        pivotFollower.configure(
+            followerConfig,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kPersistParameters
+        );
+        pivotLeader.configure(
+            leaderConfig,
+            ResetMode.kNoResetSafeParameters,
+            PersistMode.kPersistParameters
+        );
+    }
 
-    pivotFollower.configure(followerConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-    pivotLeader.configure(leaderConfig, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
-  }
+    public static Pivot getInstance() {
+        if (singleton == null) singleton = new Pivot();
+        return singleton;
+    }
 
-  public static Pivot getInstance() {
-    if (singleton == null)
-      singleton = new Pivot();
-    return singleton;
-  }
+    /**
+     * sets the motor PID position to the current position with a speed of zero
+     */
+    public void holdPosition() {
+        pivotLeader
+            .getClosedLoopController()
+            .setReference(
+                getPosition(),
+                ControlType.kPosition,
+                ClosedLoopSlot.kSlot0,
+                0
+            );
+    }
 
-  /**
-   * sets the motor PID position to the current position with a speed of zero
-   */
-  public void holdPosition() {
-    pivotLeader.getClosedLoopController().setReference(getPosition(), ControlType.kPosition, ClosedLoopSlot.kSlot0, 0);
-  }
+    public Command holdPositionCommand() {
+        return new RunCommand(
+            () -> {
+                holdPosition();
+            },
+            getInstance()
+        );
+    }
 
-  public Command holdPositionCommand() {
-    return new RunCommand(() -> {
-      holdPosition();
-    }, getInstance());
-  }
+    // SETTERS
 
-  // SETTERS
+    public void setSpeed(double speed) {
+        pivotLeader.set(speed);
+    }
 
-  public void setSpeed(double speed) {
-    pivotLeader.set(speed);
-  }
+    public void setCommand(String name) {
+        this.name = name;
+    }
 
-  public void setCommand(String name) {
-    this.name = name;
-  }
+    /**
+     * sets the position, velocity, and acceleration that we want the robot to
+     * achieve
+     *
+     * @param state - the state of the pivot that we want to be in
+     */
+    public void setDesiredState(MotionProfile.State state) {
+        desiredState = state;
+        feed = ff.calculate(
+            Units.degreesToRadians(state.position),
+            Units.degreesToRadians(state.velocity),
+            Units.degreesToRadians(state.acceleration)
+        );
 
-  /**
-   * sets the position, velocity, and acceleration that we want the robot to
-   * achieve
-   * 
-   * @param state - the state of the pivot that we want to be in
-   */
-  public void setDesiredState(MotionProfile.State state) {
-    desiredState = state;
-    feed = ff.calculate(Units.degreesToRadians(state.position), Units.degreesToRadians(state.velocity),
-        Units.degreesToRadians(state.acceleration));
+        pivotLeader
+            .getClosedLoopController()
+            .setReference(
+                state.position,
+                ControlType.kPosition,
+                ClosedLoopSlot.kSlot0,
+                feed
+            );
+    }
 
-    pivotLeader.getClosedLoopController().setReference(state.position, ControlType.kPosition, ClosedLoopSlot.kSlot0,
-        feed);
-  }
+    // GETTERS
 
-  // GETTERS
+    public String getCommand() {
+        return name;
+    }
 
-  public String getCommand() {
-    return name;
-  }
+    /**
+     *
+     * @return position in degrees
+     */
+    public double getPosition() {
+        return encoder.getPosition();
+    }
 
-  /**
-   * 
-   * @return position in degrees
-   */
-  public double getPosition() {
-    return encoder.getPosition();
-  }
-
-  public double getVelocity() {
-    return encoder.getVelocity();
-  }
-
+    public double getVelocity() {
+        return encoder.getVelocity();
+    }
 }
