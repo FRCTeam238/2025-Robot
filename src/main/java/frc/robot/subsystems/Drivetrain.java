@@ -2,10 +2,17 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
+import java.util.function.BiFunction;
+import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 
 import choreo.trajectory.SwerveSample;
+import choreo.trajectory.Trajectory;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.PIDController;
@@ -17,9 +24,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /** for swerve */
@@ -216,6 +226,44 @@ public class Drivetrain extends SubsystemBase {
 
   public double getTurnRate() {
     return gyro.getRate();
+  }
+
+  public Command choreoCommand(
+          Trajectory<SwerveSample> trajectory,
+          BooleanSupplier isReversed) {
+
+      var time = new Timer();
+
+      return new FunctionalCommand(
+         time::restart,
+         () -> {// execute
+            driveWithChassisSpeeds(choreoController(trajectory.sampleAt(time.get(), isReversed.getAsBoolean()).get()));
+      }, 
+      (interrupted) -> {//end
+        time.stop();
+        if (interrupted) {
+           driveWithChassisSpeeds(new ChassisSpeeds()); 
+        } else {
+        
+            driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
+        }
+        
+
+      }, 
+      () -> {//isFinished
+
+          var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
+
+          //is this good?
+          return time.hasElapsed(trajectory.getTotalTime()) 
+            && Math.abs(distanceFromGoal.getX()) < 0.5 
+            && Math.abs(distanceFromGoal.getY()) < 0.5 
+            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < 5;
+      },
+      this
+      );
+
+
   }
 
   public ChassisSpeeds choreoController(SwerveSample referenceState) {

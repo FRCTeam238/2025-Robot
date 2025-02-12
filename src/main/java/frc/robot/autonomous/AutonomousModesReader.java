@@ -26,7 +26,7 @@ public class AutonomousModesReader {
         this.dataSource = dataSource;
     }
 
-    public List<String> GetAutoNames() {
+    public List<String> getAutoNames() {
         var modeDescriptors = getAutonomousModeDescriptors();
         List<String> autoNames = new ArrayList<>();
         for (AutonomousModeDescriptor descriptor : modeDescriptors) {
@@ -44,22 +44,21 @@ public class AutonomousModesReader {
             final String name = modeDescriptor.getName();
             final List<Command> parallelCommandGroups = new ArrayList<>();
             parallelCommandGroups.add(new ParallelCommandGroup());
-            final List<Boolean> isParallelList = new ArrayList<>();
+            ParallelType isParallel = ParallelType.None;
 
-            if (!modeDescriptor.getName().equals(autoName)) continue;
+            if (!modeDescriptor.getName().equals(autoName))
+                continue;
 
             for (CommandDescriptor commandDescriptor : modeDescriptor.getCommands()) {
                 final String commandName = commandDescriptor.getName();
                 final String className = classPath + commandName;
                 // create a command object
-                isParallelList.add(false);
+                isParallel = ParallelType.None;
                 Command autoCommand = null;
                 try {
                     Constructor construct = null;
-                    for (Constructor constructor :
-                            Class.forName(className).getDeclaredConstructors()) {
-                        if (constructor.getParameterCount()
-                                == commandDescriptor.getParameters().size()) {
+                    for (Constructor constructor : Class.forName(className).getDeclaredConstructors()) {
+                        if (constructor.getParameterCount() == commandDescriptor.getParameters().size()) {
                             construct = constructor;
                         }
                     }
@@ -83,7 +82,7 @@ public class AutonomousModesReader {
                             }
                         } else if (paramClasses[i].isEnum()) {
 
-                            parsedParams.add(Enum.valueOf(paramClasses[i], param.toUpperCase()));
+                            parsedParams.add(Enum.valueOf(paramClasses[i], param));
                         } else if (paramClasses[i].equals(String.class)) {
                             parsedParams.add(param);
                         } else if (paramClasses[i].equals(boolean.class)) {
@@ -92,7 +91,7 @@ public class AutonomousModesReader {
                     }
 
                     autoCommand = (Command) construct.newInstance(parsedParams.toArray());
-                    //                    autoCommand = (IAutonomousCommand)
+                    // autoCommand = (IAutonomousCommand)
                     // Class.forName(className).getDeclaredConstructor().newInstance();
                 } catch (InstantiationException
                         | IllegalAccessException
@@ -109,20 +108,18 @@ public class AutonomousModesReader {
                 // List<String> strippedParams =
                 // commandDescriptor.getParameters().stream().skip(1).collect(Collectors.toList());
                 // Value of first boolean parameter
-                String parallelType =
-                        commandDescriptor
-                                .getParallelType(); // Boolean.parseBoolean(commandDescriptor.getParameters().get(0));
+                String parallelType = commandDescriptor
+                        .getParallelType(); // Boolean.parseBoolean(commandDescriptor.getParameters().get(0));
 
                 // Pass in parameters (minus isParallel
 
                 if (parallelType.equals("None")) {
-                    if (isParallelList.get(0)) { // If there is a parallel command group being built
+                    if (isParallel != ParallelType.None) { // If there is a parallel command group being
+                                                                      // built
                         // Add that parallel command group to the sequential command list
                         commands.addCommands(parallelCommandGroups.get(0));
                     }
-                    isParallelList.set(
-                            0,
-                            false); // Communicate that there is not a parallel command group being
+                    isParallel = ParallelType.None; // Communicate that there is not a parallel command group being
                     // built
 
                     commands.addCommands(autoCommand); // Add the command sequentially
@@ -131,32 +128,29 @@ public class AutonomousModesReader {
                 switch (parallelType) {
                     case "Parallel":
                         Command parallelGroup;
-                        if (isParallelList.get(0) == false) { // If there is no parallel command group currently
+                        if (isParallel != ParallelType.Parallel) { // If there is no parallel command group
+                                                                              // currently
                             // being built
                             parallelGroup = new ParallelCommandGroup(); // Create a new one
                             parallelCommandGroups.set(0, parallelGroup); // Add the command
-                            isParallelList.set(
-                                    0, true); // Communicate that there IS a parallel command group
+                            isParallel = ParallelType.Parallel; // Communicate that there IS a parallel command group
                             // being
                             // built
                         } else {
                             // Set parallelGroup to the last command group in the list
-                            parallelGroup =
-                                    parallelCommandGroups.get(parallelCommandGroups.size() - 1);
+                            parallelGroup = parallelCommandGroups.get(parallelCommandGroups.size() - 1);
                         }
 
-                        ((ParallelCommandGroup)parallelGroup).addCommands(autoCommand); // Add the command in parallel
+                        ((ParallelCommandGroup) parallelGroup).addCommands(autoCommand); // Add the command in parallel
 
                         break;
                     case "Race":
                         Command raceGroup;
-                        if (isParallelList.get(0)
-                                == false) { // If there is no parallel command group currently
+                        if (isParallel != ParallelType.Race) { // If there is no parallel command group currently
                             // being built
                             raceGroup = new ParallelRaceGroup(); // Create a new one
                             parallelCommandGroups.set(0, raceGroup); // Add the command
-                            isParallelList.set(
-                                    0, true); // Communicate that there IS a parallel command group
+                            isParallel = ParallelType.Race; // Communicate that there IS a parallel command group
                             // being
                             // built
                         } else {
@@ -164,25 +158,22 @@ public class AutonomousModesReader {
                             raceGroup = parallelCommandGroups.get(parallelCommandGroups.size() - 1);
                         }
 
-                        ((ParallelRaceGroup)raceGroup).addCommands((Command) autoCommand); // Add the command in parallel
+                        ((ParallelRaceGroup) raceGroup).addCommands((Command) autoCommand); // Add the command in
+                                                                                            // parallel
 
                         break;
                     case "Deadline_Leader":
                         Command deadlineGroup;
-                        if (isParallelList.get(0)
-                                == false) { // If there is no parallel command group currently
+                        if (isParallel != ParallelType.Deadline) { // If there is no parallel command group currently
                             // being built
-                            deadlineGroup =
-                                    new ParallelDeadlineGroup(
-                                            (Command) autoCommand); // Create a new one
+                            deadlineGroup = new ParallelDeadlineGroup(
+                                    (Command) autoCommand); // Create a new one
                             parallelCommandGroups.set(0, deadlineGroup); // Add the command
-                            isParallelList.set(
-                                    0, true); // Communicate that there IS a parallel command group
+                            isParallel = ParallelType.Deadline; // Communicate that there IS a parallel command group
                             // being built
                         } else {
                             // Set deadlineGroup to the last command group in the list
-                            deadlineGroup =
-                                    parallelCommandGroups.get(parallelCommandGroups.size() - 1);
+                            deadlineGroup = parallelCommandGroups.get(parallelCommandGroups.size() - 1);
                         }
 
                         ((ParallelDeadlineGroup) deadlineGroup).setDeadline((Command) autoCommand);
@@ -190,16 +181,13 @@ public class AutonomousModesReader {
                         break;
                     case "Deadline_Follower":
                         Command deadlineFollowerGroup;
-                        if (isParallelList.get(0)) {
-                            deadlineFollowerGroup =
-                                    parallelCommandGroups.get(parallelCommandGroups.size() - 1);
+                        if (isParallel == ParallelType.Deadline) {
+                            deadlineFollowerGroup = parallelCommandGroups.get(parallelCommandGroups.size() - 1);
                         } else {
 
-                            deadlineFollowerGroup =
-                                    new ParallelDeadlineGroup(autoCommand); // Create a new one
+                            deadlineFollowerGroup = new ParallelDeadlineGroup(autoCommand); // Create a new one
                             parallelCommandGroups.set(0, deadlineFollowerGroup); // Add the command
-                            isParallelList.set(
-                                    0, true); // Communicate that there IS a parallel command group
+                            isParallel = ParallelType.Deadline; // Communicate that there IS a parallel command group
                             // being
                         }
 
@@ -209,7 +197,7 @@ public class AutonomousModesReader {
                 }
             }
 
-            if (isParallelList.get(0)) { // If there is a parallel command group being built
+            if (isParallel != ParallelType.None) { // If there is a parallel command group being built
                 // Add that parallel command group to the sequential command list
                 // This is done again here to ensure that if the final command is parallel, it's
                 // still added properly
@@ -241,8 +229,9 @@ public class AutonomousModesReader {
         mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
 
         try {
-            AutonomousModeDescriptors descriptor =
-                    mapper.readValue(json, new TypeReference<AutonomousModeDescriptors>() {});
+            AutonomousModeDescriptors descriptor = mapper.readValue(json,
+                    new TypeReference<AutonomousModeDescriptors>() {
+                    });
             modeDescriptors = descriptor.getAutonomousModes();
         } catch (JsonMappingException e) {
             System.out.println(e.getStackTrace().toString());
@@ -251,5 +240,12 @@ public class AutonomousModesReader {
         }
 
         return modeDescriptors;
+    }
+
+    enum ParallelType {
+        None,
+        Parallel,
+        Race,
+        Deadline,
     }
 }
