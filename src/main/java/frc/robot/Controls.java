@@ -11,9 +11,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.CoralMechanismState;
 import frc.robot.commands.Drive;
+import frc.robot.commands.EjectCoral;
+import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.ManualElevator;
 import frc.robot.commands.ManualPivot;
+import frc.robot.commands.MechanismPosition;
+import frc.robot.commands.SnapToAngle;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
@@ -50,6 +55,37 @@ public class Controls {
         Pivot.getInstance().setDefaultCommand(new ManualPivot());
         Elevator.getInstance().setDefaultCommand(new ManualElevator());
 
+        controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
+        controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
+        controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
+        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
+        controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
+        controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
+        controller.rightTrigger().whileTrue(new IntakeCoral().andThen(rumbleCommand()));
+
+        leftJoystick.button(11).whileTrue(new SnapToAngle(0));
+        leftJoystick.button(12).whileTrue(new SnapToAngle(90));
+        leftJoystick.button(13).whileTrue(new SnapToAngle(180));
+        leftJoystick.button(14).whileTrue(new SnapToAngle(270));
+
+        leftJoystick.povUp().whileTrue(new SnapToAngle(60));
+        leftJoystick.povRight().whileTrue(new SnapToAngle(120));
+        leftJoystick.povLeft().whileTrue(new SnapToAngle(240));
+        leftJoystick.povDown().whileTrue(new SnapToAngle(300));
+
+        leftJoystick.button(0).whileTrue(new EjectCoral());
+        
+        rightJoystick.button(11).whileTrue(new SnapToAngle(0));
+        rightJoystick.button(12).whileTrue(new SnapToAngle(90));
+        rightJoystick.button(13).whileTrue(new SnapToAngle(180));
+        rightJoystick.button(14).whileTrue(new SnapToAngle(270));
+        
+        rightJoystick.povUp().whileTrue(new SnapToAngle(60));
+        rightJoystick.povRight().whileTrue(new SnapToAngle(120));
+        rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
+        rightJoystick.povDown().whileTrue(new SnapToAngle(300));
+        
+        rightJoystick.button(0).whileTrue(new EjectCoral());
     }
 
     public static Controls getInstance() {

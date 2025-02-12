@@ -60,7 +60,8 @@ public class Constants {
         Stow,
         DeepCage,
         ShallowCage,
-        CoralStation
+        CoralStation,
+        Climb
     }
 
     public enum AlgaeMechanismState {
@@ -136,6 +137,9 @@ public class Constants {
         public static double deepCage = 4;
         public static double shallowCage = 0;
         public static double coralStation = 5.5;
+
+        public static double forwardLimit = 64;
+        public static double reverseLimit = 0;
     }
 
     public class WristConstants {

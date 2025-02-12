@@ -43,6 +43,8 @@ public class Elevator extends SubsystemBase {
     leftConfig.Slot0.kI = kI;
     leftConfig.Slot0.kD = kD;
     leftConfig.Slot0.kV = kV;
+    leftConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimit;
+    leftConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimit;
     leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     leftConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     leftConfig.CurrentLimits.StatorCurrentLimitEnable = true;
@@ -56,6 +58,10 @@ public class Elevator extends SubsystemBase {
     rightConfig.Slot0.kI = kI;
     rightConfig.Slot0.kD = kD;
     rightConfig.Slot0.kV = kV;
+    rightConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = forwardLimit;
+    rightConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = reverseLimit;
+    rightConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+    rightConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
     rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     rightConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     rightConfig.CurrentLimits.StatorCurrentLimitEnable = true;
