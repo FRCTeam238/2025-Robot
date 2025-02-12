@@ -21,7 +21,7 @@ public class MechanismPosition extends ParallelCommandGroup {
   CoralMechanismState mechState;
 
   /** Creates a new MechanismPosition. */
-  @Auto
+  @Auto(names = {"Mechanism State"})
   public MechanismPosition(CoralMechanismState state) {
 
     mechState = state;

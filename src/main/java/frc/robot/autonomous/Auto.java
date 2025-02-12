@@ -21,4 +21,5 @@ import java.lang.annotation.Inherited;
 @Target({ElementType.CONSTRUCTOR})
 @Inherited
 public @interface Auto {
+    public String[] names() default {};
 }

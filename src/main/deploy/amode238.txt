@@ -7,18 +7,34 @@
       "parallelType" : "None"
     }, {
       "name" : "MechanismPosition",
-      "parameters" : [ "L3" ],
+      "parameters" : [ "L4" ],
       "parallelType" : "None"
     }, {
       "name" : "EjectCoral",
       "parameters" : [ ],
       "parallelType" : "None"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "SnapToAngle",
+      "parameters" : [ "0" ],
+      "parallelType" : "None"
     } ]
   }, {
     "name" : "New Auto",
     "commands" : [ {
+      "name" : "SnapToAngle",
+      "parameters" : [ "60" ],
+      "parallelType" : "None"
+    }, {
       "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
+      "parameters" : [ "Stow" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ ],
       "parallelType" : "None"
     } ]
   }, {
@@ -40,7 +56,22 @@
     "name" : "New Auto_copy_copy",
     "commands" : [ {
       "name" : "MechanismPosition",
-      "parameters" : [ "ShallowCage" ],
+      "parameters" : [ "Climb" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    } ]
+  }, {
+    "name" : "kjhsdf",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "Climb" ],
       "parallelType" : "None"
     }, {
       "name" : "EjectCoral",

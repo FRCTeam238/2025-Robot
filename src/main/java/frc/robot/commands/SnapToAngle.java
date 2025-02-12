@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
+import frc.robot.autonomous.Auto;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.DriveConstants.*;
 
@@ -16,6 +17,8 @@ public class SnapToAngle extends Command {
   private double angle;
   private PIDController pid;
   /** Creates a new SnapToAngle. */
+  
+  @Auto(names = {"Angle (Degrees)"})
   public SnapToAngle(double degrees) {
     // Use addRequirements() here to declare subsystem dependencies.
     angle = degrees;
