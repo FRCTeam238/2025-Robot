@@ -10,6 +10,7 @@ import frc.robot.MotionProfile;
 import frc.robot.Robot;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.WristConstants;
+import frc.robot.autonomous.Auto;
 import frc.robot.Constants.ElevatorConstants;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -20,6 +21,7 @@ public class MechanismPosition extends ParallelCommandGroup {
   CoralMechanismState mechState;
 
   /** Creates a new MechanismPosition. */
+  @Auto
   public MechanismPosition(CoralMechanismState state) {
 
     mechState = state;

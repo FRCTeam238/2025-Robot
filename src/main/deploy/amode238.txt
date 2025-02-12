@@ -1,0 +1,55 @@
+{
+  "autonomousModes" : [ {
+    "name" : "First",
+    "commands" : [ {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L3" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "New Auto",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "New Auto_copy",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "ShallowCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    } ]
+  }, {
+    "name" : "New Auto_copy_copy",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "ShallowCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
+      "parallelType" : "Race"
+    } ]
+  } ]
+}

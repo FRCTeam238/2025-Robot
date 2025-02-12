@@ -11,6 +11,7 @@ import frc.robot.subsystems.CoralIntake;
 public class IntakeCoral extends Command {
   private CoralIntake intake = CoralIntake.getInstance();
 
+
   /** Creates a new RunIntake. */
   public IntakeCoral() {
     // Use addRequirements() here to declare subsystem dependencies.
