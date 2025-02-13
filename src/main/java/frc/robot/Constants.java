@@ -133,17 +133,17 @@ public class Constants {
         public static double kS;
         public static double kG = .5;
         public static double statorCurrentLimit = 40;
-        public static double conversionFactor = 1;//(9 / 54) * 2.256 * Math.PI;
-        public static double dangerZone = 3.5 * .825; // elevator needs to be up at least this high for wrist to fold back
+        public static double conversionFactor = .825;//(9 / 54) * 2.256 * Math.PI;
+        public static double dangerZone = 3.5; // elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
         public static double L2 = 0;
-        public static double L3 = 14.75 *.825;
-        public static double L4 = 39.5 * .825;
+        public static double L3 = 14.75;
+        public static double L4 = 39.5;
         public static double stow = 0;
-        public static double deepCage = 4 * .825;
+        public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 5.5 *.825;
+        public static double coralStation = 5.5;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;

@@ -84,7 +84,7 @@ public class Elevator extends SubsystemBase {
     double feed = ff.calculate(Units.degreesToRadians(90 - Pivot.getInstance().getPosition()), state.velocity,
         state.acceleration);
 
-    elevatorVoltage.withFeedForward(feed).withPosition(state.position);
+    elevatorVoltage.withFeedForward(feed).withPosition(state.position * conversionFactor);
     leftMotor.setControl(elevatorVoltage);
 
   }
@@ -119,11 +119,11 @@ public class Elevator extends SubsystemBase {
    */
   public double getPosition() {
 
-    return leftMotor.getPosition().getValueAsDouble();
+    return leftMotor.getPosition().getValueAsDouble()/conversionFactor;
   }
 
   public double getVelocity() {
-    return leftMotor.getVelocity().getValue().baseUnitMagnitude();
+    return leftMotor.getVelocity().getValue().baseUnitMagnitude()/conversionFactor;
   }
 
   public void setCommand(String name) {
