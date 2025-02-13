@@ -28,7 +28,8 @@ public class ManualPivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    pivot.setSpeed(Controls.getInstance().getOperatorRightStickY() * 0.25);
+    pivot.setSpeed(Controls.getInstance().getOperatorRightStickY() * 0.5);
+    System.out.println(Controls.getInstance().getOperatorRightStickY()*0.5);
   }
 
   // Called once the command ends or is interrupted.

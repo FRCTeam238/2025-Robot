@@ -15,30 +15,31 @@ import au.grapplerobotics.interfaces.LaserCanInterface.TimingBudget;
 import static frc.robot.Constants.CoralIntakeConstants.*;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged
 public class CoralIntake extends SubsystemBase {
   /** Creates a new CoralIntake. */
 
-  TalonFX coralMotor = new TalonFX(0);
-  LaserCan lc;
+  TalonFX coralMotor = new TalonFX(15);
+  @NotLogged LaserCan lc;
 
-  private static CoralIntake singleton;
+  @NotLogged private static CoralIntake singleton;
 
   private CoralIntake() {
     TalonFXConfiguration coralIntakeConfig = new TalonFXConfiguration();
-    lc = new LaserCan(0);
+    //lc = new LaserCan(0);
     coralIntakeConfig.CurrentLimits.StatorCurrentLimit = currentLimit;
     coralIntakeConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     coralMotor.getConfigurator().apply(coralIntakeConfig);
-    try {
+    /*try {
       lc.setRangingMode(RangingMode.SHORT);
       lc.setRegionOfInterest(new RegionOfInterest(ROIx, ROIy, ROIw, ROIh));
       lc.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
       e.printStackTrace();
-    }
+    }*/
   }
 
   public static CoralIntake getInstance() {
@@ -53,7 +54,7 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public boolean hasCoral() {
-    return sensorDistance >= lc.getMeasurement().distance_mm;
+    return false; //sensorDistance >= lc.getMeasurement().distance_mm;
   }
 
   @Override

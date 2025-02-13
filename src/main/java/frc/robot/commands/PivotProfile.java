@@ -53,6 +53,7 @@ public class PivotProfile extends Command {
   @Override
   public void end(boolean interrupted) {
     pivot.setCommand("None");
+    // pivot.holdPosition();
   }
 
   // Returns true when the command should end.

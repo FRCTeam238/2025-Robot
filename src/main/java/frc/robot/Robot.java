@@ -26,6 +26,8 @@ import frc.robot.autonomous.DataFileAutonomousModeDataSource;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.CoralIntake;
 
 @Logged
 public class Robot extends TimedRobot {
@@ -35,7 +37,9 @@ public class Robot extends TimedRobot {
   public Drivetrain drivetrain;
   public Elevator elevator;
   public Controls controls;
-  // public CoralIntake coralIntake = CoralIntake.getInstance();
+  public CoralIntake coralIntake;
+  public Wrist wrist;
+
   public static CoralMechanismState coralState = CoralMechanismState.Stow;
 
 
@@ -55,6 +59,8 @@ public class Robot extends TimedRobot {
     elevator = Elevator.getInstance();
     pivot = Pivot.getInstance();
     drivetrain = Drivetrain.getInstance();
+    wrist = Wrist.getInstance();
+    coralIntake = CoralIntake.getInstance();
     controls = Controls.getInstance();
   }
 

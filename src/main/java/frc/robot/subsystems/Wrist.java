@@ -6,8 +6,10 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,14 +19,14 @@ import static frc.robot.Constants.WristConstants.*;
 @Logged
 public class Wrist extends SubsystemBase {
     // talonfx - falcon
-    TalonFX wristMotor = new TalonFX(0);
-    CANcoder wristSensor = new CANcoder(0);
+    TalonFX wristMotor = new TalonFX(16);
+    CANcoder wristSensor = new CANcoder(1);
     ArmFeedforward wristFf = new ArmFeedforward(kS, kG, kV, kA);
     PositionVoltage wristVoltage = new PositionVoltage(0);
     String commandName = "";
     MotionProfile.State desiredState = new MotionProfile.State(0);
 
-    private static Wrist singleton;
+    @NotLogged private static Wrist singleton;
 
     private Wrist() {
         TalonFXConfiguration wristConfig = new TalonFXConfiguration();
@@ -32,10 +34,11 @@ public class Wrist extends SubsystemBase {
         wristConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         wristConfig.Feedback.FeedbackRemoteSensorID = wristSensor.getDeviceID();
         wristConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-        wristConfig.Feedback.SensorToMechanismRatio = 1 / 360; // Native unit is rotations, this converts to degrees
+        wristConfig.Feedback.SensorToMechanismRatio = 1./360.; // Native unit is rotations, this converts to degrees
         wristConfig.Slot0.kP = kP;
         wristConfig.Slot0.kI = kI;
         wristConfig.Slot0.kD = kD;
+        wristConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         wristMotor.getConfigurator().apply(wristConfig);
 
         CANcoderConfiguration sensorConfig = new CANcoderConfiguration();
@@ -67,7 +70,8 @@ public class Wrist extends SubsystemBase {
     }
 
     public double getPosition() {
-        return wristSensor.getAbsolutePosition().getValueAsDouble() * 360;
+        //return wristSensor.getAbsolutePosition().getValueAsDouble() * 360;
+        return wristMotor.getPosition().getValueAsDouble();
     }
 
     public double getVelocity() {

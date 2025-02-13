@@ -52,8 +52,8 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
         Drivetrain.getInstance().setDefaultCommand(new Drive());
-        Pivot.getInstance().setDefaultCommand(new ManualPivot());
-        Elevator.getInstance().setDefaultCommand(new ManualElevator());
+        // Pivot.getInstance().setDefaultCommand(Pivot.getInstance().holdPositionCommand());
+        // Elevator.getInstance().setDefaultCommand(new ManualElevator());
 
         controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
         controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
@@ -73,7 +73,7 @@ public class Controls {
         leftJoystick.povLeft().whileTrue(new SnapToAngle(240));
         leftJoystick.povDown().whileTrue(new SnapToAngle(300));
 
-        leftJoystick.button(0).whileTrue(new EjectCoral());
+        leftJoystick.button(1).whileTrue(new EjectCoral());
         
         rightJoystick.button(11).whileTrue(new SnapToAngle(0));
         rightJoystick.button(12).whileTrue(new SnapToAngle(90));
@@ -85,7 +85,7 @@ public class Controls {
         rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
         rightJoystick.povDown().whileTrue(new SnapToAngle(300));
         
-        rightJoystick.button(0).whileTrue(new EjectCoral());
+        rightJoystick.button(1).whileTrue(new EjectCoral());
     }
 
     public static Controls getInstance() {

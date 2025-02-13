@@ -12,6 +12,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +30,7 @@ public class Elevator extends SubsystemBase {
 
   String command = "None";
 
-  private static Elevator singleton;
+  @NotLogged private static Elevator singleton;
 
   ArmFeedforward ff;
   MotionProfile.State desiredState = new MotionProfile.State(0);
@@ -48,8 +49,8 @@ public class Elevator extends SubsystemBase {
     leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     leftConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     leftConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    leftConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    leftConfig.Feedback.SensorToMechanismRatio = 1.0 / conversionFactor; // native unit is rotations, this converts to
+    leftConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    leftConfig.Feedback.SensorToMechanismRatio = 1. / conversionFactor; // native unit is rotations, this converts to
                                                                          // inches
     leftMotor.getConfigurator().apply(leftConfig);
 
@@ -65,7 +66,7 @@ public class Elevator extends SubsystemBase {
     rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     rightConfig.CurrentLimits.StatorCurrentLimit = statorCurrentLimit;
     rightConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    rightConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    rightConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     rightMotor.getConfigurator().apply(rightConfig);
     rightMotor.setControl(new Follower(leftMotor.getDeviceID(), true));
 

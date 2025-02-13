@@ -42,14 +42,14 @@ public class MechanismPosition extends ParallelCommandGroup {
       case L3 -> {
         addCommands(
             new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L3), "L3"),
-            new PivotProfile(new MotionProfile.State(PivotConstants.L3), "L3"),
-            new WristProfile(new MotionProfile.State(WristConstants.L3), "L3"));
+            new PivotProfile(new MotionProfile.State(PivotConstants.L3), "L3"));
+            // new WristProfile(new MotionProfile.State(WristConstants.L3), "L3"));
       }
       case L4 -> {
         addCommands(
-            new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L4), "L4"),
-            new PivotProfile(new MotionProfile.State(PivotConstants.L4), "L4"),
-            new WristProfile(new MotionProfile.State(WristConstants.L4), "L4"));
+            // new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L4), "L4"),
+            new PivotProfile(new MotionProfile.State(PivotConstants.L4), "L4"));
+            // new WristProfile(new MotionProfile.State(WristConstants.L4), "L4"));
       }
       case CoralStation -> {
         addCommands(
@@ -71,9 +71,9 @@ public class MechanismPosition extends ParallelCommandGroup {
       }
       case Stow -> {
         addCommands(
-            new ElevatorProfile(new MotionProfile.State(ElevatorConstants.stow), "Stow"),
-            new PivotProfile(new MotionProfile.State(PivotConstants.stow), "Stow"),
-            new WristProfile(new MotionProfile.State(WristConstants.stow), "Stow"));
+            // new ElevatorProfile(new MotionProfile.State(ElevatorConstants.stow), "Stow"),
+            new PivotProfile(new MotionProfile.State(PivotConstants.stow), "Stow"));
+            // new WristProfile(new MotionProfile.State(WristConstants.stow), "Stow"));
       }
     }
   }

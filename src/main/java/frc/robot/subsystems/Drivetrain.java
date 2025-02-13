@@ -53,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
       new double[] { 0, 0, 0, 0 });
 
-  private static Drivetrain singleton;
+  @NotLogged private static Drivetrain singleton;
 
   private Drivetrain() {
     gyro = new AHRS(NavXComType.kMXP_SPI);

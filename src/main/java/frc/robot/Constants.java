@@ -78,11 +78,11 @@ public class Constants {
         public static double velocityMaxError = 3;
         public static double positionMaxError = 1;
         public static double maxJerk = 10000;
-        public static double maxAccel = 150; // Max = 12,146 degrees/s^2
-        public static double maxVelocity = 15; // Max = 151 degrees/s
+        public static double maxAccel = 600; // Max = 12,146 degrees/s^2
+        public static double maxVelocity = 60; // Max = 151 degrees/s
         public static double velocityTolerance = 3;
 
-        public static double kP = 0;
+        public static double kP = 0.02;
         public static double kI = 0;
         public static double kD = 0;
         public static double kS = 0;
@@ -120,30 +120,30 @@ public class Constants {
 
         // https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
         public static double maxElevatorJerk = 10000;
-        public static double maxAccel = 120; // max @40A is 830 in/s^2
-        public static double maxVelocity = 12; // max is ~121 in/s
+        public static double maxAccel = 240; // max @40A is 830 in/s^2
+        public static double maxVelocity = 24; // max is ~121 in/s
         public static double velocityTolerance = 0.5;
         public static double velocityMaxError = 0.3;
         public static double positionMaxError = 0.5;
-        public static double kP;
+        public static double kP = 0.4;
         public static double kI;
         public static double kD;
-        public static double kV = 0.1; // V*s/in
+        public static double kV = 0.15; // V*s/in
         public static double kA = 0.0013; // V*2^2/in
         public static double kS;
-        public static double kG = .5;
+        public static double kG = 1.8;
         public static double statorCurrentLimit = 40;
-        public static double conversionFactor = (9 / 54) * 2.256 * Math.PI;
-        public static double dangerZone = 3.5; // elevator needs to be up at least this high for wrist to fold back
+        public static double conversionFactor = 1;//(9 / 54) * 2.256 * Math.PI;
+        public static double dangerZone = 3.5 * .825; // elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
         public static double L2 = 0;
-        public static double L3 = 14.75;
-        public static double L4 = 39.5;
+        public static double L3 = 14.75 *.825;
+        public static double L4 = 39.5 * .825;
         public static double stow = 0;
-        public static double deepCage = 4;
+        public static double deepCage = 4 * .825;
         public static double shallowCage = 0;
-        public static double coralStation = 5.5;
+        public static double coralStation = 5.5 *.825;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;
@@ -157,9 +157,9 @@ public class Constants {
         public static double kI = 0;
         public static double kD = 0;
         public static double wrapPoint = .5;
-        public static double sensorOffset = 0;
+        public static double sensorOffset = -0.5344921875;
         public static SensorDirectionValue sensorDirection =
-            SensorDirectionValue.Clockwise_Positive;
+            SensorDirectionValue.CounterClockwise_Positive;
         public static double kG = 0.23;
         public static double kV = 1.26; // V/s*rad
         public static double kA = 0;

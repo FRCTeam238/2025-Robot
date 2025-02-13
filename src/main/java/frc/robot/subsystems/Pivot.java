@@ -14,7 +14,11 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,7 +37,7 @@ public class Pivot extends SubsystemBase {
 
     String name = "None";
 
-    private static Pivot singleton;
+    @NotLogged private static Pivot singleton;
 
     MotionProfile.State desiredState = new MotionProfile.State(0);
     double feed = 0;
@@ -52,16 +56,21 @@ public class Pivot extends SubsystemBase {
 
         // TODO: finish configs
         followerConfig.follow(pivotLeader, true).closedLoop.p(kP).i(kI).d(kD);
+        followerConfig.idleMode(IdleMode.kBrake);
 
         leaderConfig.closedLoop.p(kP).i(kI).d(kD);
+        leaderConfig.idleMode(IdleMode.kBrake);
+        leaderConfig.inverted(true);
+        leaderConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
         leaderConfig.absoluteEncoder
             .positionConversionFactor(360)
-            .velocityConversionFactor(360);
+            .velocityConversionFactor(360)
+            .inverted(true);
         leaderConfig.softLimit
             .forwardSoftLimit(0)
             .reverseSoftLimit(0)
-            .reverseSoftLimitEnabled(true)
-            .forwardSoftLimitEnabled(true);
+            .reverseSoftLimitEnabled(false)
+            .forwardSoftLimitEnabled(false);
         pivotFollower.configure(
             followerConfig,
             ResetMode.kNoResetSafeParameters,
