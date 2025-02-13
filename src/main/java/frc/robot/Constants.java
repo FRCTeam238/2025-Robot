@@ -131,7 +131,7 @@ public class Constants {
         public static double kV = 0.15; // V*s/in
         public static double kA = 0.0013; // V*2^2/in
         public static double kS;
-        public static double kG = 1.8;
+        public static double kG = .5;
         public static double statorCurrentLimit = 40;
         public static double conversionFactor = 1;//(9 / 54) * 2.256 * Math.PI;
         public static double dangerZone = 3.5 * .825; // elevator needs to be up at least this high for wrist to fold back

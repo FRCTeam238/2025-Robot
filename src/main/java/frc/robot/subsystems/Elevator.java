@@ -80,7 +80,8 @@ public class Elevator extends SubsystemBase {
 
   public void setDesiredState(MotionProfile.State state) {
     desiredState = state;
-    double feed = ff.calculate(Units.degreesToRadians(Pivot.getInstance().getPosition()), state.velocity,
+    //elevator runs perpendicular to arm so offset position for FF by 90 degrees
+    double feed = ff.calculate(Units.degreesToRadians(90 - Pivot.getInstance().getPosition()), state.velocity,
         state.acceleration);
 
     elevatorVoltage.withFeedForward(feed).withPosition(state.position);
