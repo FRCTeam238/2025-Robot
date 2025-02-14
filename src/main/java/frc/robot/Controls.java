@@ -62,6 +62,10 @@ public class Controls {
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
         controller.rightTrigger().whileTrue(new IntakeCoral().andThen(rumbleCommand()));
+        controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
+        controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
+        controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
+        controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
 
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
@@ -74,17 +78,17 @@ public class Controls {
         leftJoystick.povDown().whileTrue(new SnapToAngle(300));
 
         leftJoystick.button(1).whileTrue(new EjectCoral());
-        
+
         rightJoystick.button(11).whileTrue(new SnapToAngle(0));
         rightJoystick.button(12).whileTrue(new SnapToAngle(90));
         rightJoystick.button(13).whileTrue(new SnapToAngle(180));
         rightJoystick.button(14).whileTrue(new SnapToAngle(270));
-        
+
         rightJoystick.povUp().whileTrue(new SnapToAngle(60));
         rightJoystick.povRight().whileTrue(new SnapToAngle(120));
         rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
         rightJoystick.povDown().whileTrue(new SnapToAngle(300));
-        
+
         rightJoystick.button(1).whileTrue(new EjectCoral());
     }
 
@@ -160,10 +164,11 @@ public class Controls {
         XBOX,
         JOYSTICK
     }
+
     public Command rumbleCommand() {
-        return new RunCommand(()->{
+        return new RunCommand(() -> {
             controller.setRumble(RumbleType.kBothRumble, 1);
-        }).finallyDo(()->{
+        }).finallyDo(() -> {
             controller.setRumble(RumbleType.kBothRumble, 0);
         });
     }
