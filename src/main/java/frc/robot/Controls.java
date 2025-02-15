@@ -41,15 +41,17 @@ public class Controls {
     @NotLogged
     CommandJoystick leftJoystick = new CommandJoystick(2);
 
-    DriveType driveType = DriveType.XBOX;
+    DriveType driveType = DriveType.JOYSTICK;
 
     private Controls() {
         DriverStation.silenceJoystickConnectionWarning(true);
-        driveTypeChooser.addOption("JOYSTICK", DriveType.JOYSTICK);
-        driveTypeChooser.setDefaultOption("XBOX", DriveType.XBOX);
+        driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
+        driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
         SmartDashboard.putData(driveTypeChooser);
 
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+        leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+        rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
 
         Drivetrain.getInstance().setDefaultCommand(new Drive());
         // Pivot.getInstance().setDefaultCommand(Pivot.getInstance().holdPositionCommand());
@@ -58,7 +60,7 @@ public class Controls {
         controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
         controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
         controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
-        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
+        // controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
         controller.rightTrigger().whileTrue(new IntakeCoral().andThen(rumbleCommand()));

@@ -22,21 +22,22 @@ public class WristProfile extends Command {
 
   MotionProfile.State goal;
   MotionProfile profile;
+  String name;
 
   private MotionProfile.State current;
 
   /** Creates a new WristProfile. */
   public WristProfile(MotionProfile.State goal, String name) {
     this.goal = goal;
-
+    this.name = name;
     wrist = Wrist.getInstance();
     addRequirements(wrist);
-    wrist.setCommand(name);
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    wrist.setCommand(name);
 
     current = new MotionProfile.State(wrist.getPosition(), wrist.getVelocity());
     profile = new MotionProfile(goal, current, new MotionConstraints(maxJerk, maxAccel, maxVelocity, velocityTolerance),
@@ -61,12 +62,13 @@ public class WristProfile extends Command {
   @Override
   public void end(boolean interrupted) {
     wrist.setCommand("None");
+    wrist.holdPosition();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(wrist.getPosition() - goal.position) <= maxPositionTolerance
-        && Math.abs(wrist.getVelocity() - goal.velocity) <= maxVelocityTolerance;
+    return Math.abs(wrist.getPosition() - goal.position) <= maxPositionTolerance;
+        // && Math.abs(wrist.getVelocity() - goal.velocity) <= maxVelocityTolerance;
   }
 }

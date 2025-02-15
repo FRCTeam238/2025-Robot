@@ -82,7 +82,7 @@ public class Constants {
         public static double maxVelocity = 60; // Max = 151 degrees/s
         public static double velocityTolerance = 3;
 
-        public static double kP = 0.02;
+        public static double kP = 0.018;
         public static double kI = 0;
         public static double kD = 0;
         public static double kS = 0;
@@ -93,13 +93,13 @@ public class Constants {
         // Units = degrees. 0 degrees is pivot level (folded flat) to make FF work
         // right.
         public static double L1 = 0;
-        public static double L2 = 90;
-        public static double L3 = 90;
+        public static double L2 = 85;
+        public static double L3 = 85;
         public static double L4 = 90;
         public static double stow = 50;
         public static double deepCage = 90;
         public static double shallowCage = 0;
-        public static double coralStation = 45;
+        public static double coralStation = 42;
 
         public static double forwardLimit = 0;
         public static double reverseLimit = 0;
@@ -125,25 +125,25 @@ public class Constants {
         public static double velocityTolerance = 0.5;
         public static double velocityMaxError = 0.3;
         public static double positionMaxError = 0.5;
-        public static double kP = 0.4;
+        public static double kP = 0.5;
         public static double kI;
         public static double kD;
-        public static double kV = 0.15; // V*s/in
+        public static double kV = 0.13; // V*s/in
         public static double kA = 0.0013; // V*2^2/in
         public static double kS;
-        public static double kG = .5;
+        public static double kG = .4;
         public static double statorCurrentLimit = 40;
         public static double conversionFactor = .825;//(9 / 54) * 2.256 * Math.PI;
         public static double dangerZone = 3.5; // elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
         public static double L2 = 0;
-        public static double L3 = 14.75;
-        public static double L4 = 39.5;
+        public static double L3 = 12.3;
+        public static double L4 = 35.5;
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 5.5;
+        public static double coralStation = 3.5;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;
@@ -154,7 +154,7 @@ public class Constants {
         //https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A70.4%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         //Actual gear ratio is different than expected due to the "coin paradox". 10 tooth gear rotatng around 44 tooth is 5.4 to 1 not 4.4.
         public static double wristCurrent = 30;
-        public static double kP = 0;
+        public static double kP = 0.4;
         public static double kI = 0;
         public static double kD = 0;
         public static double wrapPoint = .5;
@@ -166,22 +166,22 @@ public class Constants {
         public static double kA = 0;
         public static double kS = 0;
 
-        public static double maxAccel = 560; // max accel = 15k deg/s^2
+        public static double maxAccel = 1500;// last is 560 // max accel = 15k deg/s^2
         public static double maxJerk = 10000;
-        public static double maxVelocity = 56; // max 560 deg/s
+        public static double maxVelocity = 150;//last is 56 // max 560 deg/s
         public static double velocityTolerance = 3;
 
-        public static double maxPositionTolerance = 1;
-        public static double maxVelocityTolerance = 3;
+        public static double maxPositionTolerance = 5;
+        public static double maxVelocityTolerance = 5;
 
         public static double dangerZone = 72; // Wrist cannot travel up past this angle unless elevator is up a bit.
 
         // Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF
         // correct
         public static double L1 = 0;
-        public static double L2 = 45;
-        public static double L3 = 45;
-        public static double L4 = 45;
+        public static double L2 = 60;
+        public static double L3 = 60;
+        public static double L4 = 50;
         public static double stow = 36;
         public static double deepCage = 115;
         public static double shallowCage = 0;
