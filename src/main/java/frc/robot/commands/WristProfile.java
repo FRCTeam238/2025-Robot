@@ -62,13 +62,13 @@ public class WristProfile extends Command {
   @Override
   public void end(boolean interrupted) {
     wrist.setCommand("None");
-    wrist.holdPosition();
+    // wrist.holdPosition();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(wrist.getPosition() - goal.position) <= maxPositionTolerance;
-        // && Math.abs(wrist.getVelocity() - goal.velocity) <= maxVelocityTolerance;
+    return Math.abs(wrist.getPosition() - goal.position) <= maxPositionTolerance
+        && Math.abs(wrist.getWeirdVelocity() - goal.velocity) <= maxVelocityTolerance;
   }
 }
