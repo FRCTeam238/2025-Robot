@@ -27,7 +27,7 @@ public class ManualElevator extends Command {
   @Override
   public void execute() {
     double speed = Controls.getInstance().getOperatorLeftStickY();
-    Elevator.getInstance().set(speed * 0.3);
+    Elevator.getInstance().set(speed * -0.3);
   }
 
   // Called once the command ends or is interrupted.

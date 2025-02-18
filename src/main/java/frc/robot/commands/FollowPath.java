@@ -32,6 +32,7 @@ public class FollowPath extends SequentialCommandGroup {
         addCommands(drivetrain.runOnce(() -> drivetrain.setCommand("Traj-" + pathName)));
 
         Command swerveCommand = drivetrain.choreoCommand(trajectory, () -> {return DriverStation.getAlliance().get() == Alliance.Red;});
+        addCommands(swerveCommand);
 
 
     }

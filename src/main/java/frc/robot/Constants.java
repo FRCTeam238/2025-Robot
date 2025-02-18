@@ -124,7 +124,7 @@ public class Constants {
         public static double maxVelocity = 24; // max is ~121 in/s
         public static double velocityTolerance = 0.5;
         public static double velocityMaxError = 0.3;
-        public static double positionMaxError = 0.5;
+        public static double positionMaxError = 0.4;
         public static double kP = 0.5;
         public static double kI;
         public static double kD;
@@ -143,7 +143,7 @@ public class Constants {
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 3.5;
+        public static double coralStation = 3.1;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;
@@ -154,15 +154,15 @@ public class Constants {
         //https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A70.4%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         //Actual gear ratio is different than expected due to the "coin paradox". 10 tooth gear rotatng around 44 tooth is 5.4 to 1 not 4.4.
         public static double wristCurrent = 30;
-        public static double kP = 0.4;
+        public static double kP = .42;
         public static double kI = 0;
         public static double kD = 0;
         public static double wrapPoint = .5;
         public static double sensorOffset = -0.5344921875;
         public static SensorDirectionValue sensorDirection =
             SensorDirectionValue.CounterClockwise_Positive;
-        public static double kG = 0.19;
-        public static double kV = 1.55; // V/s*rad
+        public static double kG = 0.3;
+        public static double kV = 1.6; // V/s*rad
         public static double kA = 0;
         public static double kS = 0;
 

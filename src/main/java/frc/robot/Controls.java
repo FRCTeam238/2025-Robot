@@ -57,13 +57,14 @@ public class Controls {
         // Pivot.getInstance().setDefaultCommand(Pivot.getInstance().holdPositionCommand());
         // Elevator.getInstance().setDefaultCommand(new ManualElevator());
 
-        controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
+        // controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
         controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
         controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
         // controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
-        controller.rightTrigger().whileTrue(new IntakeCoral().andThen(rumbleCommand()));
+        controller.rightTrigger().whileTrue(new IntakeCoral(true).andThen(rumbleCommand()));
+        controller.leftTrigger().whileTrue(new IntakeCoral(false).andThen(rumbleCommand()));
         controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y

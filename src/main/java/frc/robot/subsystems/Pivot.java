@@ -35,7 +35,7 @@ public class Pivot extends SubsystemBase {
     SparkAbsoluteEncoder encoder;
     ArmFeedforward ff;
 
-    String name = "None";
+    String commandName = "None";
 
     @NotLogged private static Pivot singleton;
 
@@ -118,7 +118,7 @@ public class Pivot extends SubsystemBase {
     }
 
     public void setCommand(String name) {
-        this.name = name;
+        commandName = name;
     }
 
     /**
@@ -148,7 +148,7 @@ public class Pivot extends SubsystemBase {
     // GETTERS
 
     public String getCommand() {
-        return name;
+        return commandName;
     }
 
     /**

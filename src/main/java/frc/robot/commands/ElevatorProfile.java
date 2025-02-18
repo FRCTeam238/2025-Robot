@@ -17,23 +17,25 @@ public class ElevatorProfile extends Command {
   private MotionProfile.State currentState;
   private boolean bypass;
 
+  private String name;
+
   public ElevatorProfile(MotionProfile.State goal, String name) {
     // each subsystem used by the command must be passed into the
     // addRequirements() method (which takes a vararg of Subsystem)
     addRequirements(this.elevator);
+    this.name = name;
     this.goal = goal;
     constraints = new MotionProfile.MotionConstraints(
         maxElevatorJerk, maxAccel, maxVelocity, velocityTolerance);
-    elevator.setCommand(name);
   }
 
   @Override
   public void initialize() {
+    elevator.setCommand(name);
 
     currentState = new MotionProfile.State(elevator.getPosition(), elevator.getVelocity());
 
     profile = new MotionProfile(goal, currentState, constraints, MotionProfile.ProfileType.AUTO);
-    elevator.setCommand(getName());
     bypass = onTarget(); // if already on target, skip
   }
 

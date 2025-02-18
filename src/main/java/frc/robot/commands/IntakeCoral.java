@@ -12,12 +12,14 @@ import frc.robot.subsystems.CoralIntake;
 public class IntakeCoral extends Command {
   private CoralIntake intake = CoralIntake.getInstance();
 
+  boolean reversed;
 
   /** Creates a new RunIntake. */
   @Auto
-  public IntakeCoral() {
+  public IntakeCoral(boolean reversed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);
+    this.reversed = reversed;
 
   }
 
@@ -29,7 +31,11 @@ public class IntakeCoral extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setSpeed(.5);
+    if (reversed) {
+      intake.setSpeed(.5);
+    } else {
+      intake.setSpeed(-.25);
+    }
 
   }
 

@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants.CoralMechanismState;
 import frc.robot.MotionProfile;
 import frc.robot.Robot;
@@ -17,19 +19,19 @@ import frc.robot.Constants.ElevatorConstants;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MechanismPosition extends ParallelCommandGroup {
-
+  
   CoralMechanismState mechState;
-
+  
   /** Creates a new MechanismPosition. */
   @Auto(names = {"Mechanism State"})
   public MechanismPosition(CoralMechanismState state) {
-
+    
     mechState = state;
-    Robot.coralState = state;
+    addCommands(new InstantCommand(() -> Robot.coralState = state ));
     switch (mechState) {
       case L1 -> {
         addCommands(
-            new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L1), "L1"),
+          new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L1), "L1"),
             new PivotProfile(new MotionProfile.State(PivotConstants.L1), "L1"),
             new WristProfile(new MotionProfile.State(WristConstants.L1), "L1"));
       }
@@ -76,5 +78,6 @@ public class MechanismPosition extends ParallelCommandGroup {
             new WristProfile(new MotionProfile.State(WristConstants.stow), "Stow"));
       }
     }
+    
   }
 }

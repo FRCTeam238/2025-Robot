@@ -5,6 +5,10 @@
       "name" : "MechanismPosition",
       "parameters" : [ "Stow" ],
       "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Leave", "true" ],
+      "parallelType" : "None"
     } ]
   } ]
 }
