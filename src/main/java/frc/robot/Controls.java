@@ -64,7 +64,7 @@ public class Controls {
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
         controller.rightTrigger().whileTrue(new IntakeCoral(true).andThen(rumbleCommand()));
-        controller.leftTrigger().whileTrue(new IntakeCoral(false).andThen(rumbleCommand()));
+        controller.leftTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
         controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y

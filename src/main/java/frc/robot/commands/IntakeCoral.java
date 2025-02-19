@@ -32,9 +32,9 @@ public class IntakeCoral extends Command {
   @Override
   public void execute() {
     if (reversed) {
-      intake.setSpeed(.5);
+      intake.setSpeed(-22);
     } else {
-      intake.setSpeed(-.25);
+      intake.setSpeed(22);
     }
 
   }
@@ -48,6 +48,6 @@ public class IntakeCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return intake.hasCoral();
+    return intake.hasCoral() && !reversed;
   }
 }

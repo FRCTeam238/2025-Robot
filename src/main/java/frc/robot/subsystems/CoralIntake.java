@@ -5,6 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import au.grapplerobotics.ConfigurationFailedException;
 import au.grapplerobotics.LaserCan;
@@ -16,6 +18,7 @@ import static frc.robot.Constants.CoralIntakeConstants.*;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 @Logged
@@ -24,22 +27,27 @@ public class CoralIntake extends SubsystemBase {
 
   TalonFX coralMotor = new TalonFX(15);
   @NotLogged LaserCan lc;
+  @NotLogged DigitalInput di;
 
   @NotLogged private static CoralIntake singleton;
+  private boolean hadCoralLast = false;
 
   private CoralIntake() {
+    di = new DigitalInput(0);
     TalonFXConfiguration coralIntakeConfig = new TalonFXConfiguration();
-    //lc = new LaserCan(0);
+    lc = new LaserCan(0);
+    coralIntakeConfig.Slot0.kP = 0.2;
+    coralIntakeConfig.Slot0.kV = 0.13;
     coralIntakeConfig.CurrentLimits.StatorCurrentLimit = currentLimit;
     coralIntakeConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     coralMotor.getConfigurator().apply(coralIntakeConfig);
-    /*try {
+    try {
       lc.setRangingMode(RangingMode.SHORT);
-      lc.setRegionOfInterest(new RegionOfInterest(ROIx, ROIy, ROIw, ROIh));
+      // lc.setRegionOfInterest(new RegionOfInterest(ROIx, ROIy, ROIw, ROIh));
       lc.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
       e.printStackTrace();
-    }*/
+    }
   }
 
   public static CoralIntake getInstance() {
@@ -50,11 +58,21 @@ public class CoralIntake extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    coralMotor.set(speed);
+    coralMotor.setControl(new VelocityVoltage(speed));
   }
 
   public boolean hasCoral() {
-    return false; //sensorDistance >= lc.getMeasurement().distance_mm;
+
+    if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      hadCoralLast = sensorDistance >= lc.getMeasurement().distance_mm;
+    }
+    return hadCoralLast;
+    // return !di.get();
+  }
+  public double getDistanceFromCoral() {
+    // if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+      return lc.getMeasurement().distance_mm;
+    // } 
   }
 
   @Override

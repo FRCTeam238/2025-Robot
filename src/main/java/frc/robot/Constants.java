@@ -199,6 +199,6 @@ public class Constants {
         public static int ROIw = 0;
         public static int ROIh = 0;
         // units are in mm
-        public static double sensorDistance = 0;
+        public static double sensorDistance = 5;
     }
 }
