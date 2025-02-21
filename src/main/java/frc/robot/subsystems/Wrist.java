@@ -75,11 +75,7 @@ public class Wrist extends SubsystemBase {
     }
 
     public double getVelocity() {
-        return wristSensor.getVelocity().getValueAsDouble();
-    }
-
-    public double getWeirdVelocity() {
-        return wristSensor.getVelocity().getValueAsDouble() * 360;
+        return wristSensor.getVelocity().getValueAsDouble()* 360;
     }
 
     public void stop() {

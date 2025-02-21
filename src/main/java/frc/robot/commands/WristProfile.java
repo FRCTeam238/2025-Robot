@@ -69,6 +69,6 @@ public class WristProfile extends Command {
   @Override
   public boolean isFinished() {
     return Math.abs(wrist.getPosition() - goal.position) <= maxPositionTolerance
-        && Math.abs(wrist.getWeirdVelocity() - goal.velocity) <= maxVelocityTolerance;
+        && Math.abs(wrist.getVelocity() - goal.velocity) <= maxVelocityTolerance;
   }
 }
