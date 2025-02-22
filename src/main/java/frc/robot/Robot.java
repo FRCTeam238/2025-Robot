@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     autoReader = new AutonomousModesReader(new DataFileAutonomousModeDataSource(Filesystem.getDeployDirectory() + "/amode238.txt"));
 
-    autoChooser = new SendableChooser<>();
+    autoChooser = new SendableChooser<String>();
 
     autoNames = autoReader.getAutoNames();
 

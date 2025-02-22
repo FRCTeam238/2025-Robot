@@ -158,7 +158,7 @@ public class Constants {
         public static double kI = 0;
         public static double kD = 0.003;
         public static double wrapPoint = .5;
-        public static double sensorOffset = -0.5344921875;
+        public static double sensorOffset = -0.6344921875;
         public static SensorDirectionValue sensorDirection =
             SensorDirectionValue.CounterClockwise_Positive;
         public static double kG = 0.1675;

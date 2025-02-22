@@ -61,7 +61,7 @@ public class Pivot extends SubsystemBase {
         leaderConfig.closedLoop.p(kP).i(kI).d(kD);
         leaderConfig.idleMode(IdleMode.kBrake);
         leaderConfig.inverted(true);
-        leaderConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
+        leaderConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).positionWrappingEnabled(true);
         leaderConfig.absoluteEncoder
             .positionConversionFactor(360)
             .velocityConversionFactor(360)

@@ -144,7 +144,7 @@ public class SwerveModule {
     public static double driveFF = 2.5;
     public static double driveKs = .07;
 
-    public static double wheelDiameter = Units.inchesToMeters(4);
+    public static double wheelDiameter = Units.inchesToMeters(4.13);
     public static double wheelCircumference = wheelDiameter * Math.PI;
     public static double driveRatio = 50. / 14. * 17. / 27. * 45. / 15.; // MK4I L2
     public static double kDriveMetersPerRev = wheelCircumference / driveRatio;

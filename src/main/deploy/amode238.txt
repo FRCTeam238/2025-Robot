@@ -1,177 +1,32 @@
 {
   "autonomousModes" : [ {
-    "name" : "Border-I4",
+    "name" : "Border-J4",
     "commands" : [ {
       "name" : "MechanismPosition",
       "parameters" : [ "Stow" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Mid-I4", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    } ]
-  }, {
-    "name" : "Border-I4-L4",
-    "commands" : [ {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "1" ],
+      "parameters" : [ "Border-J2", "true", "0" ],
       "parallelType" : "None"
     }, {
       "name" : "MechanismPosition",
       "parameters" : [ "L2" ],
       "parallelType" : "None"
     }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "2" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "CoralStation" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "IntakeCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "Parallel"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "3" ],
-      "parallelType" : "Parallel"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
       "name" : "EjectCoral",
       "parameters" : [ ],
       "parallelType" : "None"
     } ]
   }, {
-    "name" : "Inside-I4",
+    "name" : "Leave",
     "commands" : [ {
       "name" : "MechanismPosition",
       "parameters" : [ "Stow" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Mid-I4", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    } ]
-  }, {
-    "name" : "Mid-I4",
-    "commands" : [ {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    } ]
-  }, {
-    "name" : "Mid-I4-L4",
-    "commands" : [ {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "1" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L2" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "2" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "CoralStation" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "IntakeCoral",
-      "parameters" : [ ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "Parallel"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-I4-L4", "false", "3" ],
-      "parallelType" : "Parallel"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L4" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "EjectCoral",
-      "parameters" : [ ],
+      "parameters" : [ "Leave", "true", "0" ],
       "parallelType" : "None"
     } ]
   } ]
