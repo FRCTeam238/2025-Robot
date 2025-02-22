@@ -117,6 +117,10 @@ public class Pivot extends SubsystemBase {
         pivotLeader.set(speed);
     }
 
+    public void stop() {
+        pivotLeader.set(0);
+      }
+
     public void setCommand(String name) {
         commandName = name;
     }

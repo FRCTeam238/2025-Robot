@@ -113,6 +113,10 @@ public class Elevator extends SubsystemBase {
 
   }
 
+  public void stop() {
+    leftMotor.set(0);
+  }
+
   /**
    * 
    * @return units in inches
