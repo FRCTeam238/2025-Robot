@@ -256,8 +256,8 @@ public class Drivetrain extends SubsystemBase {
 
           //is this good?
           return time.hasElapsed(trajectory.getTotalTime()) 
-            && Math.abs(distanceFromGoal.getX()) < 0.5 
-            && Math.abs(distanceFromGoal.getY()) < 0.5 
+            && Math.abs(distanceFromGoal.getX()) < 0.1 
+            && Math.abs(distanceFromGoal.getY()) < 0.1 
             && Math.abs(distanceFromGoal.getRotation().getDegrees()) < 5;
       },
       this
@@ -278,6 +278,7 @@ public class Drivetrain extends SubsystemBase {
 
     ChassisSpeeds retval = ChassisSpeeds.fromFieldRelativeSpeeds(
         xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
+      // retval.times(maxVelocityMetersPerSec);
     return retval;
   }
 }

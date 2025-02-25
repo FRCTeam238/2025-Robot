@@ -34,7 +34,7 @@ public class Constants {
         public static final double llkD = 0;
 
         public static final double maxVelocityMetersPerSec = 4.3;
-        public static final double maxAccelerationMetersPerSec2 = 100; // TODO: make this a real number
+        public static final double maxAccelerationMetersPerSec2 = 5; // TODO: make this a real number
 
         public static final double kTrackWidth = Units.inchesToMeters(20.75);
         public static final double kWheelBase = Units.inchesToMeters(20.75);

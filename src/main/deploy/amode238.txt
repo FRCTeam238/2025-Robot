@@ -1,5 +1,12 @@
 {
   "autonomousModes" : [ {
+    "name" : "Border-J2-Test",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-J2", "true", "0" ],
+      "parallelType" : "None"
+    } ]
+  }, {
     "name" : "Border-J4",
     "commands" : [ {
       "name" : "MechanismPosition",
@@ -27,6 +34,13 @@
     }, {
       "name" : "FollowPath",
       "parameters" : [ "Leave", "true", "0" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "Mid-H2",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Mid-H2", "true", "0" ],
       "parallelType" : "None"
     } ]
   } ]
