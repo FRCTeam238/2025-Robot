@@ -260,7 +260,10 @@ public class Drivetrain extends SubsystemBase {
           return time.hasElapsed(trajectory.getTotalTime()) 
             && Math.abs(distanceFromGoal.getX()) < positionTolerance
             && Math.abs(distanceFromGoal.getY()) < positionTolerance
-            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance;
+            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance
+            //TODO: does this work? or does it make things worse?
+            && Math.abs(gyro.getVelocityX() - trajectory.getFinalSample(isReversed.getAsBoolean()).get().vx) < velocityTolerance
+            && Math.abs(gyro.getVelocityY() - trajectory.getFinalSample(isReversed.getAsBoolean()).get().vy) < velocityTolerance;
       },
       this);
   }
