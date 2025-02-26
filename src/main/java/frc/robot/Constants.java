@@ -1,6 +1,8 @@
 package frc.robot;
 
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -53,6 +55,8 @@ public class Constants {
         public static final double velocityTolerance = 0.1;
         public static final double positionTolerance = 0.05;
         public static final double xandyvelocityTolerance = 0.05;
+
+        public static Transform3d cameraLocation = new Transform3d(0, 0, 0, new Rotation3d(0, Units.degreesToRadians(5), 0));
     }
 
     public enum CoralMechanismState {

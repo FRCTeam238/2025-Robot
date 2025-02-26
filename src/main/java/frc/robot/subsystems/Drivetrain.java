@@ -10,12 +10,13 @@ import com.studica.frc.AHRS.NavXComType;
 
 import choreo.trajectory.SwerveSample;
 import choreo.trajectory.Trajectory;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -28,8 +29,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
 /** for swerve */
 @Logged
@@ -43,6 +46,13 @@ public class Drivetrain extends SubsystemBase {
   SwerveModule backLeft = new SwerveModule(backLeftDriveCANId, backLeftTurnCANId);
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
+
+
+  boolean usingVision = false;
+
+  PhotonCamera cam;
+
+  PhotonPoseEstimator poseEstimator;
 
   @NotLogged
   SwerveDrivePoseEstimator odometry;
@@ -74,6 +84,10 @@ public class Drivetrain extends SubsystemBase {
     theta = new PIDController(kPAngular, kIAngular, kDAngular);
     theta.enableContinuousInput(-Math.PI, Math.PI);
 
+    if (usingVision) {
+     setupVision();
+    }
+
   }
 
   public static Drivetrain getInstance() {
@@ -94,6 +108,9 @@ public class Drivetrain extends SubsystemBase {
         });
     field.setRobotPose(getPose());
 
+    if (usingVision) {
+      runVision();
+    }
   }
 
   public Pose2d getPose() {
@@ -262,5 +279,52 @@ public class Drivetrain extends SubsystemBase {
         xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
       // retval.times(maxVelocityMetersPerSec);
     return retval;
+  }
+
+  //=========VISION STUFF=========
+
+  /**
+   * run this whenever you want vision stuff, otherwise, leave it out
+   */
+  private void setupVision() {
+    cam = new PhotonCamera("cam1");
+
+    poseEstimator = new PhotonPoseEstimator(
+        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
+        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+        cameraLocation //TODO: Make real numbers
+    );
+  }
+
+  private void updatePoseEstimate(Optional<EstimatedRobotPose> estimate) {
+    if (estimate.isPresent()) {
+      odometry.addVisionMeasurement(estimate.get().estimatedPose.toPose2d(), estimate.get().timestampSeconds);
+    }
+  }
+
+  /**
+   * gets the Pose3d that the photonvision thinks the robot is at
+   * @return Pose3d of the robot's position
+   */
+  @NotLogged
+  public Pose3d getEstimatedVisionPose() {
+    var estimate = getVisionEstimate();
+    if (estimate.isPresent()) {
+      return estimate.get().estimatedPose;
+    } else {
+      return Pose3d.kZero;
+    }
+  }
+
+  @NotLogged
+  public Optional<EstimatedRobotPose> getVisionEstimate() {
+    return poseEstimator.update(cam.getLatestResult());
+  }
+
+  /**
+   * wrapper for running all periodic vision code
+   */
+  private void runVision() {
+    updatePoseEstimate(getVisionEstimate());
   }
 }
