@@ -2,11 +2,8 @@ package frc.robot.subsystems;
 
 import static frc.robot.Constants.DriveConstants.*;
 
-import java.util.function.BiFunction;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
@@ -26,6 +23,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -50,12 +49,14 @@ public class Drivetrain extends SubsystemBase {
   AHRS gyro;
   PIDController x, y, theta;
   String command = "None";
+  Field2d field = new Field2d();
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
       new double[] { 0, 0, 0, 0 });
 
   @NotLogged private static Drivetrain singleton;
 
   private Drivetrain() {
+    SmartDashboard.putData("field", field);
     gyro = new AHRS(NavXComType.kMXP_SPI);
     odometry = new SwerveDrivePoseEstimator(
         kDriveKinematics,
@@ -91,6 +92,8 @@ public class Drivetrain extends SubsystemBase {
             backLeft.getPosition(),
             backRight.getPosition()
         });
+    field.setRobotPose(getPose());
+
   }
 
   public Pose2d getPose() {
@@ -101,10 +104,7 @@ public class Drivetrain extends SubsystemBase {
     command = name;
   }
 
-  // public void updatePoseEstimate(EstimatedRobotPose estimate) {
-  // odometry.addVisionMeasurement(estimate.estimatedPose.toPose2d(),
-  // estimate.timestampSeconds);
-  // }
+
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(
@@ -148,16 +148,6 @@ public class Drivetrain extends SubsystemBase {
   public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
     var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(swerveModuleStates);
-  }
-
-  public void lockWheels() {
-    SwerveModuleState wheelLock[] = {
-        new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-        new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-        new SwerveModuleState(0, Rotation2d.fromDegrees(45))
-    };
-    setModuleStates(wheelLock);
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
@@ -244,26 +234,18 @@ public class Drivetrain extends SubsystemBase {
         if (interrupted) {
            driveWithChassisSpeeds(new ChassisSpeeds()); 
         } else {
-        
             driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
         }
-        
-
       }, 
       () -> {//isFinished
-
           var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
-
           //is this good?
           return time.hasElapsed(trajectory.getTotalTime()) 
-            && Math.abs(distanceFromGoal.getX()) < 0.1 
-            && Math.abs(distanceFromGoal.getY()) < 0.1 
-            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < 5;
+            && Math.abs(distanceFromGoal.getX()) < positionTolerance
+            && Math.abs(distanceFromGoal.getY()) < positionTolerance
+            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance;
       },
-      this
-      );
-
-
+      this);
   }
 
   public ChassisSpeeds choreoController(SwerveSample referenceState) {
