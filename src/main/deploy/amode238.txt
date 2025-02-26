@@ -1,13 +1,6 @@
 {
   "autonomousModes" : [ {
-    "name" : "Border-J2-Test",
-    "commands" : [ {
-      "name" : "FollowPath",
-      "parameters" : [ "Border-J2", "true", "0" ],
-      "parallelType" : "None"
-    } ]
-  }, {
-    "name" : "Border-J4",
+    "name" : "Border-J2",
     "commands" : [ {
       "name" : "MechanismPosition",
       "parameters" : [ "Stow" ],
@@ -23,6 +16,13 @@
     }, {
       "name" : "EjectCoral",
       "parameters" : [ ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "Border-J2-Test",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-J2", "true", "0" ],
       "parallelType" : "None"
     } ]
   }, {

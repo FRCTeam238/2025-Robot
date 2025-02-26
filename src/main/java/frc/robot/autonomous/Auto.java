@@ -14,7 +14,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
 
 /**
- * Add your docs here.
+ * Used to annotate the constructors of commands you want to be used in auto
  */
 
 @Retention(RetentionPolicy.RUNTIME)

@@ -4,6 +4,7 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.MotionProfile.MotionConstraints;
 
 public class Constants {
 
@@ -69,7 +70,7 @@ public class Constants {
     public enum AlgaeMechanismState {
         Out,
         Stow,
-        Processor, // do we need this?
+        Processor,
     }
 
     public class PivotConstants {
@@ -200,5 +201,28 @@ public class Constants {
         public static int ROIh = 0;
         // units are in mm
         public static double sensorDistance = 5;
+    }
+
+    public class AlgaeIntakeConstants {
+        public static double outPosition;
+        public static double inPosition;
+        public static double maxJerk = 100000;
+        public static double maxAcceleration;
+        public static double maxVelocity;
+        public static double velocityTolerance;
+        public static double velocityMaxError = 0.5; //degrees per second
+        public static double positionMaxError = 2;//degrees
+        public static double kP = 0;
+        public static double kI = 0;
+        public static double kD = 0;
+        public static double kS = 0;
+        public static double kV = 0;
+        public static double kG = 0;
+        public static double positionConversionFactor = 0;
+        public static double velocityConversionFactor = 0;
+        public static double currentDetectionLimit = 25;//probably too low
+
+        public static MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAcceleration, maxVelocity, velocityTolerance);
+
     }
 }

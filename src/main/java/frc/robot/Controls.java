@@ -11,18 +11,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.AlgaeMechanismState;
 import frc.robot.Constants.CoralMechanismState;
+import frc.robot.commands.AlgaeProfile;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCoral;
 import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.ManualElevator;
 import frc.robot.commands.ManualPivot;
 import frc.robot.commands.MechanismPosition;
+import frc.robot.commands.RunAlgaeIntake;
 import frc.robot.commands.SnapToAngle;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Pivot;
-
 import static frc.robot.Constants.OperatorConstants.*;
 
 @Logged
@@ -63,12 +63,17 @@ public class Controls {
         // controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
-        controller.rightTrigger().whileTrue(new IntakeCoral(true).andThen(rumbleCommand()));
-        controller.leftTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
+
+        controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(true))).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+
+        controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
+
         controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
         controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
+    
 
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
