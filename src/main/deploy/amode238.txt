@@ -28,10 +28,6 @@
   }, {
     "name" : "Leave",
     "commands" : [ {
-      "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
-      "parallelType" : "None"
-    }, {
       "name" : "FollowPath",
       "parameters" : [ "Leave", "true", "0" ],
       "parallelType" : "None"
