@@ -19,8 +19,8 @@ import static frc.robot.Constants.WristConstants.*;
 @Logged
 public class Wrist extends SubsystemBase {
     // talonfx - falcon
-    TalonFX wristMotor = new TalonFX(16);
-    CANcoder wristSensor = new CANcoder(1);
+    TalonFX wristMotor = new TalonFX(4);
+    CANcoder wristSensor = new CANcoder(0);
     ArmFeedforward wristFf = new ArmFeedforward(kS, kG, kV, kA);
     PositionVoltage wristVoltage = new PositionVoltage(0);
     String commandName = "";

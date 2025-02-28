@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CoralIntake extends SubsystemBase {
   /** Creates a new CoralIntake. */
 
-  TalonFX coralMotor = new TalonFX(15);
+  TalonFX coralMotor = new TalonFX(5);
   @NotLogged LaserCan lc;
   @NotLogged DigitalInput di;
 

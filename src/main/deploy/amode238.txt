@@ -1,13 +1,27 @@
 {
   "autonomousModes" : [ {
-    "name" : "Border-J2",
+    "name" : "Leave",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Leave", "true", "0" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "Left-J-Test",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "", "true", "0" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "Left-J2",
     "commands" : [ {
       "name" : "MechanismPosition",
       "parameters" : [ "Stow" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Border-J2", "true", "0" ],
+      "parameters" : [ "Left-J2", "true", "0" ],
       "parallelType" : "None"
     }, {
       "name" : "MechanismPosition",
@@ -19,24 +33,25 @@
       "parallelType" : "None"
     } ]
   }, {
-    "name" : "Border-J2-Test",
-    "commands" : [ {
-      "name" : "FollowPath",
-      "parameters" : [ "Border-J2", "true", "0" ],
-      "parallelType" : "None"
-    } ]
-  }, {
-    "name" : "Leave",
-    "commands" : [ {
-      "name" : "FollowPath",
-      "parameters" : [ "Leave", "true", "0" ],
-      "parallelType" : "None"
-    } ]
-  }, {
     "name" : "Mid-H2",
     "commands" : [ {
       "name" : "FollowPath",
       "parameters" : [ "Mid-H2", "true", "0" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "Right-E2",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Right-E", "true", "0" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
       "parallelType" : "None"
     } ]
   } ]

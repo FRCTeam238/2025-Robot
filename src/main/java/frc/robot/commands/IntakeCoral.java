@@ -31,7 +31,7 @@ public class IntakeCoral extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (reversed) {
+    if (!reversed) {
       intake.setSpeed(-22);
     } else {
       intake.setSpeed(22);

@@ -48,14 +48,12 @@ public class AlgaeIntake extends SubsystemBase {
   /** Creates a new AlgaeIntake. */
   public AlgaeIntake() {
     ff = new ArmFeedforward(kS, kG, kV);
-    turn = new SparkMax(0, MotorType.kBrushless);
-    drive = new TalonFX(0);
+    turn = new SparkMax(16, MotorType.kBrushless);
+    drive = new TalonFX(3);
 
     SparkMaxConfig sConf = new SparkMaxConfig();
     sConf.encoder
-     .inverted(false)
-     .positionConversionFactor(positionConversionFactor)
-     .velocityConversionFactor(velocityConversionFactor);
+     .inverted(false);
     sConf.closedLoop
      .p(kP)
      .i(kI)
@@ -82,7 +80,6 @@ public class AlgaeIntake extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-
   //this is what i think is the correct method, but it may not be?????
   public void setPosition(MotionProfile.State state) {
    desiredState = state;
@@ -96,7 +93,6 @@ public class AlgaeIntake extends SubsystemBase {
     drive.set(speed);
   }
 
-  
   public double getTurnPosition() {
     return turn.getEncoder().getPosition();
   }
@@ -105,11 +101,7 @@ public class AlgaeIntake extends SubsystemBase {
     return turn.getEncoder().getVelocity();
   }
 
-  
   public boolean isStallingOnAlgae() {
     return drive.getStatorCurrent().getValueAsDouble() > currentDetectionLimit;
   }
-
-
-
 }

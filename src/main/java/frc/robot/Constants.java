@@ -20,9 +20,9 @@ public class Constants {
         public static final int backLeftDriveCANId = 9;
 
         public static final int frontRightTurnCANId = 18;
+        public static final int frontLeftTurnCANId = 1;
         public static final int backRightTurnCANId = 11;
         public static final int backLeftTurnCANId = 8;
-        public static final int frontLeftTurnCANId = 1;
 
         public static final double kP = 10;
         public static final double kI = 0;
@@ -163,9 +163,9 @@ public class Constants {
         public static double kI = 0;
         public static double kD = 0.003;
         public static double wrapPoint = .5;
-        public static double sensorOffset = -0.6344921875;
+        public static double sensorOffset = -0.14;
         public static SensorDirectionValue sensorDirection =
-            SensorDirectionValue.CounterClockwise_Positive;
+            SensorDirectionValue.Clockwise_Positive;
         public static double kG = 0.1675;
         public static double kV = 1.1; // V/s*rad
         public static double kA = 0;

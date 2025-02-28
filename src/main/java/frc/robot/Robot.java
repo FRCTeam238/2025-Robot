@@ -13,6 +13,7 @@ import com.ctre.phoenix6.SignalLogger;
 import au.grapplerobotics.CanBridge;
 import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -34,11 +35,14 @@ import frc.robot.subsystems.CoralIntake;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  // @NotLogged
   public Pivot pivot;
+  // @NotLogged
   public Drivetrain drivetrain;
   public Elevator elevator;
   public Controls controls;
   public CoralIntake coralIntake;
+  // @NotLogged
   public Wrist wrist;
 
   public static CoralMechanismState coralState = CoralMechanismState.Stow;
