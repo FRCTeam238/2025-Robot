@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,6 +23,7 @@ import frc.robot.commands.ManualPivot;
 import frc.robot.commands.MechanismPosition;
 import frc.robot.commands.RunAlgaeIntake;
 import frc.robot.commands.SnapToAngle;
+import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.OperatorConstants.*;
 
@@ -56,16 +58,21 @@ public class Controls {
         Drivetrain.getInstance().setDefaultCommand(new Drive());
         // Pivot.getInstance().setDefaultCommand(Pivot.getInstance().holdPositionCommand());
         // Elevator.getInstance().setDefaultCommand(new ManualElevator());
-
+        // AlgaeIntake.getInstance().setDefaultCommand(new AlgaeProfile(AlgaeMechanismState.Stow));
         // controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
         controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
         controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
-        // controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
+        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
         controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
         controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
+        controller.povUp().onTrue(new MechanismPosition(CoralMechanismState.DeepCage));
 
         // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
-        // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(true))).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
+        controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out)).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+
+        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
 
         controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
 
@@ -85,7 +92,7 @@ public class Controls {
         leftJoystick.povLeft().whileTrue(new SnapToAngle(240));
         leftJoystick.povDown().whileTrue(new SnapToAngle(300));
 
-        leftJoystick.button(1).whileTrue(new EjectCoral());
+        // leftJoystick.button(1).whileTrue(new EjectCoral());
 
         rightJoystick.button(11).whileTrue(new SnapToAngle(0));
         rightJoystick.button(12).whileTrue(new SnapToAngle(90));

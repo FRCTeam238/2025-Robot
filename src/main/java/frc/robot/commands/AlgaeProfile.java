@@ -20,11 +20,15 @@ public class AlgaeProfile extends Command {
   AlgaeMechanismState desiredMechanismState;
   /** Creates a new ExtendAlgae. */
   public AlgaeProfile(AlgaeMechanismState state) {
+    desiredMechanismState = state;
     // Use addRequirements() here to declare subsystem dependencies.
     if (state == AlgaeMechanismState.Out) {
       goal = new MotionProfile.State(outPosition);
+      // intake.setCommand("Out");
     } else {
       goal = new MotionProfile.State(inPosition);
+      // intake.setCommand("In");
+
     }
     addRequirements(intake);
   }
@@ -32,6 +36,19 @@ public class AlgaeProfile extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    intake.state = desiredMechanismState;
+    switch (desiredMechanismState) {
+      case Out:
+        intake.setCommand("Out");
+        break;
+      case Processor:
+        intake.setCommand("In");
+        break;
+      case Stow:
+        intake.setCommand("In");
+        break;
+
+    }
     MotionProfile.State currentState = new MotionProfile.State(intake.getTurnPosition(), intake.getTurnSpeed());
     profile = new MotionProfile(goal, currentState, constraints, MotionProfile.ProfileType.AUTO);
     
@@ -40,13 +57,14 @@ public class AlgaeProfile extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    
     intake.setPosition(profile.sample());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    intake.setCommand("None");
   }
 
   // Returns true when the command should end.
@@ -57,8 +75,7 @@ public class AlgaeProfile extends Command {
 
   //as an alternative, have it run until it hits the hardstop?
   public boolean onTarget() {
-    return Math.abs(intake.getTurnSpeed() - goal.velocity) <= velocityMaxError
-        && Math.abs(intake.getTurnPosition() - goal.position) <= positionMaxError;
+    return Math.abs(intake.getTurnPosition() - goal.position) <= positionMaxError;
 
   }
 }

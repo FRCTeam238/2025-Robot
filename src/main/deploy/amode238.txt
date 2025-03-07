@@ -10,22 +10,18 @@
     "name" : "Left-J-Test",
     "commands" : [ {
       "name" : "FollowPath",
-      "parameters" : [ "", "true", "0" ],
+      "parameters" : [ "Leave", "true", "0" ],
       "parallelType" : "None"
     } ]
   }, {
     "name" : "Left-J2",
     "commands" : [ {
       "name" : "MechanismPosition",
-      "parameters" : [ "Stow" ],
+      "parameters" : [ "L2" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
       "parameters" : [ "Left-J2", "true", "0" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
-      "parameters" : [ "L2" ],
       "parallelType" : "None"
     }, {
       "name" : "EjectCoral",
@@ -35,8 +31,16 @@
   }, {
     "name" : "Mid-H2",
     "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
       "name" : "FollowPath",
       "parameters" : [ "Mid-H2", "true", "0" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoral",
+      "parameters" : [ ],
       "parallelType" : "None"
     } ]
   }, {

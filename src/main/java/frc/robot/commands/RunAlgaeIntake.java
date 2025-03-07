@@ -29,7 +29,7 @@ public class RunAlgaeIntake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (reversed) {
+    if (!reversed) {
       intake.setRunSpeed(-0.5); //check if this is backwards
     } else {
       intake.setRunSpeed(0.5);

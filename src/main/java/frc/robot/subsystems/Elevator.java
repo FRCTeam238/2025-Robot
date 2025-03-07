@@ -93,7 +93,7 @@ public class Elevator extends SubsystemBase {
    * set PID to remain at the current position at zero velocity
    */
   public void holdPosition() {
-    leftMotor.setControl(new PositionVoltage(getPosition()));
+    leftMotor.setControl(new PositionVoltage(0).withPosition(getPosition()));
   }
 
   public Command holdPositionCommand() {

@@ -4,15 +4,8 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.AlgaeIntakeConstants.currentDetectionLimit;
-import static frc.robot.Constants.AlgaeIntakeConstants.positionConversionFactor;
-import static frc.robot.Constants.AlgaeIntakeConstants.velocityConversionFactor;
-import static frc.robot.Constants.ElevatorConstants.kD;
-import static frc.robot.Constants.ElevatorConstants.kG;
-import static frc.robot.Constants.ElevatorConstants.kI;
-import static frc.robot.Constants.ElevatorConstants.kP;
-import static frc.robot.Constants.ElevatorConstants.kS;
-import static frc.robot.Constants.ElevatorConstants.kV;
+import static frc.robot.Constants.AlgaeIntakeConstants.*;
+
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -27,20 +20,31 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotionProfile;
+import frc.robot.Constants.AlgaeMechanismState;
 
+@Logged
 public class AlgaeIntake extends SubsystemBase {
 
+  @NotLogged
   SparkMax turn;
+  @NotLogged
   TalonFX drive;
 
+  @NotLogged
   ArmFeedforward ff;
 
-  MotionProfile.State desiredState;
+  public AlgaeMechanismState state = AlgaeMechanismState.Stow;
+
+  String command = "None";
+
+  // @NotLogged
+  MotionProfile.State desiredState = new MotionProfile.State(0);
 
   @NotLogged private static AlgaeIntake singleton;
 
@@ -52,8 +56,6 @@ public class AlgaeIntake extends SubsystemBase {
     drive = new TalonFX(3);
 
     SparkMaxConfig sConf = new SparkMaxConfig();
-    sConf.encoder
-     .inverted(false);
     sConf.closedLoop
      .p(kP)
      .i(kI)
@@ -75,6 +77,14 @@ public class AlgaeIntake extends SubsystemBase {
     return singleton;
   }
 
+  public void setCommand(String name) {
+    command = name;
+  }
+
+  public String getCommand() {
+    return command;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -91,6 +101,11 @@ public class AlgaeIntake extends SubsystemBase {
   
   public void setRunSpeed(double speed) {
     drive.set(speed);
+  }
+
+  public void stopAll() {
+    drive.set(0);
+    turn.set(0);
   }
 
   public double getTurnPosition() {

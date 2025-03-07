@@ -29,9 +29,9 @@ public class EjectCoral extends Command {
   @Override
   public void execute() {
     if (Robot.coralState == CoralMechanismState.L1) {
-      coralIntake.setSpeed(-.25);
+      coralIntake.setSpeed(22);
     } else {
-      coralIntake.setSpeed(.25);
+      coralIntake.setSpeed(-22);
     }
   }
 
@@ -44,6 +44,6 @@ public class EjectCoral extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !coralIntake.hasCoral();
+    return false;
   }
 }

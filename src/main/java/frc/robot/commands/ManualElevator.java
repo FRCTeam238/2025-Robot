@@ -33,8 +33,10 @@ public class ManualElevator extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Elevator.getInstance().holdPosition();
+    Elevator.getInstance().set(0);
+    // Elevator.getInstance().holdPosition();
     Elevator.getInstance().setCommand("None");
+    // Elevator.getInstance().setDesiredState(new Elevator.getInstance().getPosition());;
   }
 
   // Returns true when the command should end.

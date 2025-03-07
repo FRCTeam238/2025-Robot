@@ -98,13 +98,13 @@ public class Constants {
         // Units = degrees. 0 degrees is pivot level (folded flat) to make FF work
         // right.
         public static double L1 = 0;
-        public static double L2 = 85;
-        public static double L3 = 85;
+        public static double L2 = 90;
+        public static double L3 = 90;
         public static double L4 = 90;
         public static double stow = 50;
         public static double deepCage = 90;
-        public static double shallowCage = 0;
-        public static double coralStation = 42;
+        public static double shallowCage = 10;
+        public static double coralStation = 44;
 
         public static double forwardLimit = 0;
         public static double reverseLimit = 0;
@@ -142,9 +142,9 @@ public class Constants {
         public static double dangerZone = 3.5; // elevator needs to be up at least this high for wrist to fold back
 
         public static double L1 = 0;
-        public static double L2 = 0;
-        public static double L3 = 12.3;
-        public static double L4 = 35.5;
+        public static double L2 = 1;
+        public static double L3 = 10.3;
+        public static double L4 = 35.5;//35.5
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
@@ -163,7 +163,7 @@ public class Constants {
         public static double kI = 0;
         public static double kD = 0.003;
         public static double wrapPoint = .5;
-        public static double sensorOffset = -0.14;
+        public static double sensorOffset = 0.0991;
         public static SensorDirectionValue sensorDirection =
             SensorDirectionValue.Clockwise_Positive;
         public static double kG = 0.1675;
@@ -184,13 +184,13 @@ public class Constants {
         // Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF
         // correct
         public static double L1 = 0;
-        public static double L2 = 60;
-        public static double L3 = 60;
-        public static double L4 = 50;
+        public static double L2 = 30;
+        public static double L3 = 53;
+        public static double L4 = 45;
         public static double stow = 36;
-        public static double deepCage = 115;
+        public static double deepCage = 75;
         public static double shallowCage = 0;
-        public static double coralStation = 21;
+        public static double coralStation = 18;//last: 21
     }
 
     public class CoralIntakeConstants {
@@ -208,23 +208,23 @@ public class Constants {
     }
 
     public class AlgaeIntakeConstants {
-        public static double outPosition;
-        public static double inPosition;
+        public static double outPosition = 1.1;//1.1 appears to be fully extended, i'd like to stop a bit short
+        public static double inPosition = 0.1;
         public static double maxJerk = 100000;
-        public static double maxAcceleration;
-        public static double maxVelocity;
+        public static double maxAcceleration = 100;
+        public static double maxVelocity = 60;//make higher
         public static double velocityTolerance;
         public static double velocityMaxError = 0.5; //degrees per second
-        public static double positionMaxError = 2;//degrees
-        public static double kP = 0;
+        public static double positionMaxError = 0.07;// out of 1 i think
+        public static double kP = 10;
         public static double kI = 0;
         public static double kD = 0;
         public static double kS = 0;
-        public static double kV = 0;
-        public static double kG = 0;
+        public static double kV = .31;
+        public static double kG = -1;
         public static double positionConversionFactor = 0;
         public static double velocityConversionFactor = 0;
-        public static double currentDetectionLimit = 25;//probably too low
+        public static double currentDetectionLimit = 30;//probably too low
 
         public static MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAcceleration, maxVelocity, velocityTolerance);
 

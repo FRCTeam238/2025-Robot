@@ -29,6 +29,8 @@ public class CoralIntake extends SubsystemBase {
   @NotLogged LaserCan lc;
   @NotLogged DigitalInput di;
 
+  private boolean laserCanBroken = false;
+
   @NotLogged private static CoralIntake singleton;
   private boolean hadCoralLast = false;
 
@@ -47,6 +49,7 @@ public class CoralIntake extends SubsystemBase {
       lc.setTimingBudget(TimingBudget.TIMING_BUDGET_20MS);
     } catch (ConfigurationFailedException e) {
       e.printStackTrace();
+      laserCanBroken = true;
     }
   }
 
@@ -61,17 +64,33 @@ public class CoralIntake extends SubsystemBase {
     coralMotor.setControl(new VelocityVoltage(speed));
   }
 
+  @NotLogged
   public boolean hasCoral() {
-
-    if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
-      hadCoralLast = sensorDistance >= lc.getMeasurement().distance_mm;
+    if (laserCanBroken) return false;
+    try {
+      if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+        hadCoralLast = sensorDistance >= lc.getMeasurement().distance_mm;
+      }
+      return hadCoralLast;
+    } catch (Exception e) {
+      e.printStackTrace();
+      laserCanBroken = true;
+      return false;
     }
-    return hadCoralLast;
     // return !di.get();
   }
+  @NotLogged
   public double getDistanceFromCoral() {
+    if (laserCanBroken) return 90;
     // if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {
+    try {
       return lc.getMeasurement().distance_mm;
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      laserCanBroken = true;
+      return 90;
+    }
     // } 
   }
 
