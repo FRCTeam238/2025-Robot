@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -17,6 +18,7 @@ import frc.robot.Constants.CoralMechanismState;
 import frc.robot.commands.AlgaeProfile;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCoral;
+import frc.robot.commands.GoToReefTag;
 import frc.robot.commands.IntakeCoral;
 import frc.robot.commands.ManualElevator;
 import frc.robot.commands.ManualPivot;
@@ -45,7 +47,10 @@ public class Controls {
 
     DriveType driveType = DriveType.JOYSTICK;
 
+    GoToReefTag reefCommand = new GoToReefTag(false);
+
     private Controls() {
+        CommandScheduler.getInstance().schedule(reefCommand);
         DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);

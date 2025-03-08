@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 /** for swerve */
 @Logged
@@ -48,11 +49,14 @@ public class Drivetrain extends SubsystemBase {
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
 
-  boolean usingVision = false;
+  boolean usingVision = true;
 
-  PhotonCamera cam;
+  PhotonCamera leftCam;
+  PhotonCamera rightCam;
+
 
   PhotonPoseEstimator poseEstimator;
+  PhotonPipelineResult lastResult = new PhotonPipelineResult();
 
   @NotLogged
   SwerveDrivePoseEstimator odometry;
@@ -163,7 +167,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
-    var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(speeds);
+
+    var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.discretize(speeds, .02));
     setModuleStates(swerveModuleStates);
   }
 
@@ -290,7 +295,9 @@ public class Drivetrain extends SubsystemBase {
    * run this whenever you want vision stuff, otherwise, leave it out
    */
   private void setupVision() {
-    cam = new PhotonCamera("cam1");
+    leftCam = new PhotonCamera("LeftCam");
+    rightCam = new PhotonCamera("RightCam");
+    
 
     poseEstimator = new PhotonPoseEstimator(
         AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
@@ -302,6 +309,26 @@ public class Drivetrain extends SubsystemBase {
   private void updatePoseEstimate(Optional<EstimatedRobotPose> estimate) {
     if (estimate.isPresent()) {
       odometry.addVisionMeasurement(estimate.get().estimatedPose.toPose2d(), estimate.get().timestampSeconds);
+    }
+  }
+
+  public Transform3d getRightCamToTarget() {
+    return rightCam.getLatestResult().getBestTarget().bestCameraToTarget;
+  }
+
+  public int getBestTagId(boolean rightSide) {
+    if (rightSide) {
+      return leftCam.getLatestResult().getBestTarget().fiducialId;
+    } else {
+      return rightCam.getLatestResult().getBestTarget().fiducialId;
+    }
+  }
+
+  public PhotonPipelineResult getLatestResult(boolean rightSide) {
+    if (rightSide) {
+      return leftCam.getLatestResult();
+    } else {
+      return rightCam.getLatestResult();
     }
   }
 
@@ -321,13 +348,20 @@ public class Drivetrain extends SubsystemBase {
 
   @NotLogged
   public Optional<EstimatedRobotPose> getVisionEstimate() {
-    return poseEstimator.update(cam.getLatestResult());
+    Optional<EstimatedRobotPose> p = Optional.empty();
+    for (var result : leftCam.getAllUnreadResults()) {
+      p = poseEstimator.update(result);
+    }
+    return p;
+    
   }
+
 
   /**
    * wrapper for running all periodic vision code
    */
   private void runVision() {
     updatePoseEstimate(getVisionEstimate());
+    lastResult = leftCam.getLatestResult();
   }
 }
