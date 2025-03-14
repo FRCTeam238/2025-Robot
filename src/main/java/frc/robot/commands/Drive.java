@@ -25,7 +25,7 @@ public class Drive extends Command {
   public void execute() {
     double[] joyValues = Controls.getInstance().getSwerveJoystickValues();
 
-    drivetrain.drive(
+    drivetrain.driveFromJoysticks(
         joyValues[0] * maxVelocityMetersPerSec,
         joyValues[1] * maxVelocityMetersPerSec,
         joyValues[2] * maxAngularVelocityRadsPerSec);

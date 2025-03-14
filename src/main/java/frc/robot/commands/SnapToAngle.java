@@ -38,7 +38,7 @@ public class SnapToAngle extends Command {
     double[] joyValues = Controls.getInstance().getSwerveJoystickValues();
     double robotAngle = drivetrain.getFieldRelativeOffset().getRadians();
 
-    drivetrain.drive(joyValues[0], joyValues[1], pid.calculate(robotAngle, angle));
+    drivetrain.driveFromJoysticks(joyValues[0], joyValues[1], pid.calculate(robotAngle, angle));
   }
 
   // Called once the command ends or is interrupted.

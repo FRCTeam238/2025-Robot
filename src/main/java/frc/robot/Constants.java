@@ -56,7 +56,8 @@ public class Constants {
         public static final double positionTolerance = 0.05;
         public static final double xandyvelocityTolerance = 0.05;
 
-        public static Transform3d cameraLocation = new Transform3d(0, 0, 0, new Rotation3d(0, Units.degreesToRadians(5), 0));
+        public static Transform3d rightCameraLocation = new Transform3d(-10.656, 6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
+        public static Transform3d leftCameraLocation = new Transform3d(-10.656, -6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
     }
 
     public enum CoralMechanismState {
