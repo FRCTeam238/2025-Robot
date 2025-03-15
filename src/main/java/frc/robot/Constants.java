@@ -57,8 +57,8 @@ public class Constants {
         public static final double xandyvelocityTolerance = 0.05;
 
         //Vision constants
-        public static Transform3d rightCameraLocation = new Transform3d(-10.656, 6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
-        public static Transform3d leftCameraLocation = new Transform3d(-10.656, -6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
+        public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
+        public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
         public static double maxVisionDistanceTolerance = 10;// for the max distance between cam and tag
         public static double visionPoseDiffTolerance = 5; // for the diff between estimated vision pose and odometry
     }

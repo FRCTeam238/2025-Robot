@@ -38,16 +38,18 @@ import frc.robot.subsystems.CoralIntake;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  // @NotLogged
+  @NotLogged
   public Pivot pivot;
   // @NotLogged
   public Drivetrain drivetrain;
+  @NotLogged
   public Elevator elevator;
   public Controls controls;
+  @NotLogged
   public CoralIntake coralIntake;
-  // @NotLogged
+  @NotLogged
   public Wrist wrist;
-  // @NotLogged`
+  @NotLogged
   public AlgaeIntake algae;
 
   @NotLogged
@@ -72,12 +74,12 @@ public class Robot extends TimedRobot {
 
     pd = new PowerDistribution(1, ModuleType.kRev);
     
-    elevator = Elevator.getInstance();
-    pivot = Pivot.getInstance();
+    // elevator = Elevator.getInstance();
+    // pivot = Pivot.getInstance();
     drivetrain = Drivetrain.getInstance();
-    wrist = Wrist.getInstance();
-    coralIntake = CoralIntake.getInstance();
-    algae = AlgaeIntake.getInstance();
+    // wrist = Wrist.getInstance();
+    // coralIntake = CoralIntake.getInstance();
+    // algae = AlgaeIntake.getInstance();
     controls = Controls.getInstance();
     
   }
@@ -110,10 +112,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    pivot.stop();
-    elevator.stop();
-    wrist.stop();
-    algae.stopAll();
+    // pivot.stop();
+    // elevator.stop();
+    // wrist.stop();
+    // algae.stopAll();
   }
 
   @Override

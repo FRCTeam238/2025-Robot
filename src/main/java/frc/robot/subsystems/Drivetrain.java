@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
 
-  boolean usingVision = false;
+  boolean usingVision = true;
 
   PhotonCamera leftCam;
   PhotonCamera rightCam;
@@ -438,26 +438,29 @@ public class Drivetrain extends SubsystemBase {
    */
   private void runVision() {
     rightEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
+    
     for (var result : rightCam.getAllUnreadResults()) {
       // if best visible target is too far away for our liking, discard it, else use it
+      if (!result.hasTargets()) continue;
       if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
       continue;
       var em = rightEstimator.update(result);
       //if the pose estimate is close enough to our current odometry estimate, add it to odometry
-      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
+      // if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
         odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
-      }
+      // }
     }
 
     leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : leftCam.getAllUnreadResults()) {
+      if (!result.hasTargets()) continue;
       if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
       continue;
       var em = leftEstimator.update(result);
       //if the pose estimate is close enough to our current odometry estimate, add it to odometry
-      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
+      // if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
         odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
-      }
+      // }
     }
   }
 }

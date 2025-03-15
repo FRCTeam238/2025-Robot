@@ -52,7 +52,7 @@ public class Controls {
     GoToReefTag reefCommand = new GoToReefTag(false);
 
     private Controls() {
-        CommandScheduler.getInstance().schedule(reefCommand);
+        // CommandScheduler.getInstance().schedule(reefCommand);
         DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
@@ -67,25 +67,25 @@ public class Controls {
         // Elevator.getInstance().setDefaultCommand(new ManualElevator());
         // AlgaeIntake.getInstance().setDefaultCommand(new AlgaeProfile(AlgaeMechanismState.Stow));
         // controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
-        controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
-        controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
-        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
-        controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
-        controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
-        controller.povUp().onTrue(new MechanismPosition(CoralMechanismState.DeepCage));
+        // controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
+        // controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
+        // controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
+        // controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
+        // controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
+        // controller.povUp().onTrue(new MechanismPosition(CoralMechanismState.DeepCage));
 
         // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
         // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
-        
-        controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
-        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow), new AlgaeProfile(AlgaeMechanismState.Out), () -> algaeIsOut));
-        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
-        controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
 
-        controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
-        controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
-        controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
-        controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
+        // controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
+        // controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow), new AlgaeProfile(AlgaeMechanismState.Out), () -> algaeIsOut));
+        // leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
+        // controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
+
+        // controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
+        // controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
+        // controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
+        // controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
     
 
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
@@ -110,7 +110,7 @@ public class Controls {
         rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
         rightJoystick.povDown().whileTrue(new SnapToAngle(300));
 
-        rightJoystick.button(1).whileTrue(new EjectCoral());
+        // rightJoystick.button(1).whileTrue(new EjectCoral());
     }
 
     public static Controls getInstance() {
