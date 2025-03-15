@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
   // @NotLogged`
   public AlgaeIntake algae;
 
+  @NotLogged
   PowerDistribution pd;
 
   public static CoralMechanismState coralState = CoralMechanismState.Stow;

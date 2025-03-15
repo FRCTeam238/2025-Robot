@@ -47,6 +47,8 @@ public class Controls {
 
     DriveType driveType = DriveType.JOYSTICK;
 
+    boolean algaeIsOut = false;
+
     GoToReefTag reefCommand = new GoToReefTag(false);
 
     private Controls() {
@@ -74,11 +76,10 @@ public class Controls {
 
         // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
         // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        
         controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
-        controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out)).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
-
+        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow), new AlgaeProfile(AlgaeMechanismState.Out), () -> algaeIsOut));
         leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
-
         controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
 
         controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y

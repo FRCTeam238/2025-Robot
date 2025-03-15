@@ -51,10 +51,12 @@ public class Drivetrain extends SubsystemBase {
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
 
-  boolean usingVision = true;
+  boolean usingVision = false;
 
   PhotonCamera leftCam;
   PhotonCamera rightCam;
+
+  boolean filterByDistanceFromOdometryPose = false;
 
   ArrayList<Pose2d> leftList;
   ArrayList<Pose2d> rightList;
@@ -316,9 +318,6 @@ public class Drivetrain extends SubsystemBase {
             && Math.abs(distanceFromGoal.getX()) < positionTolerance
             && Math.abs(distanceFromGoal.getY()) < positionTolerance
             && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance;
-            //TODO: does this work? or does it make things worse?
-            // && Math.abs(gyro.getVelocityX() - trajectory.getFinalSample(isReversed.getAsBoolean()).get().vx) < velocityTolerance
-            // && Math.abs(gyro.getVelocityY() - trajectory.getFinalSample(isReversed.getAsBoolean()).get().vy) < velocityTolerance;
       },
       this);
   }
@@ -335,7 +334,6 @@ public class Drivetrain extends SubsystemBase {
 
     ChassisSpeeds retval = ChassisSpeeds.fromFieldRelativeSpeeds(
         xFF + xFeedback, yFF + yFeedback, rotationFF + rotationFeedback, currentPose.getRotation());
-      // retval.times(maxVelocityMetersPerSec);
     return retval;
   }
 
@@ -404,10 +402,12 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  @NotLogged
   public Transform3d getRightCamToTarget() {
     return rightCam.getLatestResult().getBestTarget().bestCameraToTarget;
   }
 
+  @NotLogged
   public int getBestTagId(boolean rightSide) {
     if (rightSide) {
       return leftCam.getLatestResult().getBestTarget().fiducialId;
@@ -416,38 +416,22 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  public PhotonPipelineResult getLatestResult(boolean rightSide) {
-    if (rightSide) {
+
+  /**
+   * 
+   * 
+   */
+  @NotLogged
+  public PhotonPipelineResult getLatestResult(boolean rightSideOfReef) {
+    if (rightSideOfReef) {
       return leftCam.getLatestResult();
     } else {
       return rightCam.getLatestResult();
     }
   }
 
-  /**
-   * gets the Pose3d that the photonvision thinks the robot is at
-   * @return Pose3d of the robot's position
-   */
-  @NotLogged
-  public Pose3d getEstimatedVisionPose() {
-    var estimate = getVisionEstimate();
-    if (estimate.isPresent()) {
-      return estimate.get().estimatedPose;
-    } else {
-      return Pose3d.kZero;
-    }
-  }
-
-  @NotLogged
-  public Optional<EstimatedRobotPose> getVisionEstimate() {
-    Optional<EstimatedRobotPose> p = Optional.empty();
-    for (var result : leftCam.getAllUnreadResults()) {
-      p = rightEstimator.update(result);
-    }
-    return p;
-    
-  }
-
+  
+  
 
   /**
    * wrapper for running all periodic vision code
@@ -455,17 +439,25 @@ public class Drivetrain extends SubsystemBase {
   private void runVision() {
     rightEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : rightCam.getAllUnreadResults()) {
+      // if best visible target is too far away for our liking, discard it, else use it
+      if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
+      continue;
       var em = rightEstimator.update(result);
-      odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
-    }
-    leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
-    for (var result : leftCam.getAllUnreadResults()) {
-      var em = leftEstimator.update(result);
-      odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
+      //if the pose estimate is close enough to our current odometry estimate, add it to odometry
+      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
+        odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
+      }
     }
 
-   
-    
+    leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
+    for (var result : leftCam.getAllUnreadResults()) {
+      if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
+      continue;
+      var em = leftEstimator.update(result);
+      //if the pose estimate is close enough to our current odometry estimate, add it to odometry
+      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
+        odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
+      }
+    }
   }
-    
 }
