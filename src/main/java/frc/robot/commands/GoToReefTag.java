@@ -41,12 +41,12 @@ public class GoToReefTag extends Command{
         // yController.setSetpoint(desiredY);
         // thetaController.setSetpoint(desiredTheta);
     }
-
+/* 
     @Override
     public boolean runsWhenDisabled() {
         return true;
     }
-
+*/
     @Override
     public void initialize() {
         //tagID = drivetrain.getBestTagId(rightSide);

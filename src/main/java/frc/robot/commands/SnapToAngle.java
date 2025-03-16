@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Controls;
 import frc.robot.autonomous.Auto;
@@ -30,6 +31,7 @@ public class SnapToAngle extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    pid.setSetpoint(Units.degreesToRadians(angle));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,7 +40,7 @@ public class SnapToAngle extends Command {
     double[] joyValues = Controls.getInstance().getSwerveJoystickValues();
     double robotAngle = drivetrain.getFieldRelativeOffset().getRadians();
 
-    drivetrain.driveFromJoysticks(joyValues[0], joyValues[1], pid.calculate(robotAngle, angle));
+    drivetrain.driveFromJoysticks(joyValues[0]*maxVelocityMetersPerSec, joyValues[1]*maxVelocityMetersPerSec, pid.calculate(robotAngle));
   }
 
   // Called once the command ends or is interrupted.

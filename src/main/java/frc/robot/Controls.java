@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -49,10 +50,10 @@ public class Controls {
 
     boolean algaeIsOut = false;
 
-    GoToReefTag reefCommand = new GoToReefTag(false);
+   // GoToReefTag reefCommand = new GoToReefTag(false);
 
     private Controls() {
-        CommandScheduler.getInstance().schedule(reefCommand);
+       // CommandScheduler.getInstance().schedule(reefCommand);
         DriverStation.silenceJoystickConnectionWarning(true);
         driveTypeChooser.addOption("JOYSTICK", DriveType.XBOX);
         driveTypeChooser.setDefaultOption("XBOX", DriveType.JOYSTICK);
@@ -77,8 +78,9 @@ public class Controls {
         // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
         // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
         
+        
         controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
-        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow), new AlgaeProfile(AlgaeMechanismState.Out), () -> algaeIsOut));
+        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow).alongWith(getSwapInOutCommand()), new AlgaeProfile(AlgaeMechanismState.Out).andThen(getSwapInOutCommand()), () -> algaeIsOut));
         leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
         controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
 
@@ -86,8 +88,8 @@ public class Controls {
         controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
         controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
         controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
-    
-
+        
+        
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
         leftJoystick.button(13).whileTrue(new SnapToAngle(180));
@@ -97,33 +99,35 @@ public class Controls {
         leftJoystick.povRight().whileTrue(new SnapToAngle(120));
         leftJoystick.povLeft().whileTrue(new SnapToAngle(240));
         leftJoystick.povDown().whileTrue(new SnapToAngle(300));
-
+        
         // leftJoystick.button(1).whileTrue(new EjectCoral());
-
+        
         rightJoystick.button(11).whileTrue(new SnapToAngle(0));
         rightJoystick.button(12).whileTrue(new SnapToAngle(90));
         rightJoystick.button(13).whileTrue(new SnapToAngle(180));
         rightJoystick.button(14).whileTrue(new SnapToAngle(270));
-
+        
         rightJoystick.povUp().whileTrue(new SnapToAngle(60));
         rightJoystick.povRight().whileTrue(new SnapToAngle(120));
         rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
         rightJoystick.povDown().whileTrue(new SnapToAngle(300));
-
+        
         rightJoystick.button(1).whileTrue(new EjectCoral());
     }
-
+    
     public static Controls getInstance() {
         if (singleton == null) {
             singleton = new Controls();
         }
         return singleton;
     }
-
+    public Command getSwapInOutCommand() {
+        return new InstantCommand(() -> {algaeIsOut = !algaeIsOut;});
+    }
     @Logged
     public double[] getSwerveJoystickValues() {
         double slowmodePercent = getSlowmode() ? .75 : 1;
-
+        
         switch (getDriveType()) {
             case JOYSTICK -> {
                 return new double[] {

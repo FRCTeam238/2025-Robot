@@ -150,7 +150,7 @@ public class Constants {
         public static double L1 = 0;
         public static double L2 = 1;
         public static double L3 = 10.3;
-        public static double L4 = 35.5;//35.5
+        public static double L4 = 30;//35.5
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
