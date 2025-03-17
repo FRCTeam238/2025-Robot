@@ -100,38 +100,21 @@ public class Drivetrain extends SubsystemBase {
      setupVision();
     }
 
+    AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+    double xOffset = .4; //How close or far from the reef, increase number for further away
+    double yOffset = .16; // How far left/right of center, increase for further off center
+    Transform2d rightOffset = new Transform2d(xOffset, yOffset, new Rotation2d(Math.PI));
+    Transform2d leftOffset = new Transform2d(xOffset, -yOffset, new Rotation2d(Math.PI));
     rightList = new ArrayList<>();
-    rightList.add(new Pose2d(3.2, 3.865, new Rotation2d(0))); //BB
-    rightList.add(new Pose2d(4, 2.848, new Rotation2d(60))); //BD
-    rightList.add(new Pose2d(5.268, 3.009, new Rotation2d(120))); //BF
-    rightList.add(new Pose2d(5.768, 4.192, new Rotation2d(180))); //BH
-    rightList.add(new Pose2d(5, 5.197, new Rotation2d(240))); //BJ
-    rightList.add(new Pose2d(3.722, 5.060, new Rotation2d(300))); //BL
-    //RED
-    
-    rightList.add(new Pose2d(5.768 + 8.591, 4.192, new Rotation2d(180))); //RB
-    rightList.add(new Pose2d(5 + 8.591, 5.197, new Rotation2d(240))); //RD
-    rightList.add(new Pose2d(3.722 + 8.591, 5.060, new Rotation2d(300))); //RF
-    rightList.add(new Pose2d(3.2 + 8.591, 3.865, new Rotation2d(0))); //RH
-    rightList.add(new Pose2d(4 + 8.591, 2.848, new Rotation2d(60))); //RJ
-    rightList.add(new Pose2d(5.268 + 8.591, 3.009, new Rotation2d(120))); //RL
-
     leftList = new ArrayList<>();
-    leftList.add(new Pose2d(3.2, 4.191, new Rotation2d(0))); //BA
-    leftList.add(new Pose2d(3.717, 3, new Rotation2d(60))); //BC
-    leftList.add(new Pose2d(5, 2.854, new Rotation2d(120))); //BE
-    leftList.add(new Pose2d(5.762, 3.859, new Rotation2d(180))); //BG
-    leftList.add(new Pose2d(5.275, 5.013, new Rotation2d(240))); //BI
-    leftList.add(new Pose2d(4.014, 5.209, new Rotation2d(300))); //BK
-    
-    leftList.add(new Pose2d(5.762 + 8.591, 3.859, new Rotation2d(180))); //RA
-    leftList.add(new Pose2d(5.275 + 8.591, 5.013, new Rotation2d(240))); //RC
-    leftList.add(new Pose2d(4.014 + 8.591, 5.209, new Rotation2d(300))); //RE
-    leftList.add(new Pose2d(3.2 + 8.591, 4.191, new Rotation2d(0))); //RG
-    leftList.add(new Pose2d(3.717 + 8.591, 3, new Rotation2d(60))); //RI
-    leftList.add(new Pose2d(5 + 8.591, 2.854, new Rotation2d(120))); //RK
-
-
+    for (int i = 17; i <= 22; i++) {
+      rightList.add(layout.getTagPose(i).get().toPose2d().transformBy(rightOffset));
+      leftList.add(layout.getTagPose(i).get().toPose2d().transformBy(leftOffset));
+    }
+    for (int i = 6; i <= 11; i++) {
+      rightList.add(layout.getTagPose(i).get().toPose2d().transformBy(rightOffset));
+      leftList.add(layout.getTagPose(i).get().toPose2d().transformBy(leftOffset));
+    }
   }
 
   public static Drivetrain getInstance() {
