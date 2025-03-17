@@ -10,46 +10,34 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
 @Logged
-public class GoToReefTag extends Command{
+public class GoToReefTag extends Command {
 
     Drivetrain drivetrain;
 
     ChassisSpeeds speeds = new ChassisSpeeds();
 
     Pose2d nearestPose;
-    
-    boolean rightSide = false;
-    double desiredX = 0.2; //X in cam coordinates, increases as distance is further away, Y in robot coordinates
-    double desiredY = -.03; //Y in cam coordinates, + to the left, negative to the right from cam, X in robot coordinates
-    double desiredTheta = -170; //Clockwise positive, reported angle is -180 to 180, make sure to handle wrap
 
-    PIDController xController = new PIDController(0, 0, 0);
-    PIDController yController = new PIDController(0, 0, 0);
-    PIDController thetaController = new PIDController(0,0,0);
+    boolean rightSide = false;
+
+    PIDController xController = new PIDController(10, 0, .5);
+    PIDController yController = new PIDController(10, 0, .5);
+    PIDController thetaController = new PIDController(10, 0, .5);
 
     Transform3d delta = new Transform3d();
-    
+
     public GoToReefTag(boolean rightSide) {
         this.rightSide = rightSide;
         drivetrain = Drivetrain.getInstance();
-        //addRequirements(drivetrain);
-        thetaController.enableContinuousInput(-180, 180);
-        // xController.setSetpoint(desiredX);
+        addRequirements(drivetrain);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
         xController.setTolerance(0.05, 0.8);
         yController.setTolerance(0.05, 0.8);
-        thetaController.setTolerance(1, 0.8);
-        // yController.setSetpoint(desiredY);
-        // thetaController.setSetpoint(desiredTheta);
+        thetaController.setTolerance(.02, 0.8);
     }
-/* 
-    @Override
-    public boolean runsWhenDisabled() {
-        return true;
-    }
-*/
+
     @Override
     public void initialize() {
-        //tagID = drivetrain.getBestTagId(rightSide);
         nearestPose = drivetrain.getPose().nearest(drivetrain.getReefPoses(rightSide));
         xController.setSetpoint(nearestPose.getX());
         thetaController.setSetpoint(nearestPose.getRotation().getDegrees());
@@ -58,10 +46,10 @@ public class GoToReefTag extends Command{
 
     @Override
     public void execute() {
-        
+
         var xSpeed = xController.calculate(drivetrain.getPose().getX());
         var ySpeed = yController.calculate(drivetrain.getPose().getY());
-        var thetaSpeed = thetaController.calculate(drivetrain.getPose().getRotation().getDegrees());
+        var thetaSpeed = thetaController.calculate(drivetrain.getPose().getRotation().getRadians());
 
         drivetrain.driveFieldRelative(xSpeed, ySpeed, thetaSpeed);
     }
