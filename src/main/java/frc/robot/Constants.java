@@ -59,8 +59,12 @@ public class Constants {
         //Vision constants
         public static Transform3d rightCameraLocation = new Transform3d(-10.656, 6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
         public static Transform3d leftCameraLocation = new Transform3d(-10.656, -6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
-        public static double maxVisionDistanceTolerance = 10;// for the max distance between cam and tag
-        public static double visionPoseDiffTolerance = 5; // for the diff between estimated vision pose and odometry
+        public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
+        public static double maxAmbiguity = 1; // max ambiguity out of 1
+        public static double zTolerance = 0.25;
+        public static double rollPitchTolerance = Units.degreesToRadians(10);
+        public static double visionPoseDiffTolerance = 2; // for the diff between estimated vision pose and odometry in
+                                                          // meters
     }
 
     public enum CoralMechanismState {

@@ -16,6 +16,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.NotLogged;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.*;
@@ -50,7 +51,6 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-
   boolean usingVision = false;
 
   PhotonCamera leftCam;
@@ -61,10 +61,21 @@ public class Drivetrain extends SubsystemBase {
   ArrayList<Pose2d> leftList;
   ArrayList<Pose2d> rightList;
 
-
   PhotonPoseEstimator rightEstimator;
   PhotonPoseEstimator leftEstimator;
   PhotonPipelineResult lastResult = new PhotonPipelineResult();
+
+  double rightTagDistance = 0;
+  double rightAmbiguity = 0;
+  double rightBestID = 0;
+  double rightOffsetDistance = 0;
+  Pose3d rightPoseEstimate = new Pose3d();
+
+  double leftTagDistance = 0;
+  double leftAmbiguity = 0;
+  double leftBestID = 0;
+  double leftOffsetDistance = 0;
+  Pose3d leftPoseEstimate = new Pose3d();
 
   @NotLogged
   SwerveDrivePoseEstimator odometry;
@@ -90,6 +101,7 @@ public class Drivetrain extends SubsystemBase {
             backRight.getPosition()
         },
         new Pose2d());
+    odometry.setVisionMeasurementStdDevs(VecBuilder.fill(0.5, 0.5, 15));
 
     x = new PIDController(kP, kI, kD);
     y = new PIDController(kP, kI, kD);
@@ -97,11 +109,11 @@ public class Drivetrain extends SubsystemBase {
     theta.enableContinuousInput(-Math.PI, Math.PI);
 
     if (usingVision) {
-     setupVision();
+      setupVision();
     }
 
     AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
-    double xOffset = .4; //How close or far from the reef, increase number for further away
+    double xOffset = .4; // How close or far from the reef, increase number for further away
     double yOffset = .16; // How far left/right of center, increase for further off center
     Transform2d rightOffset = new Transform2d(xOffset, yOffset, new Rotation2d(Math.PI));
     Transform2d leftOffset = new Transform2d(xOffset, -yOffset, new Rotation2d(Math.PI));
@@ -147,8 +159,6 @@ public class Drivetrain extends SubsystemBase {
   public void setCommand(String name) {
     command = name;
   }
-
-
 
   public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(
@@ -198,14 +208,13 @@ public class Drivetrain extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             .02));
     setModuleStates(swerveModuleStates);
-  } 
+  }
 
   public void driveWithChassisSpeeds(ChassisSpeeds speeds) {
 
     var swerveModuleStates = kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.discretize(speeds, .02));
     setModuleStates(swerveModuleStates);
   }
-
 
   public void setModuleStates(SwerveModuleState[] states) {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, maxVelocityMetersPerSec);
@@ -320,7 +329,7 @@ public class Drivetrain extends SubsystemBase {
     return retval;
   }
 
-  //=========VISION STUFF=========
+  // =========VISION STUFF=========
 
   /**
    * run this whenever you want vision stuff, otherwise, leave it out
@@ -328,7 +337,6 @@ public class Drivetrain extends SubsystemBase {
   private void setupVision() {
     leftCam = new PhotonCamera("LeftCam");
     rightCam = new PhotonCamera("RightCam");
-    
 
     rightEstimator = new PhotonPoseEstimator(
         AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
@@ -378,6 +386,8 @@ public class Drivetrain extends SubsystemBase {
         // J  | 4.000 + 8.591 | 2.848 | 60
         // K  | 5.000 + 8.591 | 2.854 | 120
         // L  | 5.268 + 8.591 | 3.009 | 120
+    // K | 5.000 + 8.591 | 2.854 | 120
+    // L | 5.268 + 8.591 | 3.009 | 120
     if (rightSide) {
       return rightList;
     } else {
@@ -399,7 +409,6 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-
   /**
    * 
    * 
@@ -413,8 +422,9 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  
-  
+  private boolean isReefTag(int tag) {
+    return (tag <= 11 && tag >= 6) || (tag <= 22 && tag >= 17);
+  }
 
   /**
    * wrapper for running all periodic vision code
@@ -422,25 +432,74 @@ public class Drivetrain extends SubsystemBase {
   private void runVision() {
     rightEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : rightCam.getAllUnreadResults()) {
-      // if best visible target is too far away for our liking, discard it, else use it
-      if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
-      continue;
+      // if best visible target is too far away for our liking, discard it, else use
+      // it
+      rightTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
+      if (rightTagDistance > maxVisionDistanceTolerance)
+        continue;
+      // Check if 3D ambiguity is too high and skip if it is. May not be needed
+      // because of chosen estimator strategy
+      rightAmbiguity = result.getBestTarget().poseAmbiguity;
+      if (rightAmbiguity > maxAmbiguity)
+        continue;
+      // Check if tag is a reef tag and skip if it's not
+      if (!isReefTag(result.getBestTarget().fiducialId))
+        continue;
+
       var em = rightEstimator.update(result);
-      //if the pose estimate is close enough to our current odometry estimate, add it to odometry
-      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
-        odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
-      }
+      rightPoseEstimate = em.get().estimatedPose;
+      // Check if estimate has us flying in the air and reject
+      if (rightPoseEstimate.getZ() > zTolerance)
+        continue;
+      // Check if estimate says we're rolled and reject
+      if (rightPoseEstimate.getRotation().getX() > rollPitchTolerance)
+        continue;
+      // Check if estimate says we're pitched and reject
+      if (rightPoseEstimate.getRotation().getY() > rollPitchTolerance)
+        continue;
+      // Check if estimate is close enough to where we think we are
+      rightOffsetDistance = rightPoseEstimate.toPose2d().getTranslation()
+          .getDistance(odometry.getEstimatedPosition().getTranslation());
+      if (rightOffsetDistance > visionPoseDiffTolerance)
+        continue;
+      // Measurement passed all filters, add to global pose estimate
+      odometry.addVisionMeasurement(rightPoseEstimate.toPose2d(), em.get().timestampSeconds);
     }
 
     leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : leftCam.getAllUnreadResults()) {
-      if (result.getBestTarget().bestCameraToTarget.getTranslation().getNorm() > maxVisionDistanceTolerance)
-      continue;
+      // if best visible target is too far away for our liking, discard it, else use
+      // it
+      leftTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
+      if (leftTagDistance > maxVisionDistanceTolerance)
+        continue;
+      // Check if 3D ambiguity is too high and skip if it is. May not be needed
+      // because of chosen estimator strategy
+      leftAmbiguity = result.getBestTarget().poseAmbiguity;
+      if (leftAmbiguity > maxAmbiguity)
+        continue;
+      // Check if tag is a reef tag and skip if it's not
+      if (!isReefTag(result.getBestTarget().fiducialId))
+        continue;
+
       var em = leftEstimator.update(result);
-      //if the pose estimate is close enough to our current odometry estimate, add it to odometry
-      if (em.get().estimatedPose.getTranslation().getNorm() < visionPoseDiffTolerance && filterByDistanceFromOdometryPose) {
-        odometry.addVisionMeasurement(em.get().estimatedPose.toPose2d(), em.get().timestampSeconds);
-      }
+      leftPoseEstimate = em.get().estimatedPose;
+      // Check if estimate has us flying in the air and reject
+      if (leftPoseEstimate.getZ() > zTolerance)
+        continue;
+      // Check if estimate says we're rolled and reject
+      if (leftPoseEstimate.getRotation().getX() > rollPitchTolerance)
+        continue;
+      // Check if estimate says we're pitched and reject
+      if (leftPoseEstimate.getRotation().getY() > rollPitchTolerance)
+        continue;
+      // Check if estimate is close enough to where we think we are
+      leftOffsetDistance = leftPoseEstimate.toPose2d().getTranslation()
+          .getDistance(odometry.getEstimatedPosition().getTranslation());
+      if (leftOffsetDistance > visionPoseDiffTolerance)
+        continue;
+      // Measurement passed all filters, add to global pose estimate
+      odometry.addVisionMeasurement(leftPoseEstimate.toPose2d(), em.get().timestampSeconds);
     }
   }
 }
