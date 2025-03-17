@@ -339,15 +339,15 @@ public class Drivetrain extends SubsystemBase {
     rightCam = new PhotonCamera("RightCam");
 
     rightEstimator = new PhotonPoseEstimator(
-        AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
-        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-        rightCameraLocation //TODO: Make real numbers
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
+        PhotonPoseEstimator.PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+        rightCameraLocation // TODO: Make real numbers
     );
     leftEstimator = new PhotonPoseEstimator(
-      AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField),
-      PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-      leftCameraLocation //TODO: Make real numbers
-  );
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
+        PhotonPoseEstimator.PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+        leftCameraLocation // TODO: Make real numbers
+    );
   }
 
   private void updatePoseEstimate(Optional<EstimatedRobotPose> estimate) {
