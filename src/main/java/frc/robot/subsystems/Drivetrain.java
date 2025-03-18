@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = false;
+  boolean usingVision = true;
 
   PhotonCamera leftCam;
   PhotonCamera rightCam;
@@ -115,8 +115,8 @@ public class Drivetrain extends SubsystemBase {
     AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
     double xOffset = .4; // How close or far from the reef, increase number for further away
     double yOffset = .16; // How far left/right of center, increase for further off center
-    Transform2d rightOffset = new Transform2d(xOffset, yOffset, new Rotation2d(Math.PI));
-    Transform2d leftOffset = new Transform2d(xOffset, -yOffset, new Rotation2d(Math.PI));
+    Transform2d rightOffset = new Transform2d(xOffset, yOffset, new Rotation2d(0));
+    Transform2d leftOffset = new Transform2d(xOffset, -yOffset, new Rotation2d(0));
     rightList = new ArrayList<>();
     leftList = new ArrayList<>();
     for (int i = 17; i <= 22; i++) {
@@ -432,6 +432,7 @@ public class Drivetrain extends SubsystemBase {
   private void runVision() {
     rightEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : rightCam.getAllUnreadResults()) {
+      if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use
       // it
       rightTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();
@@ -468,6 +469,7 @@ public class Drivetrain extends SubsystemBase {
 
     leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
     for (var result : leftCam.getAllUnreadResults()) {
+      if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use
       // it
       leftTagDistance = result.getBestTarget().bestCameraToTarget.getTranslation().getNorm();

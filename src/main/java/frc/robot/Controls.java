@@ -46,6 +46,9 @@ public class Controls {
     @NotLogged
     CommandJoystick leftJoystick = new CommandJoystick(2);
 
+    GoToReefTag goLeft = new GoToReefTag(false);
+    GoToReefTag goRight = new GoToReefTag(true);
+
     DriveType driveType = DriveType.JOYSTICK;
 
     boolean algaeIsOut = false;
@@ -62,34 +65,10 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
-
+        
+        driverController.x().whileTrue(goLeft);
+        driverController.b().whileTrue(goRight);
         Drivetrain.getInstance().setDefaultCommand(new Drive());
-        // Pivot.getInstance().setDefaultCommand(Pivot.getInstance().holdPositionCommand());
-        // Elevator.getInstance().setDefaultCommand(new ManualElevator());
-        // AlgaeIntake.getInstance().setDefaultCommand(new AlgaeProfile(AlgaeMechanismState.Stow));
-        // controller.a().onTrue(new MechanismPosition(CoralMechanismState.L1));
-        controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
-        controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
-        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
-        controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
-        controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
-        controller.povUp().onTrue(new MechanismPosition(CoralMechanismState.DeepCage));
-
-        // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
-        // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
-        
-        
-        controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
-        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow).alongWith(getSwapInOutCommand()), new AlgaeProfile(AlgaeMechanismState.Out).andThen(getSwapInOutCommand()), () -> algaeIsOut));
-        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
-        controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
-
-        controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
-        controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
-        controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
-        controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
-        
-        
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
         leftJoystick.button(13).whileTrue(new SnapToAngle(180));
@@ -111,8 +90,34 @@ public class Controls {
         rightJoystick.povRight().whileTrue(new SnapToAngle(120));
         rightJoystick.povLeft().whileTrue(new SnapToAngle(240));
         rightJoystick.povDown().whileTrue(new SnapToAngle(300));
+       
+        if (Robot.isPracticeBot()) return;
+        //PUT ALL STUFF NOT ON THE PRACTICE BOT BELOW THIS LINE
+       
+        controller.x().onTrue(new MechanismPosition(CoralMechanismState.L2));
+        controller.b().onTrue(new MechanismPosition(CoralMechanismState.L3));
+        controller.y().onTrue(new MechanismPosition(CoralMechanismState.L4));
+        controller.rightBumper().onTrue(new MechanismPosition(CoralMechanismState.CoralStation));
+        controller.povDown().onTrue(new MechanismPosition(CoralMechanismState.Stow));
+        controller.povUp().onTrue(new MechanismPosition(CoralMechanismState.DeepCage));
+
+        // controller.leftTrigger().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        // controller.leftBumper().whileTrue(new AlgaeProfile(AlgaeMechanismState.Out).andThen(new RunAlgaeIntake(false)).andThen(rumbleCommand())).onFalse(new AlgaeProfile(AlgaeMechanismState.Stow));
+        
+        
+        controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
+        controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow).alongWith(getSwapInOutCommand()), new AlgaeProfile(AlgaeMechanismState.Out).andThen(getSwapInOutCommand()), () -> algaeIsOut));
+        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
+        controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
+
+        controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
+        controller.axisLessThan(1, -0.1).whileTrue(new ManualElevator()); // Left Y
+        controller.axisGreaterThan(5, 0.1).whileTrue(new ManualPivot()); // Right Y
+        controller.axisLessThan(5, -0.1).whileTrue(new ManualPivot()); // Right Y
         
         rightJoystick.button(1).whileTrue(new EjectCoral());
+        
+        
     }
     
     public static Controls getInstance() {

@@ -72,16 +72,28 @@ public class Robot extends TimedRobot {
 
     pd = new PowerDistribution(1, ModuleType.kRev);
     
+    controls = Controls.getInstance();
+    drivetrain = Drivetrain.getInstance();
+    if (isPracticeBot()) {
+      Epilogue.elevatorLogger.disable();
+      Epilogue.pivotLogger.disable();
+      Epilogue.wristLogger.disable();
+      Epilogue.coralIntakeLogger.disable();
+      Epilogue.algaeIntakeLogger.disable();
+      return;
+    }
     elevator = Elevator.getInstance();
     pivot = Pivot.getInstance();
-    drivetrain = Drivetrain.getInstance();
     wrist = Wrist.getInstance();
     coralIntake = CoralIntake.getInstance();
     algae = AlgaeIntake.getInstance();
-    controls = Controls.getInstance();
     
   }
   
+  public static boolean isPracticeBot() {
+    return true;
+  }
+
   @Override
   public void robotInit() {
     pd.setSwitchableChannel(true);
@@ -110,6 +122,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    if (isPracticeBot()) return;
     pivot.stop();
     elevator.stop();
     wrist.stop();

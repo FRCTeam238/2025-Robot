@@ -64,7 +64,7 @@ public class CoralIntake extends SubsystemBase {
     coralMotor.setControl(new VelocityVoltage(speed));
   }
 
-  @NotLogged
+  
   public boolean hasCoral() {
     if (laserCanBroken) return false;
     try {
@@ -79,7 +79,7 @@ public class CoralIntake extends SubsystemBase {
     }
     // return !di.get();
   }
-  @NotLogged
+  
   public double getDistanceFromCoral() {
     if (laserCanBroken) return 90;
     // if (lc.getMeasurement().status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT) {

@@ -57,13 +57,13 @@ public class Constants {
         public static final double xandyvelocityTolerance = 0.05;
 
         //Vision constants
-        public static Transform3d rightCameraLocation = new Transform3d(-10.656, 6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
-        public static Transform3d leftCameraLocation = new Transform3d(-10.656, -6.988, 14.692, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
+        public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
+        public static Transform3d leftCameraLocation = new Transform3d(-0.2707, -0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(170)));
         public static double maxVisionDistanceTolerance = 5;// for the max distance between cam and tag in meters
         public static double maxAmbiguity = 1; // max ambiguity out of 1
         public static double zTolerance = 0.25;
         public static double rollPitchTolerance = Units.degreesToRadians(10);
-        public static double visionPoseDiffTolerance = 2; // for the diff between estimated vision pose and odometry in
+        public static double visionPoseDiffTolerance = 99; // for the diff between estimated vision pose and odometry in
                                                           // meters
     }
 
@@ -114,7 +114,7 @@ public class Constants {
         public static double stow = 50;
         public static double deepCage = 90;
         public static double shallowCage = 10;
-        public static double coralStation = 44;
+        public static double coralStation = 46.7;
 
         public static double forwardLimit = 0;
         public static double reverseLimit = 0;
@@ -158,7 +158,7 @@ public class Constants {
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 3.1;
+        public static double coralStation = 1.8;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;
@@ -214,7 +214,7 @@ public class Constants {
         public static int ROIw = 0;
         public static int ROIh = 0;
         // units are in mm
-        public static double sensorDistance = 5;
+        public static double sensorDistance = 20;
     }
 
     public class AlgaeIntakeConstants {
