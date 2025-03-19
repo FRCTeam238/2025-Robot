@@ -92,14 +92,6 @@ public class Pivot extends SubsystemBase {
      * sets the motor PID position to the current position with a speed of zero
      */
     public void holdPosition() {
-        // pivotLeader
-        //     .getClosedLoopController()
-        //     .setReference(
-        //         getPosition(),
-        //         ControlType.kPosition,
-        //         ClosedLoopSlot.kSlot0,
-        //         0
-        //     );
         setDesiredState(new MotionProfile.State(getPosition()));
     }
 

@@ -29,7 +29,6 @@ public class ManualPivot extends Command {
   @Override
   public void execute() {
     pivot.setSpeed(Controls.getInstance().getOperatorRightStickY() * 0.5);
-    System.out.println(Controls.getInstance().getOperatorRightStickY()*0.5);
   }
 
   // Called once the command ends or is interrupted.

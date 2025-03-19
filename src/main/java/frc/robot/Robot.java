@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
   }
   
   public static boolean isPracticeBot() {
-    return true;
+    return false;
   }
 
   @Override

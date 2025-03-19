@@ -51,18 +51,22 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = true;
+  boolean usingVision = false;
 
+  @NotLogged
   PhotonCamera leftCam;
+  @NotLogged
   PhotonCamera rightCam;
 
   boolean filterByDistanceFromOdometryPose = false;
-
+  @NotLogged
   ArrayList<Pose2d> leftList;
+  @NotLogged
   ArrayList<Pose2d> rightList;
 
   PhotonPoseEstimator rightEstimator;
   PhotonPoseEstimator leftEstimator;
+  @NotLogged
   PhotonPipelineResult lastResult = new PhotonPipelineResult();
 
   double rightTagDistance = 0;
@@ -82,6 +86,7 @@ public class Drivetrain extends SubsystemBase {
   AHRS gyro;
   PIDController x, y, theta;
   String command = "None";
+  @NotLogged
   Field2d field = new Field2d();
   SwerveSample trajectoryPose = new SwerveSample(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, new double[] { 0, 0, 0, 0 },
       new double[] { 0, 0, 0, 0 });
@@ -269,6 +274,7 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  @NotLogged
   public Command zeroHeadingCommand() {
     return Commands.runOnce(
         () -> {
@@ -284,6 +290,7 @@ public class Drivetrain extends SubsystemBase {
     return gyro.getRate();
   }
 
+  @NotLogged
   public Command choreoCommand(
           Trajectory<SwerveSample> trajectory,
           BooleanSupplier isReversed) {
@@ -314,6 +321,8 @@ public class Drivetrain extends SubsystemBase {
       this);
   }
 
+
+  @NotLogged
   public ChassisSpeeds choreoController(SwerveSample referenceState) {
     Pose2d currentPose = getPose();
     double xFF = referenceState.vx;
@@ -356,6 +365,7 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  @NotLogged
   public List<Pose2d> getReefPoses(boolean rightSide) {
     //y: 7, x: 1, 0: 10
         // BLUE SIDE
