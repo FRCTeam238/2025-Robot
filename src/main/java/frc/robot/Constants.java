@@ -53,8 +53,8 @@ public class Constants {
 
         public static final double angleTolerance = 5;
         public static final double velocityTolerance = 0.8;
-        public static final double positionTolerance = 0.05;
-        public static final double xandyvelocityTolerance = 0.05;
+        public static final double positionTolerance = 0.08;
+        public static final double xandyvelocityTolerance = 0.08;
 
         //Vision constants
         public static Transform3d rightCameraLocation = new Transform3d(-0.2707, 0.1775, 0.3732, new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(190)));
@@ -91,7 +91,7 @@ public class Constants {
 
         // https://www.reca.lc/arm?armMass=%7B%22s%22%3A32%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A14%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22NEO%22%7D&ratio=%7B%22magnitude%22%3A225%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         public static double velocityMaxError = 3;
-        public static double positionMaxError = 1;
+        public static double positionMaxError = 1.2;
         public static double maxJerk = 3500;
         public static double maxAccel = 3200; // Max = 12,146 degrees/s^2
         public static double maxVelocity = 110; // Max = 151 degrees/s
@@ -114,7 +114,7 @@ public class Constants {
         public static double stow = 50;
         public static double deepCage = 90;
         public static double shallowCage = 10;
-        public static double coralStation = 46.7;
+        public static double coralStation = 48.7;
 
         public static double forwardLimit = 0;
         public static double reverseLimit = 0;
@@ -136,7 +136,7 @@ public class Constants {
         // https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
         public static double maxElevatorJerk = 10000;
         public static double maxAccel = 240; // max @40A is 830 in/s^2
-        public static double maxVelocity = 24; // max is ~121 in/s
+        public static double maxVelocity = 48; // max is ~121 in/s
         public static double velocityTolerance = 0.5;
         public static double velocityMaxError = 0.3;
         public static double positionMaxError = 0.4;
@@ -154,11 +154,11 @@ public class Constants {
         public static double L1 = 0;
         public static double L2 = 1;
         public static double L3 = 10.3;
-        public static double L4 = 30;//35.5
+        public static double L4 = 33;//35.5
         public static double stow = 0;
         public static double deepCage = 4;
         public static double shallowCage = 0;
-        public static double coralStation = 1.8;
+        public static double coralStation = 1.5;
 
         public static double forwardLimit = 64;
         public static double reverseLimit = 0;
@@ -196,7 +196,7 @@ public class Constants {
         public static double L1 = 0;
         public static double L2 = 30;
         public static double L3 = 53;
-        public static double L4 = 45;
+        public static double L4 = 30;
         public static double stow = 36;
         public static double deepCage = 75;
         public static double shallowCage = 0;
@@ -234,7 +234,7 @@ public class Constants {
         public static double kG = -1;
         public static double positionConversionFactor = 0;
         public static double velocityConversionFactor = 0;
-        public static double currentDetectionLimit = 30;//probably too low
+        public static double currentDetectionLimit = 36;//probably too low
 
         public static MotionProfile.MotionConstraints constraints = new MotionConstraints(maxJerk, maxAcceleration, maxVelocity, velocityTolerance);
 

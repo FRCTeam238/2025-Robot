@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
   }
   
   public static boolean isPracticeBot() {
-    return true;
+    return false;
   }
 
   @Override
@@ -118,6 +118,12 @@ public class Robot extends TimedRobot {
     }
 
     lastSelectedAuto = autoChooser.getSelected();
+    
+  }
+
+
+  public double getTime() {
+    return DriverStation.getMatchTime();
   }
 
   @Override

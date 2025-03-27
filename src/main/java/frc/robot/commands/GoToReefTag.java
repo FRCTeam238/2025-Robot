@@ -9,7 +9,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain;
 
-@Logged
 public class GoToReefTag extends Command {
 
     Drivetrain drivetrain;

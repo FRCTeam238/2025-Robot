@@ -34,7 +34,7 @@ public class ManualElevator extends Command {
   @Override
   public void end(boolean interrupted) {
     Elevator.getInstance().set(0);
-    // Elevator.getInstance().holdPosition();
+    Elevator.getInstance().holdPosition();
     Elevator.getInstance().setCommand("None");
     // Elevator.getInstance().setDesiredState(new Elevator.getInstance().getPosition());;
   }

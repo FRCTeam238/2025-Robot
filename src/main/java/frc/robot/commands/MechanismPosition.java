@@ -51,7 +51,7 @@ public class MechanismPosition extends ParallelCommandGroup {
         addCommands(
             new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L4), "L4"),
             new PivotProfile(new MotionProfile.State(PivotConstants.L4), "L4"));
-            // new WristProfile(new MotionProfile.State(WristConstants.L4), "L4"));
+            new WristProfile(new MotionProfile.State(WristConstants.L4), "L4");
       }
       case CoralStation -> {
         addCommands(

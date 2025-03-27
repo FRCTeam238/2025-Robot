@@ -25,6 +25,7 @@ import frc.robot.commands.ManualElevator;
 import frc.robot.commands.ManualPivot;
 import frc.robot.commands.MechanismPosition;
 import frc.robot.commands.RunAlgaeIntake;
+import frc.robot.commands.RunAlgaeSlow;
 import frc.robot.commands.SnapToAngle;
 import frc.robot.subsystems.AlgaeIntake;
 import frc.robot.subsystems.Drivetrain;
@@ -46,8 +47,6 @@ public class Controls {
     @NotLogged
     CommandJoystick leftJoystick = new CommandJoystick(2);
 
-    GoToReefTag goLeft = new GoToReefTag(false);
-    GoToReefTag goRight = new GoToReefTag(true);
 
     DriveType driveType = DriveType.JOYSTICK;
 
@@ -66,9 +65,8 @@ public class Controls {
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         
-        driverController.x().whileTrue(goLeft);
-        driverController.b().whileTrue(goRight);
         Drivetrain.getInstance().setDefaultCommand(new Drive());
+        AlgaeIntake.getInstance().setDefaultCommand(new RunAlgaeSlow(-0.1));
         leftJoystick.button(11).whileTrue(new SnapToAngle(0));
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
         leftJoystick.button(13).whileTrue(new SnapToAngle(180));
@@ -107,7 +105,7 @@ public class Controls {
         
         controller.leftTrigger().whileTrue(new RunAlgaeIntake(false));
         controller.leftBumper().onTrue(new ConditionalCommand(new AlgaeProfile(AlgaeMechanismState.Stow).alongWith(getSwapInOutCommand()), new AlgaeProfile(AlgaeMechanismState.Out).andThen(getSwapInOutCommand()), () -> algaeIsOut));
-        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true));
+        leftJoystick.button(1).whileTrue(new RunAlgaeIntake(true)).onFalse(new RunAlgaeSlow(0).withTimeout(4.62));
         controller.rightTrigger().whileTrue(new IntakeCoral(false).andThen(new IntakeCoral(true).withTimeout(.1)).andThen(rumbleCommand()));
 
         controller.axisGreaterThan(1, 0.1).whileTrue(new ManualElevator()); // Left Y
@@ -129,9 +127,9 @@ public class Controls {
     public Command getSwapInOutCommand() {
         return new InstantCommand(() -> {algaeIsOut = !algaeIsOut;});
     }
-    @Logged
+    @Logged 
     public double[] getSwerveJoystickValues() {
-        double slowmodePercent = getSlowmode() ? .75 : 1;
+        double slowmodePercent = getSlowmode() ? 1 : .67;
         
         switch (getDriveType()) {
             case JOYSTICK -> {

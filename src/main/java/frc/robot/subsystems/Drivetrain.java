@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = true;
+  boolean usingVision = false;
 
   PhotonCamera leftCam;
   PhotonCamera rightCam;
@@ -60,6 +60,9 @@ public class Drivetrain extends SubsystemBase {
 
   ArrayList<Pose2d> leftList;
   ArrayList<Pose2d> rightList;
+
+  double lastLinearAccelX = 0;
+  double lastLinearAccelY = 0;
 
   PhotonPoseEstimator rightEstimator;
   PhotonPoseEstimator leftEstimator;
@@ -77,6 +80,8 @@ public class Drivetrain extends SubsystemBase {
   double leftOffsetDistance = 0;
   Pose3d leftPoseEstimate = new Pose3d();
 
+  Pose2d desiredPose = Pose2d.kZero;
+
   @NotLogged
   SwerveDrivePoseEstimator odometry;
   AHRS gyro;
@@ -90,7 +95,7 @@ public class Drivetrain extends SubsystemBase {
 
   private Drivetrain() {
     SmartDashboard.putData("field", field);
-    gyro = new AHRS(NavXComType.kMXP_SPI);
+    gyro = new AHRS(NavXComType.kUSB1);
     odometry = new SwerveDrivePoseEstimator(
         kDriveKinematics,
         gyro.getRotation2d(),
@@ -127,6 +132,7 @@ public class Drivetrain extends SubsystemBase {
       rightList.add(layout.getTagPose(i).get().toPose2d().transformBy(rightOffset));
       leftList.add(layout.getTagPose(i).get().toPose2d().transformBy(leftOffset));
     }
+    
   }
 
   public static Drivetrain getInstance() {
@@ -297,29 +303,46 @@ public class Drivetrain extends SubsystemBase {
       }, 
       (interrupted) -> {//end
         time.stop();
-        if (interrupted) {
-           driveWithChassisSpeeds(new ChassisSpeeds()); 
-        } else {
-            driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
-        }
+        // if (interrupted) {
+        //    driveWithChassisSpeeds(new ChassisSpeeds()); 
+        // } else {
+        //     driveWithChassisSpeeds((choreoController(trajectory.getFinalSample(isReversed.getAsBoolean()).get())));
+        // }
+        driveFromJoysticks(0, 0, 0);; 
+
+        setCommand("None");
       }, 
       () -> {//isFinished
           var distanceFromGoal = getPose().relativeTo(trajectory.getFinalPose(isReversed.getAsBoolean()).get());
           //is this good?
-          return time.hasElapsed(trajectory.getTotalTime()) 
+          return (time.hasElapsed(trajectory.getTotalTime()) 
             && Math.abs(distanceFromGoal.getX()) < positionTolerance
             && Math.abs(distanceFromGoal.getY()) < positionTolerance
-            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance;
+            && Math.abs(distanceFromGoal.getRotation().getDegrees()) < angleTolerance);
+            // || (time.hasElapsed(0.08) && detectCrash.getAsBoolean() && hasCrashed());
       },
       this);
   }
 
+  public boolean hasCrashed() {
+
+    double linearAccelX = gyro.getWorldLinearAccelX();
+    double jerkX = linearAccelX - lastLinearAccelX;
+    lastLinearAccelX = linearAccelX;
+    double linearAccelY = gyro.getWorldLinearAccelY();
+    double jerkY = linearAccelY - lastLinearAccelY;
+    lastLinearAccelY = linearAccelY;
+
+    return Math.abs(jerkX) > 0.75 || Math.abs(jerkY) > 0.75;
+
+  }
+
   public ChassisSpeeds choreoController(SwerveSample referenceState) {
     Pose2d currentPose = getPose();
+    desiredPose = referenceState.getPose();
     double xFF = referenceState.vx;
     double yFF = referenceState.vy;
     double rotationFF = referenceState.omega;
-
     double xFeedback = x.calculate(currentPose.getX(), referenceState.x);
     double yFeedback = y.calculate(currentPose.getY(), referenceState.y);
     double rotationFeedback = theta.calculate(currentPose.getRotation().getRadians(), referenceState.heading);
