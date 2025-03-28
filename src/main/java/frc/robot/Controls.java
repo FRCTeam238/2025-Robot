@@ -71,6 +71,8 @@ public class Controls {
         leftJoystick.button(12).whileTrue(new SnapToAngle(90));
         leftJoystick.button(13).whileTrue(new SnapToAngle(180));
         leftJoystick.button(14).whileTrue(new SnapToAngle(270));
+        leftJoystick.button(15).whileTrue(new GoToReefTag(true));
+        leftJoystick.button(16).whileTrue(new GoToReefTag(false));
 
         leftJoystick.povUp().whileTrue(new SnapToAngle(60));
         leftJoystick.povRight().whileTrue(new SnapToAngle(120));

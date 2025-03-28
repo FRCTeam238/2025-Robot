@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
     wrist = Wrist.getInstance();
     coralIntake = CoralIntake.getInstance();
     algae = AlgaeIntake.getInstance();
+    pd.setSwitchableChannel(true);
     
   }
   
@@ -96,7 +97,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    pd.setSwitchableChannel(true);
     autoReader = new AutonomousModesReader(new DataFileAutonomousModeDataSource(Filesystem.getDeployDirectory() + "/amode238.txt"));
 
     autoChooser = new SendableChooser<String>();

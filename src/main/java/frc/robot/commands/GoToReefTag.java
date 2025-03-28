@@ -11,8 +11,6 @@ import frc.robot.subsystems.Drivetrain;
 
 public class GoToReefTag extends Command {
 
-    Drivetrain drivetrain;
-
     ChassisSpeeds speeds = new ChassisSpeeds();
 
     Pose2d nearestPose;
@@ -27,8 +25,7 @@ public class GoToReefTag extends Command {
 
     public GoToReefTag(boolean rightSide) {
         this.rightSide = rightSide;
-        drivetrain = Drivetrain.getInstance();
-        addRequirements(drivetrain);
+        addRequirements(Drivetrain.getInstance());
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
         xController.setTolerance(0.05, 0.8);
         yController.setTolerance(0.05, 0.8);
@@ -37,7 +34,7 @@ public class GoToReefTag extends Command {
 
     @Override
     public void initialize() {
-        nearestPose = drivetrain.getPose().nearest(drivetrain.getReefPoses(rightSide));
+        nearestPose = Drivetrain.getInstance().getPose().nearest(Drivetrain.getInstance().getReefPoses(rightSide));
         xController.setSetpoint(nearestPose.getX());
         thetaController.setSetpoint(nearestPose.getRotation().getDegrees());
         yController.setSetpoint(nearestPose.getY());
@@ -46,16 +43,16 @@ public class GoToReefTag extends Command {
     @Override
     public void execute() {
 
-        var xSpeed = xController.calculate(drivetrain.getPose().getX());
-        var ySpeed = yController.calculate(drivetrain.getPose().getY());
-        var thetaSpeed = thetaController.calculate(drivetrain.getPose().getRotation().getRadians());
+        var xSpeed = xController.calculate(Drivetrain.getInstance().getPose().getX());
+        var ySpeed = yController.calculate(Drivetrain.getInstance().getPose().getY());
+        var thetaSpeed = thetaController.calculate(Drivetrain.getInstance().getPose().getRotation().getRadians());
 
-        drivetrain.driveFieldRelative(xSpeed, ySpeed, thetaSpeed);
+        Drivetrain.getInstance().driveFieldRelative(xSpeed, ySpeed, thetaSpeed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrain.driveFieldRelative(0, 0, 0);
+        Drivetrain.getInstance().driveFieldRelative(0, 0, 0);
     }
 
     @Override

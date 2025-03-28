@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   @NotLogged
   SwerveModule backRight = new SwerveModule(backRightDriveCANId, backRightTurnCANId);
 
-  boolean usingVision = false;
+  boolean usingVision = true;
 
   PhotonCamera leftCam;
   PhotonCamera rightCam;

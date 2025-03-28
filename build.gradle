@@ -27,6 +27,8 @@ deploy {
                 // getTargetTypeClass is a shortcut to get the class type using a string
 
                 frcJava(getArtifactTypeClass('FRCJavaArtifact')) {
+                // Enable VisualVM connection
+                jvmArgs.add("-Xmx10M")
                 }
 
                 // Static files artifact
