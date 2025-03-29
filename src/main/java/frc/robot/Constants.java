@@ -97,9 +97,9 @@ public class Constants {
         public static double maxVelocity = 110; // Max = 151 degrees/s
         public static double velocityTolerance = 3;
 
-        public static double kP = 0.03;
+        public static double kP = 0.04;
         public static double kI = 0;
-        public static double kD = 0;
+        public static double kD = 0.001;
         public static double kS = 0;
         public static double kV = 4.38; // V*s/rad
         public static double kG = 0.37;
@@ -135,16 +135,16 @@ public class Constants {
 
         // https://www.reca.lc/linear?angle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&currentLimit=%7B%22s%22%3A40%2C%22u%22%3A%22A%22%7D&efficiency=100&limitAcceleration=0&limitDeceleration=0&limitVelocity=0&limitedAcceleration=%7B%22s%22%3A400%2C%22u%22%3A%22in%2Fs2%22%7D&limitedDeceleration=%7B%22s%22%3A50%2C%22u%22%3A%22in%2Fs2%22%7D&limitedVelocity=%7B%22s%22%3A10%2C%22u%22%3A%22in%2Fs%22%7D&load=%7B%22s%22%3A18%2C%22u%22%3A%22lbs%22%7D&motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A6%2C%22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A2.256%2C%22u%22%3A%22in%22%7D&travelDistance=%7B%22s%22%3A60%2C%22u%22%3A%22in%22%7D
         public static double maxElevatorJerk = 10000;
-        public static double maxAccel = 240; // max @40A is 830 in/s^2
-        public static double maxVelocity = 48; // max is ~121 in/s
+        public static double maxAccel = 600; // max @40A is 830 in/s^2
+        public static double maxVelocity = 90; // max is ~121 in/s
         public static double velocityTolerance = 0.5;
-        public static double velocityMaxError = 0.3;
+        public static double velocityMaxError = 3;
         public static double positionMaxError = 0.4;
-        public static double kP = 0.5;
+        public static double kP = 1.5;
         public static double kI;
-        public static double kD;
-        public static double kV = 0.13; // V*s/in
-        public static double kA = 0.0013; // V*2^2/in
+        public static double kD = .02;
+        public static double kV = 0.15; // V*s/in
+        public static double kA = 0.002; // V*2^2/in
         public static double kS;
         public static double kG = .4;
         public static double statorCurrentLimit = 40;
@@ -169,9 +169,9 @@ public class Constants {
         //https://www.reca.lc/arm?armMass=%7B%22s%22%3A12.5%2C%22u%22%3A%22lbs%22%7D&comLength=%7B%22s%22%3A5%2C%22u%22%3A%22in%22%7D&currentLimit=%7B%22s%22%3A30%2C%22u%22%3A%22A%22%7D&efficiency=90&endAngle=%7B%22s%22%3A90%2C%22u%22%3A%22deg%22%7D&iterationLimit=10000&motor=%7B%22quantity%22%3A1%2C%22name%22%3A%22Falcon%20500%22%7D&ratio=%7B%22magnitude%22%3A70.4%2C%22ratioType%22%3A%22Reduction%22%7D&startAngle=%7B%22s%22%3A0%2C%22u%22%3A%22deg%22%7D
         //Actual gear ratio is different than expected due to the "coin paradox". 10 tooth gear rotatng around 44 tooth is 5.4 to 1 not 4.4.
         public static double wristCurrent = 30;
-        public static double kP = .3; //last is .42
+        public static double kP = .4; //last is .42
         public static double kI = 0;
-        public static double kD = 0.003;
+        public static double kD = 0.005;
         public static double wrapPoint = .5;
         public static double sensorOffset = 0.651;
         public static SensorDirectionValue sensorDirection =
@@ -181,15 +181,15 @@ public class Constants {
         public static double kA = 0;
         public static double kS = 0.0575;
 
-        public static double maxAccel = 3000;// last is 560 // max accel = 15k deg/s^2
+        public static double maxAccel = 6000;// last is 560 // max accel = 15k deg/s^2
         public static double maxJerk = 100000;
-        public static double maxVelocity = 300;//last is 56 // max 560 deg/s
+        public static double maxVelocity = 400;//last is 56 // max 560 deg/s
         public static double velocityTolerance = 3;
 
         public static double maxPositionTolerance = .8;
         public static double maxVelocityTolerance = 3;
 
-        public static double dangerZone = 72; // Wrist cannot travel up past this angle unless elevator is up a bit.
+        public static double dangerZone = 76; // Wrist cannot travel up past this angle unless elevator is up a bit.
 
         // Units = degrees. Wrist pointing with coral vertical is 0 degrees to make FF
         // correct

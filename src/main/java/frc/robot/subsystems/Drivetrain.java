@@ -118,7 +118,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     AprilTagFieldLayout layout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
-    double xOffset = .4; // How close or far from the reef, increase number for further away
+    double xOffset = .45; // How close or far from the reef, increase number for further away
     double yOffset = .16; // How far left/right of center, increase for further off center
     Transform2d rightOffset = new Transform2d(xOffset, yOffset, new Rotation2d(0));
     Transform2d leftOffset = new Transform2d(xOffset, -yOffset, new Rotation2d(0));
@@ -210,7 +210,7 @@ public class Drivetrain extends SubsystemBase {
         ChassisSpeeds.discretize(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xSpeed, ySpeed, rot, gyro.getRotation2d())
+                    xSpeed, ySpeed, rot, odometry.getEstimatedPosition().getRotation())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             .02));
     setModuleStates(swerveModuleStates);
@@ -324,6 +324,10 @@ public class Drivetrain extends SubsystemBase {
       this);
   }
 
+  public void setDesiredPose(Pose2d pose){
+    desiredPose = pose;
+  }
+
   public boolean hasCrashed() {
 
     double linearAccelX = gyro.getWorldLinearAccelX();
@@ -363,12 +367,12 @@ public class Drivetrain extends SubsystemBase {
 
     rightEstimator = new PhotonPoseEstimator(
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
-        PhotonPoseEstimator.PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         rightCameraLocation // TODO: Make real numbers
     );
     leftEstimator = new PhotonPoseEstimator(
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
-        PhotonPoseEstimator.PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+        PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
         leftCameraLocation // TODO: Make real numbers
     );
   }
@@ -453,7 +457,7 @@ public class Drivetrain extends SubsystemBase {
    * wrapper for running all periodic vision code
    */
   private void runVision() {
-    rightEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
+    rightEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
     for (var result : rightCam.getAllUnreadResults()) {
       if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use
@@ -490,7 +494,7 @@ public class Drivetrain extends SubsystemBase {
       odometry.addVisionMeasurement(rightPoseEstimate.toPose2d(), em.get().timestampSeconds);
     }
 
-    leftEstimator.addHeadingData(Timer.getFPGATimestamp(), gyro.getRotation3d());
+    leftEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
     for (var result : leftCam.getAllUnreadResults()) {
       if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use

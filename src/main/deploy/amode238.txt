@@ -25,11 +25,15 @@
     "name" : "Left-J2",
     "commands" : [ {
       "name" : "MechanismPosition",
-      "parameters" : [ "L2" ],
+      "parameters" : [ "DeepCage" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
       "parameters" : [ "Left-J2", "true", "0" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
       "parallelType" : "None"
     }, {
       "name" : "EjectCoralAuto",

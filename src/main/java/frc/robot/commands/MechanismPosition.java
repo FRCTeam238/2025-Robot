@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.lang.Thread.State;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -49,9 +51,10 @@ public class MechanismPosition extends ParallelCommandGroup {
       }
       case L4 -> {
         addCommands(
-            new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L4), "L4"),
-            new PivotProfile(new MotionProfile.State(PivotConstants.L4), "L4"));
-            new WristProfile(new MotionProfile.State(WristConstants.L4), "L4");
+          new WristProfile(new MotionProfile.State(WristConstants.deepCage), "L4WristUp")
+          .andThen(new PivotProfile(new MotionProfile.State(PivotConstants.L4), "L4"))
+          .andThen(new ElevatorProfile(new MotionProfile.State(ElevatorConstants.L4), "L4"))
+          .andThen(new WristProfile(new MotionProfile.State(WristConstants.L4), "L4")));
       }
       case CoralStation -> {
         addCommands(

@@ -19,7 +19,7 @@ public class GoToReefTag extends Command {
 
     PIDController xController = new PIDController(10, 0, .5);
     PIDController yController = new PIDController(10, 0, .5);
-    PIDController thetaController = new PIDController(10, 0, .5);
+    PIDController thetaController = new PIDController(10, 0, .1);
 
     Transform3d delta = new Transform3d();
 
@@ -35,8 +35,9 @@ public class GoToReefTag extends Command {
     @Override
     public void initialize() {
         nearestPose = Drivetrain.getInstance().getPose().nearest(Drivetrain.getInstance().getReefPoses(rightSide));
+        Drivetrain.getInstance().setDesiredPose(nearestPose);
         xController.setSetpoint(nearestPose.getX());
-        thetaController.setSetpoint(nearestPose.getRotation().getDegrees());
+        thetaController.setSetpoint(nearestPose.getRotation().getRadians());
         yController.setSetpoint(nearestPose.getY());
     }
 

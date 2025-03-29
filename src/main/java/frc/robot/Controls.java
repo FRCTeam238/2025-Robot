@@ -64,6 +64,12 @@ public class Controls {
         driverController.start().onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         leftJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
         rightJoystick.button(4).onTrue(Drivetrain.getInstance().zeroHeadingCommand());
+
+
+        leftJoystick.button(7).whileTrue(new GoToReefTag(true));
+        leftJoystick.button(9).whileTrue(new GoToReefTag(false));
+        rightJoystick.button(7).whileTrue(new GoToReefTag(true));
+        rightJoystick.button(9).whileTrue(new GoToReefTag(false));
         
         Drivetrain.getInstance().setDefaultCommand(new Drive());
         AlgaeIntake.getInstance().setDefaultCommand(new RunAlgaeSlow(-0.1));
