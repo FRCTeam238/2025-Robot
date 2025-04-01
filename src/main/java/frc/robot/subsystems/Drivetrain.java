@@ -457,7 +457,7 @@ public class Drivetrain extends SubsystemBase {
    * wrapper for running all periodic vision code
    */
   private void runVision() {
-    rightEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
+    // rightEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
     for (var result : rightCam.getAllUnreadResults()) {
       if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use
@@ -494,7 +494,7 @@ public class Drivetrain extends SubsystemBase {
       odometry.addVisionMeasurement(rightPoseEstimate.toPose2d(), em.get().timestampSeconds);
     }
 
-    leftEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
+    // leftEstimator.addHeadingData(Timer.getFPGATimestamp(), odometry.getEstimatedPosition().getRotation());
     for (var result : leftCam.getAllUnreadResults()) {
       if (!result.hasTargets()) continue;
       // if best visible target is too far away for our liking, discard it, else use

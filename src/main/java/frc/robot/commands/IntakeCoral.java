@@ -15,7 +15,7 @@ public class IntakeCoral extends Command {
   boolean reversed;
 
   /** Creates a new RunIntake. */
-  @Auto
+  @Auto(names = {"Reversed"})
   public IntakeCoral(boolean reversed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intake);

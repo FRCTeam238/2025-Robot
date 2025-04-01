@@ -13,7 +13,7 @@ public class EjectCoralAuto extends SequentialCommandGroup {
   @Auto
   public EjectCoralAuto() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addCommands(new EjectCoral().withTimeout(3));
+    addCommands(new EjectCoral().withTimeout(1.5));
   }
 
 }

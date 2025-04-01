@@ -11,6 +11,69 @@
       "parallelType" : "None"
     } ]
   }, {
+    "name" : "Left-I4-L4",
+    "commands" : [ {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "true", "0" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "false", "1" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "false", "2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "false", "3" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "false", "4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Border-I4-L4", "false", "5" ],
+      "parallelType" : "None"
+    } ]
+  }, {
     "name" : "Left-J-Test",
     "commands" : [ {
       "name" : "FollowPath",
@@ -71,19 +134,7 @@
       "parallelType" : "None"
     }, {
       "name" : "MechanismPosition",
-      "parameters" : [ "L2" ],
-      "parallelType" : "None"
-    }, {
-      "name" : "MechanismPosition",
       "parameters" : [ "L4" ],
-      "parallelType" : "Race"
-    }, {
-      "name" : "Delay",
-      "parameters" : [ "2.2" ],
-      "parallelType" : "Race"
-    }, {
-      "name" : "FollowPath",
-      "parameters" : [ "Mid-H4-back", "true", "0" ],
       "parallelType" : "None"
     }, {
       "name" : "EjectCoralAuto",
