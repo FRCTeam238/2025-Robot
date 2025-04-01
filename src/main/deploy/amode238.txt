@@ -1,5 +1,274 @@
 {
   "autonomousModes" : [ {
+    "name" : "KO_Left-A4-B4",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "LBorder-A4-B4", "true", "0" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "LBorder-A4-B4", "false", "1" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "LBorder-A4-B4", "false", "2" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "true" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "LBorder-A4-B4", "false", "3" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-A4-B4", "false", "4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "KO_Left-J4-K4-L4",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-J4-K4-L4", "true", "0" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "true" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-J4-K4-L4", "false", "1" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-J4-K4-L4", "false", "2" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-J4-K4-L4", "false", "4" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Left-J4-K4-L4", "false", "5" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "true" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "None"
+    } ]
+  }, {
+    "name" : "KO_Mid-H4-A4",
+    "commands" : [ {
+      "name" : "FollowPath",
+      "parameters" : [ "Mid-A4-H4", "true", "0" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "true" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Mid-H4-A4", "false", "1" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "Delay",
+      "parameters" : [ "Time to wait (Seconds)" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Mid-H4-A4", "false", "2" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "IntakeCoral",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "FollowPath",
+      "parameters" : [ "Mid-H4-A4", "false", "3" ],
+      "parallelType" : "Parallel"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "DeepCage" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "GoToReefTag",
+      "parameters" : [ "false" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "L4" ],
+      "parallelType" : "None"
+    }, {
+      "name" : "EjectCoralAuto",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "WristProfile",
+      "parameters" : [ ],
+      "parallelType" : "None"
+    }, {
+      "name" : "MechanismPosition",
+      "parameters" : [ "CoralStation" ],
+      "parallelType" : "None"
+    } ]
+  }, {
     "name" : "Leave",
     "commands" : [ {
       "name" : "FollowPath",

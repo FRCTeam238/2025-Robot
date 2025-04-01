@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.autonomous.Auto;
 import frc.robot.subsystems.Drivetrain;
 
 public class GoToReefTag extends Command {
@@ -23,6 +24,7 @@ public class GoToReefTag extends Command {
 
     Transform3d delta = new Transform3d();
 
+    @Auto(names = { "Right Side?" })
     public GoToReefTag(boolean rightSide) {
         this.rightSide = rightSide;
         addRequirements(Drivetrain.getInstance());

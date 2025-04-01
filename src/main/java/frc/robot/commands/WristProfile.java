@@ -12,6 +12,7 @@ import frc.robot.Constants.WristConstants;
 import frc.robot.MotionProfile;
 import frc.robot.MotionProfile.MotionConstraints;
 import frc.robot.MotionProfile.ProfileType;
+import frc.robot.autonomous.Auto;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
 
@@ -33,7 +34,12 @@ public class WristProfile extends Command {
     wrist = Wrist.getInstance();
     addRequirements(wrist);
   }
-  
+
+  @Auto
+  public WristProfile() {
+    this(new MotionProfile.State(WristConstants.deepCage), "DeepCage");
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
