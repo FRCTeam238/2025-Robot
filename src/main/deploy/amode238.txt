@@ -75,7 +75,7 @@
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Left-A4-B4", "false", "4" ],
+      "parameters" : [ "LBorder-A4-B4", "false", "4" ],
       "parallelType" : "None"
     }, {
       "name" : "MechanismPosition",
@@ -158,7 +158,7 @@
       "parallelType" : "Parallel"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Left-J4-K4-L4", "false", "4" ],
+      "parameters" : [ "Left-J4-K4-L4", "false", "3" ],
       "parallelType" : "Parallel"
     }, {
       "name" : "IntakeCoral",
@@ -166,7 +166,7 @@
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",
-      "parameters" : [ "Left-J4-K4-L4", "false", "5" ],
+      "parameters" : [ "Left-J4-K4-L4", "false", "4" ],
       "parallelType" : "Parallel"
     }, {
       "name" : "MechanismPosition",
@@ -197,7 +197,7 @@
     "name" : "KO_Mid-H4-A4",
     "commands" : [ {
       "name" : "FollowPath",
-      "parameters" : [ "Mid-A4-H4", "true", "0" ],
+      "parameters" : [ "Mid-H4-A4", "true", "0" ],
       "parallelType" : "Parallel"
     }, {
       "name" : "MechanismPosition",
@@ -229,7 +229,7 @@
       "parallelType" : "Parallel"
     }, {
       "name" : "Delay",
-      "parameters" : [ "Time to wait (Seconds)" ],
+      "parameters" : [ "1" ],
       "parallelType" : "None"
     }, {
       "name" : "FollowPath",

@@ -18,6 +18,7 @@ public class FollowPath extends SequentialCommandGroup {
 
     @Auto(names = {"Name of Path", "Set the Robot Position", "Trajectory Split Number"})
     public FollowPath(String pathName, boolean resetPosition, int splitNum) {
+
         Trajectory<SwerveSample> trajectory = (Trajectory<SwerveSample>) Choreo.loadTrajectory(pathName).get().getSplit(splitNum >= 0 ? splitNum : 0).get();
 
         if (resetPosition) {
